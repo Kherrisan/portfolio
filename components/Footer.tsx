@@ -7,7 +7,7 @@ const Footer = () => (
       <SiNotion size={16} />
       <SiVercel size={16} />
     </div>
-    <div>Built with love by Spencer Woo</div>
+    <div>Built with love by <a href="https://spencerwoo.com">Spencer Woo</a></div>
     <div>
       <a
         href="https://creativecommons.org/licenses/by-nc-sa/4.0/"
