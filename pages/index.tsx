@@ -13,24 +13,24 @@ const Home: NextPage<{
 }> = ({ latestPost }) => (
   <>
     <Head>
-      <title>Spencer Woo</title>
+      <title>Dikai Zou</title>
     </Head>
 
     <div className="mx-auto max-w-3xl px-6">
       <Image
         className="rounded-full"
-        src="/images/avatar.jpg"
+        src="/images/avatar.jpeg"
         alt="avatar"
         width={120}
         height={120}
         priority
       />
 
-      <h1 className="heading-text my-8 font-serif text-4xl">Spencer Woo</h1>
+      <h1 className="heading-text my-8 font-serif text-4xl">Dikai Zou</h1>
 
       <p className="mb-8 leading-7">
-        Developer / Designer / Writer /{' '}
-        <a
+        Researcher / Developer {' '}
+        {/* <a
           href="https://genshin-impact.fandom.com/wiki/Hu_Tao"
           target="_blank"
           rel="noopener noreferrer"
@@ -40,42 +40,33 @@ const Home: NextPage<{
             #HuTao
           </abbr>
         </a>{' '}
-        main
+        main */}
       </p>
 
       <p className="leading-7">
-        PhD student at{' '}
+        Graduate student at{' '}
         <a
-          href="https://cst.bit.edu.cn"
+          href="https://cyber.seu.edu.cn"
           target="_blank"
           rel="noopener noreferrer"
           className="bg-emerald-600/10 text-emerald-600 p-1 rounded font-bold transition-all duration-150 hover:bg-emerald-600/20"
         >
-          🎓 BIT
+          🌲CYBER#SEU
         </a>{' '}
-        on cryptography, AI security, and adversarial attacks. Graduated from{' '}
+        on astrology, alchemy. Graduated from{' '}
         <a
-          href="https://gla.ac.uk"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="bg-indigo-600/10 text-indigo-600 p-1 rounded font-bold transition-all duration-150 hover:bg-indigo-600/20"
-        >
-          🇬🇧 UofG
-        </a>{' '}
-        with distinction (MSc, 2022). Graduated from{' '}
-        <a
-          href="https://cs.bit.edu.cn"
+          href="https://cse.seu.edu.cn"
           target="_blank"
           rel="noopener noreferrer"
           className="hover-links"
         >
-          🇨🇳 BIT
+          CSE#SEU
         </a>{' '}
-        (BSc, 2020).
+        (BSc).
       </p>
 
       <p className="mt-8 leading-7">
-        More about me (projects, links, Genshin Impact):{' '}
+        More about me (projects, links):{' '}
         <Link href="/projectsnsocials">
           <a className="group inline-flex flex-wrap items-center">
             <span className="hover-links">📚 Projects & Socials</span>
@@ -100,25 +91,22 @@ const Home: NextPage<{
       </p>
 
       <p className="mt-8 leading-7">
-        Most of my work can be found on{' '}
-        <a
-          href="https://github.com/spencerwooo"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          GitHub
+        Contact me:{' '}
+        
+        <a href="mailto:zoudikai@outlook.com" className="group inline-flex flex-wrap items-center">
+            <span className="hover-links">
+              {/* <FiMail size={15} className="mr-2 inline" /> */}
+              📨 zoudikai#outlook.com
+            </span>
+          
         </a>
-        .
       </p>
 
       <p className="leading-7 mb-8">
-        <FiMail size={15} className="mr-2 inline" />
-        <a href="mailto:spencer.wushangbo@gmail.com" className="hover-links">
-          spencer.wushangbo#gmail.com
-        </a>
+        
       </p>
 
-      <NowPlaying />
+      {/* <NowPlaying /> */}
     </div>
   </>
 )
