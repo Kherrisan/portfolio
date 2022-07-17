@@ -3,7 +3,7 @@ import { ListBlockChildrenResponse } from '@notionhq/client/build/src/api-endpoi
 
 const notion = new Client({ auth: process.env.NOTION_KEY })
 const databaseId =
-  process.env.NOTION_DATABASE_ID || '7021cba3b8a04865850473d4037762ad'
+  process.env.NOTION_DATABASE_ID || 'b3f55ea317de4af39aefcab597bcf7d5'
 
 export const getDatabase = async (slug?: string) => {
   let dbQuery: any = {
