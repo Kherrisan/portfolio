@@ -1,6 +1,6 @@
-<samp><a href="https://spencerwoo.com" target="_blank" rel="noopener noreferrer">spencerwoo.com</a></samp>
+# Portfolio
 
-personal portfolio powered by **Next.js**.
+my personal portfolio powered by **Next.js, React and Notion**, forked and adapted from [spencerwooo/spencerwoo.com](https://github.com/spencerwooo/spencerwoo.com)
 
 <br>
 
