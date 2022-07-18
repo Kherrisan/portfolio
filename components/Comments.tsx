@@ -7,8 +7,8 @@ const Comments = () => {
       className="mt-4 rounded border border-gray-400/30 p-4 md:-mx-4"
     >
       <Giscus
-        repo="spencerwooo/giscus-discussions"
-        repoId="R_kgDOGldfMQ"
+        repo="kherrisan/giscus-discussions"
+        repoId="R_kgDOHrXU0g"
         category="Announcements"
         categoryId="DIC_kwDOGldfMc4CAbod"
         mapping="pathname"
