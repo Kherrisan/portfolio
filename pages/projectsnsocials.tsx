@@ -166,11 +166,11 @@ const ProjectsNSocials: NextPage<{ genshinUserInfo: UserInfo }> = ({
 
         <h1 className="heading-text my-8 font-serif text-4xl">Projects</h1>
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        {/* <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           {projectLinks.map((project: ProjectProps) => (
             <ProjectCard key={project.slug} {...project} />
           ))}
-        </div>
+        </div> */}
 
         <h1 className="heading-text my-8 font-serif text-4xl">Socials</h1>
 
