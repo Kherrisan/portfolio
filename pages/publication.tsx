@@ -19,13 +19,15 @@ const Publication: NextPage<{
   return (
     <>
       <Head>
-        <title>Spencer Woo - Publication</title>
+        <title>Dikai Zou - Publication</title>
       </Head>
 
       <div className="container mx-auto max-w-3xl px-6">
         <h1 className="heading-text mb-8 font-serif text-4xl">Publication</h1>
 
-        {data.map((item, index) => (
+        <p>Soon！</p>
+
+        {/* {data.map((item, index) => (
           <HoverCard
             key={index}
             href={item.link}
@@ -79,7 +81,7 @@ const Publication: NextPage<{
               {item.publication}
             </div>
           </HoverCard>
-        ))}
+        ))} */}
 
         <div className="secondary-text text-center font-mono text-xs mt-8">
           Updates every 24 hrs, sourced from{' '}
@@ -100,12 +102,12 @@ const Publication: NextPage<{
   )
 }
 
-export const getStaticProps: GetStaticProps = async () => {
-  const data = await getPublications()
-  return {
-    props: { data },
-    revalidate: 86400, // 24 hrs
-  }
-}
+// export const getStaticProps: GetStaticProps = async () => {
+//   const data = await getPublications()
+//   return {
+//     props: { data },
+//     revalidate: 86400, // 24 hrs
+//   }
+// }
 
 export default Publication
