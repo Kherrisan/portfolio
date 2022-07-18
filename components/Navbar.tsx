@@ -36,15 +36,15 @@ const MenuItemLink = (props: { href: string; children: React.ReactNode }) => {
 const Navbar = () => {
   return (
     <header className="primary-text z-10 flex items-center px-4 py-3 justify-between sticky top-0 backdrop-blur-lg bg-white/30 dark:bg-dark-900/50">
-      {/* <Link href="/">
+      <Link href="/">
         <Image
           className="transition-all duration-150 cursor-pointer dark:invert hover:opacity-80"
-          src="/images/avatar.jpeg"
+          src="/images/avatar_white.jpg"
           alt="home"
           width={42}
           height={42}
         />
-      </Link> */}
+      </Link>
 
       <div className="flex items-center space-x-4">
         <nav className="hidden items-center space-x-2 sm:flex">
