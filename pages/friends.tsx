@@ -35,7 +35,7 @@ const Friends: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Spencer Woo - Friends</title>
+        <title>Dikai Zou - Friends</title>
       </Head>
 
       <div className="container mx-auto max-w-3xl px-6">
