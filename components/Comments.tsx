@@ -10,7 +10,7 @@ const Comments = () => {
         repo="kherrisan/giscus-discussions"
         repoId="R_kgDOHrXU0g"
         category="Announcements"
-        categoryId="DIC_kwDOGldfMc4CAbod"
+        categoryId="DIC_kwDOHrXU0s4CQSsV"
         mapping="pathname"
         reactionsEnabled="1"
         theme="preferred_color_scheme"
