@@ -2,7 +2,7 @@ import { JSDOM } from 'jsdom'
 
 const getPublications = async () => {
   const resp = await fetch(
-    'https://scholar.google.com/citations?user=Mf-JoyQAAAAJ&hl=en',
+    'https://scholar.google.com/citations?user=zILf1s4AAAAJ&hl=en',
     {
       headers: {
         'user-agent':

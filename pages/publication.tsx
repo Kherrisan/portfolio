@@ -25,9 +25,7 @@ const Publication: NextPage<{
       <div className="container mx-auto max-w-3xl px-6">
         <h1 className="heading-text mb-8 font-serif text-4xl">Publication</h1>
 
-        <p>Soon！</p>
-
-        {/* {data.map((item, index) => (
+        {data.map((item, index) => (
           <HoverCard
             key={index}
             href={item.link}
@@ -50,19 +48,20 @@ const Publication: NextPage<{
             }
           >
             <div className="text-sm secondary-text truncate">
-              {item.title.startsWith('Demiguise') ? (
+              {/* {item.title.startsWith('Demiguise') ? (
                 <>
                   <span className="opacity-100 font-bold">Y Wang*, S Wu*</span>
                   <span className="opacity-80">
                     , W Jiang, S Hao, Y Tan, Q Zhang
                   </span>
                 </>
-              ) : (
+              ) : ( */}
+              {(
                 item.author.split(', ').map((author, index) => (
                   <span key={index}>
-                    {author.toLowerCase() === 's wu' ? (
+                    {author.toLowerCase() === 'd zou' ? (
                       <span className="opacity-100 font-bold">
-                        {author + '*'}
+                        {author}
                       </span>
                     ) : (
                       <span className="opacity-80">{author}</span>
@@ -81,7 +80,7 @@ const Publication: NextPage<{
               {item.publication}
             </div>
           </HoverCard>
-        ))} */}
+        ))}
 
         <div className="secondary-text text-center font-mono text-xs mt-8">
           Updates every 24 hrs, sourced from{' '}
@@ -102,12 +101,12 @@ const Publication: NextPage<{
   )
 }
 
-// export const getStaticProps: GetStaticProps = async () => {
-//   const data = await getPublications()
-//   return {
-//     props: { data },
-//     revalidate: 86400, // 24 hrs
-//   }
-// }
+export const getStaticProps: GetStaticProps = async () => {
+  const data = await getPublications()
+  return {
+    props: { data },
+    revalidate: 86400, // 24 hrs
+  }
+}
 
 export default Publication
