@@ -84,15 +84,15 @@ const GenshinCardStat = ({
 const ProjectsNSocials: NextPage<{ genshinUserInfo: UserInfo }> = ({
   genshinUserInfo,
 }) => {
-  const randomGenshinBackground = () =>
-    `/images/genshin/${Math.floor(Math.random() * 21) + 1}.jpg`
+  // const randomGenshinBackground = () =>
+  //   `/images/genshin/${Math.floor(Math.random() * 21) + 1}.jpg`
 
-  const stats = genshinUserInfo.stats
-  const exploration = genshinUserInfo.world_explorations.map(
-    (a) => a.exploration_percentage
-  )
-  const worldExplorationPercentage =
-    exploration.reduce((sum, val) => sum + val) / exploration.length
+  // const stats = genshinUserInfo.stats
+  // const exploration = genshinUserInfo.world_explorations.map(
+  //   (a) => a.exploration_percentage
+  // )
+  // const worldExplorationPercentage =
+  //   exploration.reduce((sum, val) => sum + val) / exploration.length
 
   return (
     <>
@@ -105,7 +105,7 @@ const ProjectsNSocials: NextPage<{ genshinUserInfo: UserInfo }> = ({
           Genshin Impact
         </h1>
 
-        <div className="relative shadow-lg p-4 rounded overflow-hidden text-white">
+        {/* <div className="relative shadow-lg p-4 rounded overflow-hidden text-white">
           <div className="flex justify-between">
             <div>
               <div className="text-2xl">阿巴阿巴 Lv.58</div>
@@ -157,7 +157,7 @@ const ProjectsNSocials: NextPage<{ genshinUserInfo: UserInfo }> = ({
               objectPosition="50% 60%"
             />
           </div>
-        </div>
+        </div> */}
 
         <div className="secondary-text text-center font-mono text-xs mt-4">
           Updates every 24 hrs. Background images shot by myself in-game.
@@ -199,12 +199,12 @@ const ProjectsNSocials: NextPage<{ genshinUserInfo: UserInfo }> = ({
   )
 }
 
-export const getStaticProps: GetStaticProps = async () => {
-  const genshinUserInfo = await getGenshinUserInfo()
-  return {
-    props: { genshinUserInfo },
-    revalidate: 86400, // 24 hours
-  }
-}
+// export const getStaticProps: GetStaticProps = async () => {
+//   // const genshinUserInfo = await getGenshinUserInfo()
+//   return {
+//     props: { genshinUserInfo },
+//     revalidate: 86400, // 24 hours
+//   }
+// }
 
 export default ProjectsNSocials
