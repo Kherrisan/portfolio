@@ -51,16 +51,16 @@ const Home: NextPage<{
           rel="noopener noreferrer"
           className="bg-emerald-600/10 text-emerald-600 p-1 rounded font-bold transition-all duration-150 hover:bg-emerald-600/20"
         >
-          🌲CYBER#SEU
+          🌲 CYBER#SEU
         </a>{' '}
         on astrology, alchemy. Graduated from{' '}
         <a
-          href="https://cse.seu.edu.cn"
+          href="https://cose.seu.edu.cn"
           target="_blank"
           rel="noopener noreferrer"
           className="hover-links"
         >
-          CSE#SEU
+          COSE#SEU
         </a>{' '}
         (BSc).
       </p>
@@ -102,9 +102,14 @@ const Home: NextPage<{
         </a>
       </p>
 
-      <p className="leading-7 mb-8">
-        
-      </p>
+      <div className="secondary-text text-center font-mono text-xs">
+        <p className="leading-7 mt-8">
+          This site is forked from{' '}
+          <a href="https://github.com/spencerwooo/spencerwoo.com" className="bg-indigo-600/10 text-indigo-600 p-1 rounded font-bold transition-all duration-150 hover:bg-indigo-600/20">
+            spencerwooo/spencerwoo.com
+          </a>, built with ❤️ love and 💻 expertise by spencerwoo.
+        </p>
+      </div>
 
       {/* <NowPlaying /> */}
     </div>
