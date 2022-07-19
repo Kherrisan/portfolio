@@ -1,9 +1,10 @@
 import { Menu, Transition } from '@headlessui/react'
-import { Fragment } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { FiMenu, FiRss } from 'react-icons/fi'
 
 import Image from 'next/image'
 import Link from 'next/link'
+import { useTheme } from 'next-themes'
 
 const navigations = [
   {
@@ -34,12 +35,15 @@ const MenuItemLink = (props: { href: string; children: React.ReactNode }) => {
 }
 
 const Navbar = () => {
+  const { resolvedTheme, setTheme } = useTheme()
+
   return (
     <header className="primary-text z-10 flex items-center px-4 py-3 justify-between sticky top-0 backdrop-blur-lg bg-white/30 dark:bg-dark-900/50">
       <Link href="/">
         <Image
-          className="transition-all duration-150 cursor-pointer dark:invert hover:opacity-80"
-          src="/images/avatar_white.jpg"
+          // className="transition-all duration-150 cursor-pointer dark:invert hover:opacity-80"
+          className="transition-all duration-150 cursor-pointer hover:opacity-80"
+          src={`/images/avatar_${resolvedTheme === 'light' ? 'white' : 'black'}.jpg`}
           alt="home"
           width={42}
           height={42}
