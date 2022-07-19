@@ -25,7 +25,7 @@ const BlogCopyright = ({
         </svg>
       </div>
       <div className="font-serif text-lg leading-6">
-        {page.properties.name.title[0].plain_text} - Spencer Woo
+        {page.properties.name.title[0].plain_text} - Dikai Zou
       </div>
       <div className="leading-5 opacity-90">
         <a href={absoluteLink} target="_blank" rel="noopener noreferrer">
