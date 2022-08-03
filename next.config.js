@@ -9,7 +9,8 @@ module.exports = {
       'avatars2.githubusercontent.com',
       'avatars3.githubusercontent.com',
       's3.bmp.ovh',
-      'i1.hdslb.com'
+      'i1.hdslb.com',
+      'b2.kendrickzou.com'
     ],
   },
   redirects: [
