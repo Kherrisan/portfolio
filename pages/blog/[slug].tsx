@@ -10,7 +10,7 @@ import BlogCopyright from '../../components/BlogCopyright'
 import BlogTableOfContent from '../../components/BlogTableOfContent'
 import Comments from '../../components/Comments'
 import NotionBlock from '../../components/NotionBlock'
-import probeImageSize from '../../lib/imaging'
+import probeImageSize, { proxyStaticImage } from '../../lib/imaging'
 import { getBlocks, getDatabase, getPage } from '../../lib/notion'
 
 const Post: NextPage<{ page: any; blocks: any[] }> = ({ page, blocks }) => {
@@ -134,14 +134,14 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     blocksWithChildren
       .filter((b: any) => b.type === 'image')
       .map(async (b) => {
-        const { type } = b
-        const value = b[type]
-        const src =
-          value.type === 'external' ? value.external.url : value.file.url
-
-        const { width, height } = await probeImageSize(src)
-        value['dim'] = { width, height }
-        b[type] = value
+          const { type } = b
+          const value = b[type]
+          let src = value.type === 'external' ? value.external.url : value.file.url
+          src = await proxyStaticImage(src)
+          value[value.type].url = src
+          const { width, height } = await probeImageSize(src)
+          value['dim'] = { width, height }
+          b[type] = value
       })
   )
 
