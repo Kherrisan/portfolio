@@ -9,6 +9,7 @@ import axios from 'axios'
 const B2_REGION = 'us-west-004'
 const B2_ENDPOINT = `s3.${B2_REGION}.backblazeb2.com`
 const B2_BUCKET = 'bucket-kendrickzou'
+const B2_CF_HOST = 'b2.kendrickzou.com'
 
 const s3 = new S3Client({
   region: B2_REGION,
@@ -28,7 +29,7 @@ const s3 = new S3Client({
 export const probeImageInB2 = async (img: string) => {
   try {
     await s3.send(new HeadObjectCommand({ Bucket: B2_BUCKET, Key: img }))
-    return `https://${B2_BUCKET}.${B2_ENDPOINT}/${img}`
+    return `https://${B2_CF_HOST}/${img}`
   } catch (err) {
     // If the image is not stored in Backblaze B2, s3.send will throw an error(40x).
     // Thus return null.
@@ -66,7 +67,7 @@ export const storeImage2B2 = async (url: string, img: string) => {
     })
     await uploading.done()
     console.info(`[INFO] Successfully uploaded to Backblaze: ${img}`)
-    return `https://${B2_BUCKET}.${B2_ENDPOINT}/${img}`
+    return `https://${B2_CF_HOST}/${img}`
   } catch (err) {
     console.error(err)
   }
