@@ -19,9 +19,9 @@ export const friends: FriendProps[] = [
     bgColor: '#895969',
   },
   {
-    id: '@SoulOfSea',
-    link: 'https://weibo.com/u/6207554915',
-    avatar: 'https://s3.bmp.ovh/imgs/2022/07/18/11106d27b7312739.jpg',
+    id: '@o大粽子o',
+    link: 'https://space.bilibili.com/3236181',
+    avatar: 'https://i1.hdslb.com/bfs/face/c482ec73186cb69fa52873b5f0607c09f0787528.jpg',
     bgColor: '#b59672',
   },
   // {
