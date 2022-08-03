@@ -97,7 +97,7 @@ const ProjectsNSocials: NextPage<{ genshinUserInfo: UserInfo }> = ({
   return (
     <>
       <Head>
-        <title>Spencer Woo - Projects & Socials</title>
+        <title>Kendrick Zou - Projects & Socials</title>
       </Head>
 
       <div className="container mx-auto max-w-3xl px-6">

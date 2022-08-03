@@ -15,7 +15,7 @@ import { getBlocks, getDatabase, getPage } from '../../lib/notion'
 
 const Post: NextPage<{ page: any; blocks: any[] }> = ({ page, blocks }) => {
   const router = useRouter()
-  const hostname = 'https://spencerwoo.com'
+  const hostname = 'https://kendrickzou.com'
 
   if (!page || !blocks) return <div />
 
@@ -23,7 +23,7 @@ const Post: NextPage<{ page: any; blocks: any[] }> = ({ page, blocks }) => {
     <>
       <Head>
         <title>
-          {page.properties.name.title[0].plain_text} - Spencer&apos;s Blog
+          {page.properties.name.title[0].plain_text} - Kendrick&apos;s Blog
         </title>
       </Head>
 
@@ -145,8 +145,8 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       })
   )
 
-  return { props: { page, blocks: blocksWithChildren }, revalidate: 1 }
-  // return { props: { page, blocks: blocksWithChildren }, revalidate: 60 * 60 } // 1 hour
+  // return { props: { page, blocks: blocksWithChildren }, revalidate: 1 }
+  return { props: { page, blocks: blocksWithChildren }, revalidate: 60 * 60 } // 1 hour
 }
 
 export default Post

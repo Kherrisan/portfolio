@@ -6,7 +6,7 @@ import Navbar from './Navbar'
 const Layout = ({ children }: { children: React.ReactNode }) => (
   <>
     <Head>
-      <meta name="description" content="Spencer Woo" />
+      <meta name="description" content="Kendrick Zou" />
       <link rel="icon" href="/favicon.ico" />
       <link
         rel="apple-touch-icon"
