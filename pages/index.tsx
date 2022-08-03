@@ -29,7 +29,7 @@ const Home: NextPage<{
       <h1 className="heading-text my-8 font-serif text-4xl">Dikai Zou</h1>
 
       <p className="mb-8 leading-7">
-        Researcher / Developer {' '}
+        Researcher / Developer{' '}
         {/* <a
           href="https://genshin-impact.fandom.com/wiki/Hu_Tao"
           target="_blank"
@@ -92,22 +92,27 @@ const Home: NextPage<{
 
       <p className="mt-8 leading-7">
         Contact me:{' '}
-        
-        <a href="mailto:zoudikai@outlook.com" className="group inline-flex flex-wrap items-center">
-            <span className="hover-links">
-              {/* <FiMail size={15} className="mr-2 inline" /> */}
-              📨 zoudikai#outlook.com
-            </span>
-          
+        <a
+          href="mailto:zoudikai@outlook.com"
+          className="group inline-flex flex-wrap items-center"
+        >
+          <span className="hover-links">
+            {/* <FiMail size={15} className="mr-2 inline" /> */}
+            📨 zoudikai#outlook.com
+          </span>
         </a>
       </p>
 
       <div className="secondary-text text-center font-mono text-xs">
         <p className="leading-7 mt-8">
           This site is forked from{' '}
-          <a href="https://github.com/spencerwooo/spencerwoo.com" className="bg-indigo-600/10 text-indigo-600 p-1 rounded font-bold transition-all duration-150 hover:bg-indigo-600/20">
+          <a
+            href="https://github.com/spencerwooo/spencerwoo.com"
+            className="bg-indigo-600/10 text-indigo-600 p-1 rounded font-bold transition-all duration-150 hover:bg-indigo-600/20"
+          >
             spencerwooo/spencerwoo.com
-          </a>, built with ❤️ love and 💻 expertise by spencerwoo.
+          </a>
+          , built with ❤️ love and 💻 expertise by spencerwoo.
         </p>
       </div>
 

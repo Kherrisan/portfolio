@@ -1,10 +1,10 @@
 import { Menu, Transition } from '@headlessui/react'
+import { useTheme } from 'next-themes'
 import { Fragment, useEffect, useState } from 'react'
 import { FiHome, FiMenu, FiRss } from 'react-icons/fi'
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { useTheme } from 'next-themes'
 
 const navigations = [
   {

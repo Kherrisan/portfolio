@@ -15,7 +15,7 @@ const Blog: NextPage<{ posts: QueryDatabaseResponse['results'] }> = ({
   return (
     <>
       <Head>
-        <title>Spencer Woo - Blog</title>
+        <title>Kendrick Zou - Blog</title>
       </Head>
 
       {/* <SearchModal searchOpen={searchOpen} setSearchOpen={setSearchOpen} /> */}

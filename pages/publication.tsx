@@ -56,23 +56,19 @@ const Publication: NextPage<{
                   </span>
                 </>
               ) : ( */}
-              {(
-                item.author.split(', ').map((author, index) => (
-                  <span key={index}>
-                    {author.toLowerCase() === 'd zou' ? (
-                      <span className="opacity-100 font-bold">
-                        {author}
-                      </span>
-                    ) : (
-                      <span className="opacity-80">{author}</span>
-                    )}
+              {item.author.split(', ').map((author, index) => (
+                <span key={index}>
+                  {author.toLowerCase() === 'd zou' ? (
+                    <span className="opacity-100 font-bold">{author}</span>
+                  ) : (
+                    <span className="opacity-80">{author}</span>
+                  )}
 
-                    {index !== item.author.split(', ').length - 1 && (
-                      <span>, </span>
-                    )}
-                  </span>
-                ))
-              )}
+                  {index !== item.author.split(', ').length - 1 && (
+                    <span>, </span>
+                  )}
+                </span>
+              ))}
             </div>
 
             <div className="text-sm opacity-60 secondary-text truncate">
