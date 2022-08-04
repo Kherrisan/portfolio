@@ -58,7 +58,7 @@ const Blog: NextPage<{ posts: QueryDatabaseResponse['results'] }> = ({
                 <span key={person.id}>{person.name?.toLowerCase()}</span>
               ))}
               <span>·</span>
-              <span>{post.properties.tag.select.name?.toLowerCase()}</span>
+              <span>{post.properties.category.select.name?.toLowerCase()}</span>
             </div>
           </HoverCard>
         ))}

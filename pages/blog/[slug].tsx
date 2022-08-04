@@ -47,7 +47,7 @@ const Post: NextPage<{ page: any; blocks: any[] }> = ({ page, blocks }) => {
               <span>·</span>
               <div>
                 <FiBookmark size={18} className="mr-1 inline" />
-                <span>{page.properties.tag.select.name?.toLowerCase()}</span>
+                <span>{page.properties.category.select.name?.toLowerCase()}</span>
               </div>
               <span>·</span>
               <Link href="#comments-section" passHref>
