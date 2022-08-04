@@ -1,6 +1,8 @@
 import type { GetStaticProps, NextPage } from 'next'
 import { ParsedUrlQuery } from 'querystring'
 import { FiArrowLeft, FiBookmark, FiMessageCircle } from 'react-icons/fi'
+import { BiCategory } from 'react-icons/bi'
+import { AiOutlineTag } from 'react-icons/ai'
 
 import Head from 'next/head'
 import Link from 'next/link'
@@ -36,7 +38,7 @@ const Post: NextPage<{ page: any; blocks: any[] }> = ({ page, blocks }) => {
               </span>
               <span>{page.icon?.emoji || '📚'}</span>
             </h1>
-            <div className="secondary-text flex flex-wrap items-center gap-2">
+            <div className="secondary-text flex flex-wrap items-center gap-2 mb-2">
               <span>
                 {new Date(page.properties.date.date.start).toLocaleDateString()}
               </span>
@@ -44,11 +46,6 @@ const Post: NextPage<{ page: any; blocks: any[] }> = ({ page, blocks }) => {
               {page.properties.author.people.map((person: { name: string }) => (
                 <span key={person.name}>{person.name?.toLowerCase()}</span>
               ))}
-              <span>·</span>
-              <div>
-                <FiBookmark size={18} className="mr-1 inline" />
-                <span>{page.properties.category.select.name?.toLowerCase()}</span>
-              </div>
               <span>·</span>
               <Link href="#comments-section" passHref>
                 <a className="hover-links">
@@ -58,7 +55,21 @@ const Post: NextPage<{ page: any; blocks: any[] }> = ({ page, blocks }) => {
               </Link>
             </div>
 
-            <article className="prose my-8 dark:prose-invert">
+            <div className="secondary-text flex flex-wrap items-center gap-2">
+              <div>
+                <BiCategory size={18} className="mr-1 inline" />
+                <span>{page.properties.category.select.name?.toLowerCase()}</span>
+              </div>
+              <span>·</span>
+              {page.properties.tags.multi_select.map((tag: any) => (
+                <span key={tag.id}>
+                  <AiOutlineTag size={18} className="mr-1 inline" />
+                <span>{tag.name?.toLowerCase()}</span>
+                </span>
+              ))}
+            </div>
+
+            <article className="prose my-8 dark:prose-invert max-w-none">
               {blocks.map((block) => (
                 <NotionBlock key={block.id} block={block} />
               ))}
@@ -101,6 +112,7 @@ export const getStaticPaths = async () => {
 interface Props extends ParsedUrlQuery {
   slug: string
 }
+
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   // res.setHeader('Cache-Control', 'max-age=0, s-maxage=60, stale-while-revalidate')
 
@@ -109,44 +121,65 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const post = db[0].id
 
   const page = await getPage(post)
-  const blocks = await getBlocks(post)
+  // const blocks = await getBlocks(post)
 
-  // Retrieve all child blocks fetched
-  const childBlocks = await Promise.all(
-    blocks
-      .filter((b: any) => b.has_children)
-      .map(async (b) => {
-        return {
-          id: b.id,
-          children: await getBlocks(b.id),
+  const imageBlocks: any[] = []
+
+  const recursiveGetBlocks = async (blocks: any[]) => {
+    return await Promise.all(
+      blocks
+      .map(async (b: any) => {
+        if(b.type === 'image') {imageBlocks.push(b)}
+        if(b.has_children){
+          let children = await getBlocks(b.id)
+          children = await recursiveGetBlocks(children)
+          b[b.type]['children'] = children
         }
+        return b
       })
-  )
-  const blocksWithChildren = blocks.map((b: any) => {
-    if (b.has_children && !b[b.type].children) {
-      b[b.type]['children'] = childBlocks.find((x) => x.id === b.id)?.children
-    }
-    return b
-  })
+    )
+  }
+
+  let blocks = await getBlocks(post)
+  let recursiveblocks = await recursiveGetBlocks(blocks)
+
+  // // Retrieve all child blocks fetched
+  // const childBlocks = await Promise.all(
+  //   blocks
+  //     .filter((b: any) => b.has_children)
+  //     .map(async (b) => {
+  //       return {
+  //         id: b.id,
+  //         children: await getBlocks(b.id),
+  //       }
+  //     })
+  // )
+  // const blocksWithChildren = blocks.map((b: any) => {
+  //   if (b.has_children && !b[b.type].children) {
+  //     b[b.type]['children'] = childBlocks.find((x) => x.id === b.id)?.children
+  //   }
+  //   return b
+  // })
 
   // Resolve all images' dimensions
   await Promise.all(
-    blocksWithChildren
+    // blocksWithChildren
+    imageBlocks
       .filter((b: any) => b.type === 'image')
       .map(async (b) => {
-          const { type } = b
-          const value = b[type]
-          let src = value.type === 'external' ? value.external.url : value.file.url
-          src = await proxyStaticImage(src)
-          value[value.type].url = src
-          const { width, height } = await probeImageSize(src)
-          value['dim'] = { width, height }
-          b[type] = value
+        const { type } = b
+        const value = b[type]
+        let src = value.type === 'external' ? value.external.url : value.file.url
+        src = await proxyStaticImage(src)
+        value[value.type].url = src
+        const { width, height } = await probeImageSize(src)
+        value['dim'] = { width, height }
+        b[type] = value
       })
   )
 
   // return { props: { page, blocks: blocksWithChildren }, revalidate: 1 }
-  return { props: { page, blocks: blocksWithChildren }, revalidate: 60 * 60 } // 1 hour
+  return { props: { page, blocks: recursiveblocks }, revalidate: 60 * 60 } // 1 hour
 }
 
 export default Post
