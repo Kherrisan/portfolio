@@ -1,5 +1,7 @@
 import type { QueryDatabaseResponse } from '@notionhq/client/build/src/api-endpoints'
 import type { GetStaticProps, NextPage } from 'next'
+import { AiOutlineTag } from 'react-icons/ai'
+import { BiCategory } from 'react-icons/bi'
 
 import Head from 'next/head'
 
@@ -58,8 +60,18 @@ const Blog: NextPage<{ posts: QueryDatabaseResponse['results'] }> = ({
                 <span key={person.id}>{person.name?.toLowerCase()}</span>
               ))}
               <span>·</span>
+              {/* <BiCategory size={18} className="mr-1 inline" /> */}
               <span>{post.properties.category.select.name?.toLowerCase()}</span>
+              {/* <span>·</span>
+              {post.properties.tags.multi_select.map((tag: any) => (
+                <span>
+                  <AiOutlineTag size={16} className="mr-1 inline" />
+                  <span key={tag.id}>{tag.name?.toLowerCase()}</span>
+                </span>
+              ))} */}
             </div>
+
+            <div className="secondary-text flex flex-wrap items-center space-x-2 text-sm"></div>
           </HoverCard>
         ))}
       </div>

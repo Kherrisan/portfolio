@@ -14,6 +14,8 @@ const S3_REG = new RegExp(
 export const proxyStaticImage = async (url: string) => {
   let notion_img: string
   try {
+    // Replace backslash with dash in the image name.
+    // So as not to be misinterpreted as a directory.
     notion_img = S3_REG.exec(url)![1].replace('/', '-')
   } catch (err) {
     return url
