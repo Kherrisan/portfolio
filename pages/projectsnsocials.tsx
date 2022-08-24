@@ -23,10 +23,10 @@ const LinkFollowerText = ({
 }) => {
   const { data, error } = useSWR(apiUrl, fetcher)
 
-  if (error) return <div className="font-mono text-sm">-</div>
-  if (!data) return <div className="font-mono text-sm">...</div>
+  if (error) return <div className="font-mono text-xs">-</div>
+  if (!data) return <div className="font-mono text-xs">...</div>
   return (
-    <div className="font-mono text-sm">
+    <div className="font-mono text-xs">
       {data.count} {followerName}
     </div>
   )
@@ -42,7 +42,7 @@ const LinkCard = (props: LinkProps) => {
         style={{ borderBottomColor: props.color }}
       >
         <div>
-          <div className="font-bold">{props.name}</div>
+          <div className="font-bold text-sm">{props.name}</div>
           <LinkFollowerText apiUrl={props.apiUrl} followerName={pronoun} />
         </div>
         {props.icon ? (
@@ -116,7 +116,7 @@ const ProjectsNSocials: NextPage<{ genshinUserInfo: UserInfo }> = ({
         {/* <div className="relative shadow-lg p-4 rounded overflow-hidden text-white">
           <div className="flex justify-between">
             <div>
-              <div className="text-2xl">阿巴阿巴 Lv.58</div>
+              <div className="text-2xl">阿巴阿巴 Lv.59</div>
               <div className="font-mono text-sm font-bold opacity-80">
                 UID: 168305666
               </div>

@@ -13,16 +13,18 @@ module.exports = {
       'b2.kendrickzou.com'
     ],
   },
-  redirects: [
-    {
-      source: '/posts/index.xml',
-      destination: '/feed',
-      permanent: false,
-    },
-    {
-      source: '/feed.xml',
-      destination: '/feed',
-      permanent: false,
-    },
-  ],
+  async redirects() {
+    return [
+      {
+        source: '/posts/index.xml',
+        destination: '/feed',
+        permanent: false,
+      },
+      {
+        source: '/feed.xml',
+        destination: '/feed',
+        permanent: false,
+      },
+    ]
+  },
 }

@@ -1,8 +1,14 @@
+import type { PropertyItemObjectResponse } from '@notionhq/client/build/src/api-endpoints'
+
 const BlogCopyright = ({
-  page,
+  title,
+  author,
+  date,
   absoluteLink,
 }: {
-  page: any
+  title: string
+  author: PropertyItemObjectResponse[]
+  date: string
   absoluteLink: string
 }) => {
   return (
@@ -25,7 +31,7 @@ const BlogCopyright = ({
         </svg>
       </div>
       <div className="font-serif text-lg leading-6">
-        {page.properties.name.title[0].plain_text} - Dikai Zou
+        {title} - Dikai Zou
       </div>
       <div className="leading-5 opacity-90">
         <a href={absoluteLink} target="_blank" rel="noopener noreferrer">
@@ -37,16 +43,18 @@ const BlogCopyright = ({
         <div>
           <div className="text-xs">Author</div>
           <div>
-            {page.properties.author.people
-              .map((person: { name: string }) => person.name)
+            {author
+              .map((person) =>
+                'people' in person && 'name' in person.people
+                  ? person.people.name?.toLowerCase()
+                  : '_'
+              )
               .join(', ')}
           </div>
         </div>
         <div>
           <div className="text-xs">Date</div>
-          <div>
-            {new Date(page.properties.date.date.start).toLocaleDateString()}
-          </div>
+          <div>{new Date(date).toLocaleDateString()}</div>
         </div>
         <div>
           <div className="text-xs">License</div>

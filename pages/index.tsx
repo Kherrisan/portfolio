@@ -6,11 +6,9 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 import NowPlaying from '../components/NowPlaying'
-import { getLatestPost } from '../lib/notion'
+import { type LatestPostProps, getLatestPostProps } from '../lib/notion'
 
-const Home: NextPage<{
-  latestPost: any
-}> = ({ latestPost }) => (
+const Home: NextPage<{ latestPost: LatestPostProps }> = ({ latestPost }) => (
   <>
     <Head>
       <title>Dikai Zou</title>
@@ -75,20 +73,19 @@ const Home: NextPage<{
         </Link>
       </p>
 
-      <p className="leading-7">
-        Latest post:{' '}
-        <Link
-          href={`/blog/${latestPost.properties.slug.rich_text[0].text.content}`}
-        >
-          <a className="group inline-flex flex-wrap items-center">
-            <span className="hover-links">
-              {latestPost.icon?.emoji || '📚'}{' '}
-              {latestPost.properties.name.title[0].text.content}
-            </span>
-            <FiArrowRight className="h-4 w-4 transition-all duration-150 group-hover:translate-x-1" />
-          </a>
-        </Link>
-      </p>
+      {latestPost && (
+        <p className="leading-7">
+          Latest post:{' '}
+          <Link href={`/blog/${latestPost.slug}`}>
+            <a className="group inline-flex flex-wrap items-center">
+              <span className="hover-links">
+                {latestPost.emoji || '📚'} {latestPost.title}
+              </span>
+              <FiArrowRight className="h-4 w-4 transition-all duration-150 group-hover:translate-x-1" />
+            </a>
+          </Link>
+        </p>
+      )}
 
       <p className="mt-8 leading-7">
         Contact me:{' '}
@@ -122,7 +119,7 @@ const Home: NextPage<{
 )
 
 export const getStaticProps: GetStaticProps = async () => {
-  const latestPost = await getLatestPost()
+  const latestPost = await getLatestPostProps()
 
   return {
     props: { latestPost },

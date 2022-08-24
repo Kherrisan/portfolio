@@ -1,3 +1,7 @@
+import type {
+  GetPagePropertyResponse,
+  PageObjectResponse,
+} from '@notionhq/client/build/src/api-endpoints'
 import type { GetStaticProps, NextPage } from 'next'
 import { ParsedUrlQuery } from 'querystring'
 import { FiArrowLeft, FiBookmark, FiMessageCircle } from 'react-icons/fi'
@@ -13,19 +17,32 @@ import BlogTableOfContent from '../../components/BlogTableOfContent'
 import Comments from '../../components/Comments'
 import NotionBlock from '../../components/NotionBlock'
 import probeImageSize, { proxyStaticImage } from '../../lib/imaging'
-import { getBlocks, getDatabase, getPage } from '../../lib/notion'
+import { getBlocks, getDatabase, getPage, type PageCompletePropertyRecord } from '../../lib/notion'
 
-const Post: NextPage<{ page: any; blocks: any[] }> = ({ page, blocks }) => {
+const Post: NextPage<{ page: PageObjectResponse; blocks: any[] }> = ({ page, blocks }) => {
   const router = useRouter()
   const hostname = 'https://kendrickzou.com'
 
   if (!page || !blocks) return <div />
 
+  const emoji = page.icon?.type === 'emoji' ? page.icon.emoji : '🎑'
+  const prop = page.properties as unknown as PageCompletePropertyRecord
+
+  const name =
+    'results' in prop.name && prop.name.results[0].type === 'title'
+      ? prop.name.results[0].title.plain_text
+      : ''
+  const date = prop.date.type === 'date' ? prop.date.date?.start ?? '' : ''
+
+  const author = 'results' in prop.author ? prop.author.results : []
+  const category = 'select' in prop.category ? prop.category.select : null
+  const tags = 'multi_select' in prop.tags ? prop.tags.multi_select : []
+
   return (
     <>
       <Head>
         <title>
-          {page.properties.name.title[0].plain_text} - Kendrick&apos;s Blog
+          `{name} - Kendrick&apos;s Blog`
         </title>
       </Head>
 
@@ -33,19 +50,24 @@ const Post: NextPage<{ page: any; blocks: any[] }> = ({ page, blocks }) => {
         <div className="col-span-10 lg:col-span-7">
           <div className="-mx-4 rounded border-gray-400/30 p-4 md:border">
             <h1 className="mb-2 flex justify-between space-x-2 font-serif text-3xl">
-              <span className="font-bold">
-                {page.properties.name.title[0].plain_text}
-              </span>
-              <span>{page.icon?.emoji || '📚'}</span>
+              <span className="font-bold">{name}</span>
+              <span>{emoji}</span>
             </h1>
-            <div className="secondary-text flex flex-wrap items-center gap-2 mb-2">
-              <span>
-                {new Date(page.properties.date.date.start).toLocaleDateString()}
-              </span>
+            <div className="secondary-text flex flex-wrap items-center gap-2">
+              <span>{new Date(date).toLocaleDateString()}</span>
               <span>·</span>
-              {page.properties.author.people.map((person: { name: string }) => (
-                <span key={person.name}>{person.name?.toLowerCase()}</span>
+              {author.map((person: any) => (
+                <span key={person.id}>
+                  {'people' in person && 'name' in person.people
+                    ? person.people.name?.toLowerCase()
+                    : ''}
+                </span>
               ))}
+              <span>·</span>
+              <div>
+                <BiCategory size={18} className="mr-1 inline" />
+                <span>{category?.name?.toLowerCase()}</span>
+              </div>
               <span>·</span>
               <Link href="#comments-section" passHref>
                 <a className="hover-links">
@@ -56,12 +78,7 @@ const Post: NextPage<{ page: any; blocks: any[] }> = ({ page, blocks }) => {
             </div>
 
             <div className="secondary-text flex flex-wrap items-center gap-2">
-              <div>
-                <BiCategory size={18} className="mr-1 inline" />
-                <span>{page.properties.category.select.name?.toLowerCase()}</span>
-              </div>
-              <span>·</span>
-              {page.properties.tags.multi_select.map((tag: any) => (
+              {tags?.map((tag: any) => (
                 <span key={tag.id}>
                   <AiOutlineTag size={18} className="mr-1 inline" />
                 <span>{tag.name?.toLowerCase()}</span>
@@ -76,7 +93,9 @@ const Post: NextPage<{ page: any; blocks: any[] }> = ({ page, blocks }) => {
             </article>
 
             <BlogCopyright
-              page={page}
+              title={name}
+              author={author}
+              date={date}
               absoluteLink={`${hostname}/blog/${router.query.slug}`}
             />
           </div>
@@ -103,7 +122,7 @@ export const getStaticPaths = async () => {
   const db = await getDatabase()
   return {
     paths: db.map((p: any) => ({
-      params: { slug: p.properties.slug.rich_text[0].text.content },
+      params: { slug: p.properties.slug.results[0].rich_text.plain_text },
     })),
     fallback: 'blocking',
   }
