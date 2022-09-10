@@ -1,7 +1,4 @@
-import {
-  HeadObjectCommand,
-  S3Client,
-} from '@aws-sdk/client-s3'
+import { HeadObjectCommand, S3Client } from '@aws-sdk/client-s3'
 import { Upload } from '@aws-sdk/lib-storage'
 import axios from 'axios'
 

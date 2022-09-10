@@ -1,4 +1,4 @@
-import Image from "next/image"
+import Image from 'next/image'
 
 export const getMediaCtx = (value: any) => {
   const src = value.type === 'external' ? value.external.url : value.file.url
@@ -23,7 +23,13 @@ const NotionImage = ({ value }: { value: any }) => {
         //   height={height}
         //   className="rounded"
         // />
-        <Image src={imageSrc} alt={imageCaption} width={width} height={height} className="rounded" />
+        <Image
+          src={imageSrc}
+          alt={imageCaption}
+          width={width}
+          height={height}
+          className="rounded"
+        />
       ) : (
         <img src={imageSrc} alt={imageCaption} className="rounded" />
       )}

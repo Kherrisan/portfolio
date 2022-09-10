@@ -1,16 +1,39 @@
-import type { QueryDatabaseResponse } from '@notionhq/client/build/src/api-endpoints'
+import type { PageObjectResponse } from '@notionhq/client/build/src/api-endpoints'
 import type { GetStaticProps, NextPage } from 'next'
+import { AiOutlineTag } from 'react-icons/ai'
+import { BiCategory } from 'react-icons/bi'
 
 import Head from 'next/head'
 
 import HoverCard from '../components/HoverCard'
-import { getDatabase } from '../lib/notion'
+import { type PageCompletePropertyRecord, getDatabase } from '../lib/notion'
 
-const Blog: NextPage<{ posts: QueryDatabaseResponse['results'] }> = ({
-  posts,
-}) => {
+const Blog: NextPage<{ posts: PageObjectResponse[] }> = ({ posts }) => {
   // const [searchOpen, setSearchOpen] = useState(false)
   // const openSearchBox = () => setSearchOpen(true)
+  const metadata = posts.map((post) => {
+    const emoji = post.icon?.type === 'emoji' ? post.icon.emoji : '🎑'
+    const prop = post.properties as unknown as PageCompletePropertyRecord
+
+    const slug =
+      'results' in prop.slug && prop.slug.results[0].type === 'rich_text'
+        ? prop.slug.results[0].rich_text.plain_text
+        : ''
+    const name =
+      'results' in prop.name && prop.name.results[0].type === 'title'
+        ? prop.name.results[0].title.plain_text
+        : ''
+    const preview =
+      'results' in prop.preview && prop.preview.results[0].type === 'rich_text'
+        ? prop.preview.results[0].rich_text.plain_text
+        : ''
+    const date = prop.date.type === 'date' ? prop.date.date?.start ?? '' : ''
+
+    const author = 'results' in prop.author ? prop.author.results : []
+    const category = 'select' in prop.category ? prop.category.select : null
+
+    return { id: post.id, emoji, slug, name, preview, date, author, category }
+  })
 
   return (
     <>
@@ -29,37 +52,43 @@ const Blog: NextPage<{ posts: QueryDatabaseResponse['results'] }> = ({
             </button>
           </h1> */}
 
-        {posts.map((post: any) => (
+        {metadata.map((meta) => (
           <HoverCard
-            key={post.id}
-            href={`/blog/${post.properties.slug.rich_text[0].text.content}`}
+            key={meta.id}
+            href={`/blog/${meta.slug}`}
             isExternal={false}
-            headingSlot={
-              <span className="font-bold text-lg">
-                {post.properties.name.title[0].text.content}
-              </span>
-            }
+            headingSlot={<span className="font-bold text-lg">{meta.name}</span>}
             iconSlot={
               <div className="absolute right-4 -bottom-4 text-2xl">
-                {post.icon?.emoji || '📚'}
+                {meta.emoji}
               </div>
             }
           >
-            <div className="primary-text text-sm truncate">
-              {post.properties.preview.rich_text[0].text.content}
-            </div>
+            <div className="primary-text text-sm truncate">{meta.preview}</div>
 
             <div className="secondary-text flex flex-wrap items-center space-x-2 text-sm">
-              <span>
-                {new Date(post.properties.date.date.start).toLocaleDateString()}
-              </span>
+              <span>{new Date(meta.date).toLocaleDateString()}</span>
               <span>·</span>
-              {post.properties.author.people.map((person: any) => (
-                <span key={person.id}>{person.name?.toLowerCase()}</span>
+              {meta.author.map((person: any) => (
+                <span key={person.id}>
+                  {'people' in person && 'name' in person.people
+                    ? person.people.name?.toLowerCase()
+                    : ''}
+                </span>
               ))}
               <span>·</span>
-              <span>{post.properties.category.select.name?.toLowerCase()}</span>
+              {/* <BiCategory size={18} className="mr-1 inline" /> */}
+              <span>{meta.category?.name?.toLowerCase()}</span>
+              {/* <span>·</span>
+              {post.properties.tags.multi_select.map((tag: any) => (
+                <span>
+                  <AiOutlineTag size={16} className="mr-1 inline" />
+                  <span key={tag.id}>{tag.name?.toLowerCase()}</span>
+                </span>
+              ))} */}
             </div>
+
+            <div className="secondary-text flex flex-wrap items-center space-x-2 text-sm"></div>
           </HoverCard>
         ))}
       </div>
@@ -73,7 +102,7 @@ export const getStaticProps: GetStaticProps = async () => {
   const db = await getDatabase()
   return {
     props: { posts: db },
-    revalidate: 60 * 10, // 10 minutes
+    revalidate: 60 * 60, // 10 minutes
   }
 }
 

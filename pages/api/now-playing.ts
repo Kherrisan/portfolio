@@ -8,6 +8,8 @@ export type SpotifyTrack =
       is_playing: boolean
       item: string
       album: string
+      images: Array<{ url: string; height: number; width: number }>
+      artist: string
       external_url: string
       progress_ms: number
       duration_ms: number
@@ -18,6 +20,8 @@ const basicAuthToken = Buffer.from(
 ).toString('base64')
 
 const getAccessToken = async () => {
+  // Spotify clientId and clientSecrets: https://developer.spotify.com/dashboard/login
+  // Spotify refreshToken: https://benwiz.com/blog/create-spotify-refresh-token/
   const resp = await fetch('https://accounts.spotify.com/api/token', {
     method: 'POST',
     headers: {
@@ -55,6 +59,8 @@ export default async function handler(
       is_playing: result.is_playing,
       item: result.item.name,
       album: result.item.album.name,
+      images: result.item.album.images,
+      artist: result.item.artists[0].name,
       external_url: result.item.external_urls.spotify,
       progress_ms: result.progress_ms,
       duration_ms: result.item.duration_ms,

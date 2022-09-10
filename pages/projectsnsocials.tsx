@@ -10,6 +10,7 @@ import Image from 'next/image'
 import { LinkProps, socialLinks } from '../config/link'
 import { ProjectProps, projectLinks } from '../config/project'
 import getGenshinUserInfo from '../lib/genshin'
+import arknightCard from "../public/images/arknights.jpeg"
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json())
 
@@ -22,10 +23,10 @@ const LinkFollowerText = ({
 }) => {
   const { data, error } = useSWR(apiUrl, fetcher)
 
-  if (error) return <div className="font-mono text-sm">-</div>
-  if (!data) return <div className="font-mono text-sm">...</div>
+  if (error) return <div className="font-mono text-xs">-</div>
+  if (!data) return <div className="font-mono text-xs">...</div>
   return (
-    <div className="font-mono text-sm">
+    <div className="font-mono text-xs">
       {data.count} {followerName}
     </div>
   )
@@ -41,7 +42,7 @@ const LinkCard = (props: LinkProps) => {
         style={{ borderBottomColor: props.color }}
       >
         <div>
-          <div className="font-bold">{props.name}</div>
+          <div className="font-bold text-sm">{props.name}</div>
           <LinkFollowerText apiUrl={props.apiUrl} followerName={pronoun} />
         </div>
         {props.icon ? (
@@ -102,13 +103,20 @@ const ProjectsNSocials: NextPage<{ genshinUserInfo: UserInfo }> = ({
 
       <div className="container mx-auto max-w-3xl px-6">
         <h1 className="heading-text mb-8 font-serif text-4xl">
-          Genshin Impact
+          Arknights
         </h1>
+
+        <div className="shadow-xl text-0 rounded overflow-hidden">
+              <Image
+                src={arknightCard}
+                alt="Arknights Background"
+              />
+        </div>
 
         {/* <div className="relative shadow-lg p-4 rounded overflow-hidden text-white">
           <div className="flex justify-between">
             <div>
-              <div className="text-2xl">阿巴阿巴 Lv.58</div>
+              <div className="text-2xl">阿巴阿巴 Lv.59</div>
               <div className="font-mono text-sm font-bold opacity-80">
                 UID: 168305666
               </div>
@@ -159,10 +167,10 @@ const ProjectsNSocials: NextPage<{ genshinUserInfo: UserInfo }> = ({
           </div>
         </div> */}
 
-        <div className="secondary-text text-center font-mono text-xs mt-4">
+        {/* <div className="secondary-text text-center font-mono text-xs mt-4">
           Updates every 24 hrs. Background images shot by myself in-game.
           (=ﾟωﾟ)ﾉ
-        </div>
+        </div> */}
 
         <h1 className="heading-text my-8 font-serif text-4xl">Projects</h1>
 

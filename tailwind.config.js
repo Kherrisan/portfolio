@@ -7,6 +7,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontSize: {
+        '0': '0px'
+      },
       colors: {
         light: {
           50: '#fdfdfd',

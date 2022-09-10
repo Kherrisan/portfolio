@@ -41,13 +41,13 @@ const getPublications = async () => {
     return [
       {
         title:
-          'Demiguise attack: Crafting invisible semantic adversarial perturbations with perceptual similarity',
-        author: 'Y Wang, S Wu, W Jiang, S Hao, Y Tan, Q Zhang',
+          'Benefit-Oriented Task Offloading in UAV-Aided Mobile Edge Computing: An Approximate Solution',
+        author: 'Yu Gao, Jun Tao, Haotian Wang, Zuyan Wang, Dikai Zou, Yifan Xu',
         publication:
-          'Thirtieth International Joint Conference on Artificial Intelligence IJCAI-21, 2021',
-        date: '2021',
-        link: 'https://scholar.google.com/citations?view_op=view_citation&hl=en&user=Mf-JoyQAAAAJ&citation_for_view=Mf-JoyQAAAAJ:d1gkVwhDpl0C',
-        citations: '4',
+          'Preprint',
+        date: '2022',
+        link: 'https://scholar.google.com/citations?view_op=view_citation&hl=en&user=zILf1s4AAAAJ&citation_for_view=zILf1s4AAAAJ:u-x6o8ySG0sC',
+        citations: '0',
       },
     ]
   }
