@@ -7,6 +7,7 @@ import Link from 'next/link'
 
 import NowPlaying from '../components/NowPlaying'
 import { type LatestPostProps, getLatestPostProps } from '../lib/notion'
+import Sakana from '../components/Sakana'
 
 const Home: NextPage<{ latestPost: LatestPostProps }> = ({ latestPost }) => (
   <>
@@ -114,6 +115,8 @@ const Home: NextPage<{ latestPost: LatestPostProps }> = ({ latestPost }) => (
       </div>
 
       {/* <NowPlaying /> */}
+
+      <Sakana />
     </div>
   </>
 )

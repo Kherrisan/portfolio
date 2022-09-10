@@ -1,5 +1,4 @@
-import ReactDOM from 'react-dom'
-import {Component, ReactNode, useEffect} from "react";
+import {useEffect} from "react";
 
 const Sakana = () => {
     useEffect(()=>{
