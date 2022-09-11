@@ -7,7 +7,7 @@ const Sakana = () => {
             const takina = SakanaWidget.getCharacter('chisato');
             takina.initialState = {
                 ...takina.initialState,
-                i: 0.001,
+                i: 0.1,
             };
             SakanaWidget.registerCharacter('chisato-slow', takina);
             new SakanaWidget({ character: 'chisato-slow' }).mount('#sakana-widget');
