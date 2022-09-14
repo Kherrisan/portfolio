@@ -19,6 +19,12 @@ import NotionBlock from '../../components/NotionBlock'
 import probeImageSize, { proxyStaticImage } from '../../lib/imaging'
 import { getBlocks, getDatabase, getPage, type PageCompletePropertyRecord } from '../../lib/notion'
 
+import { unified } from 'unified'
+import notionRehype from 'notion-rehype'
+import rehypeStringify from 'rehype-stringify'
+import rehypeReact from '../../components/RehypeReact'
+import { ReactNode } from 'react'
+
 const Post: NextPage<{ page: PageObjectResponse; blocks: any[] }> = ({ page, blocks }) => {
   const router = useRouter()
   const hostname = 'https://kendrickzou.com'
@@ -38,11 +44,13 @@ const Post: NextPage<{ page: PageObjectResponse; blocks: any[] }> = ({ page, blo
   const category = 'select' in prop.category ? prop.category.select : null
   const tags = 'multi_select' in prop.tags ? prop.tags.multi_select : []
 
+  let reactElems = unified().use(notionRehype).use(rehypeReact).processSync({data: blocks}).result as ReactNode;
+
   return (
     <>
       <Head>
         <title>
-          `{name} - Kendrick&apos;s Blog`
+          {name} - Kendrick&apos;s Blog
         </title>
       </Head>
 
@@ -87,9 +95,12 @@ const Post: NextPage<{ page: PageObjectResponse; blocks: any[] }> = ({ page, blo
             </div>
 
             <article className="prose my-8 dark:prose-invert max-w-none">
-              {blocks.map((block) => (
+              {/* {blocks.map((block) => (
                 <NotionBlock key={block.id} block={block} />
-              ))}
+              ))} */}
+              {
+                reactElems
+              }
             </article>
 
             <BlogCopyright
@@ -160,25 +171,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   }
 
   let blocks = await getBlocks(post)
-  let recursiveblocks = await recursiveGetBlocks(blocks)
-
-  // // Retrieve all child blocks fetched
-  // const childBlocks = await Promise.all(
-  //   blocks
-  //     .filter((b: any) => b.has_children)
-  //     .map(async (b) => {
-  //       return {
-  //         id: b.id,
-  //         children: await getBlocks(b.id),
-  //       }
-  //     })
-  // )
-  // const blocksWithChildren = blocks.map((b: any) => {
-  //   if (b.has_children && !b[b.type].children) {
-  //     b[b.type]['children'] = childBlocks.find((x) => x.id === b.id)?.children
-  //   }
-  //   return b
-  // })
+  blocks = await recursiveGetBlocks(blocks)
 
   // Resolve all images' dimensions
   await Promise.all(
@@ -198,7 +191,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   )
 
   // return { props: { page, blocks: blocksWithChildren }, revalidate: 1 }
-  return { props: { page, blocks: recursiveblocks }, revalidate: 60 * 60 } // 1 hour
+  return { props: { page, blocks: blocks }, revalidate: 60 * 60 } // 1 hour
 }
 
 export default Post
