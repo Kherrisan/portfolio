@@ -20,7 +20,7 @@ import probeImageSize, { proxyStaticImage } from '../../lib/imaging'
 import { getBlocks, getDatabase, getPage, type PageCompletePropertyRecord } from '../../lib/notion'
 
 import { unified } from 'unified'
-import notionRehype from 'notion-rehype'
+import notionRehype from '@kherrisan/notion-rehype'
 import rehypeStringify from 'rehype-stringify'
 import rehypeReact from '../../components/RehypeReact'
 import { ReactNode } from 'react'
@@ -44,13 +44,14 @@ const Post: NextPage<{ page: PageObjectResponse; blocks: any[] }> = ({ page, blo
   const category = 'select' in prop.category ? prop.category.select : null
   const tags = 'multi_select' in prop.tags ? prop.tags.multi_select : []
 
-  let reactElems = unified().use(notionRehype).use(rehypeReact).processSync({data: blocks}).result as ReactNode;
+  // enableBlockId = true
+  let reactElems = unified().use(notionRehype, {enableBlockId: true}).use(rehypeReact).processSync({data: blocks}).result as ReactNode;
 
   return (
     <>
       <Head>
         <title>
-          {name} - Kendrick&apos;s Blog
+          {`${name} - Kendrick&apos;s Blog`}
         </title>
       </Head>
 
@@ -173,6 +174,8 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   let blocks = await getBlocks(post)
   blocks = await recursiveGetBlocks(blocks)
 
+  let imageMetas = new Map<string ,ImageMeta>()
+
   // Resolve all images' dimensions
   await Promise.all(
     // blocksWithChildren
@@ -186,6 +189,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         value[value.type].url = src
         const { width, height } = await probeImageSize(src)
         value['dim'] = { width, height }
+        imageMetas.set(b.id, { width, height, src })
         b[type] = value
       })
   )
