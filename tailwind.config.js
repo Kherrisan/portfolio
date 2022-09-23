@@ -7,6 +7,15 @@ module.exports = {
   ],
   theme: {
     extend: {
+      typography: {
+        DEFAULT: {
+          css: {
+            h2: {
+              'margin-top': '0',
+            }
+          }
+        }
+      },
       fontSize: {
         '0': '0px'
       },

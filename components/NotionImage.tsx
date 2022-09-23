@@ -1,13 +1,22 @@
 import Image from 'next/image'
+import { string } from 'prop-types'
 
-export const getMediaCtx = (value: any) => {
-  const src = value.type === 'external' ? value.external.url : value.file.url
-  const expire = value.type === 'file' ? value.file.expiry_time : null
-  const caption = value.caption[0] ? value.caption[0].plain_text : ''
-  return { src, caption, expire }
+interface ImageProperties {
+  'data-notion-file-type': string,
+  src: { url: string, expiry_time: string },
+  dim: { width: number, height: number },
 }
 
-const NotionImage = ({ value }: { value: any }) => {
+export const getMediaCtx = (value: ImageProperties) => {
+  const src = value.src.url
+  const expire = value['data-notion-file-type'] === 'file' ? value.src.expiry_time : null
+  // const caption = value.caption[0] ? value.caption[0].plain_text : ''
+  return { src, caption: 'caption', expire }
+}
+
+const NotionImage = ({ value }: {
+  value: ImageProperties
+}) => {
   const { src: imageSrc, caption: imageCaption } = getMediaCtx(value)
   const {
     dim: { width, height },
