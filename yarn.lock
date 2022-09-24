@@ -1273,10 +1273,10 @@
   "resolved" "https://registry.npmjs.org/@juggle/resize-observer/-/resize-observer-3.4.0.tgz"
   "version" "3.4.0"
 
-"@kherrisan/notion-rehype@^1.1.1":
-  "integrity" "sha512-1G/3u7p5JQeNy45DDPhBEntBkJ8TImHs9Byp8fitOBeYkE474K4Eo/XoCdX7BfrtKqioFp3D6e9pYKLVCa8dWQ=="
-  "resolved" "https://npm.pkg.github.com/download/@kherrisan/notion-rehype/1.1.1/0bef73afca2c6b2a68c60cdfbee3328ac52e0b85"
-  "version" "1.1.1"
+"@kherrisan/notion-rehype@^1.1.3":
+  "integrity" "sha512-jKxyxt6bDdSW4xvMcvDBSBtO2Mzct4f3uam8urG9POPx1WEdZfj7xkTC8jGPAJ+PWdbr32JBJn8vaIMdabifQA=="
+  "resolved" "https://npm.pkg.github.com/download/@kherrisan/notion-rehype/1.1.3/8a2ab5215ed81a7122d6adb141f3051feafea6ef"
+  "version" "1.1.3"
 
 "@lit/reactive-element@^1.3.0", "@lit/reactive-element@^1.4.0":
   "integrity" "sha512-qDv4851VFSaBWzpS02cXHclo40jsbAjRXnebNXpm0uVg32kCneZPo9RYVQtrTNICtZ+1wAYHu1ZtxWSWMbKrBw=="
