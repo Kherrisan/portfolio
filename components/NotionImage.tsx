@@ -1,10 +1,10 @@
 import Image from 'next/image'
-import { string } from 'prop-types'
 
 interface ImageProperties {
   'data-notion-file-type': string,
   src: { url: string, expiry_time: string },
   dim: { width: number, height: number },
+  caption?: Array<{ plain_text: string }>
 }
 
 export const getMediaCtx = (value: ImageProperties) => {
@@ -17,33 +17,28 @@ export const getMediaCtx = (value: ImageProperties) => {
 const NotionImage = ({ value }: {
   value: ImageProperties
 }) => {
-  const { src: imageSrc, caption: imageCaption } = getMediaCtx(value)
+  const expire = value['data-notion-file-type'] === 'file' ? value.src.expiry_time : null
+  const src = value.src.url
   const {
     dim: { width, height },
+    caption
   } = value || {}
 
   return (
     <figure>
       {width && height ? (
-        // <img
-        //   src={imageSrc}
-        //   alt={imageCaption}
-        //   width={width}
-        //   height={height}
-        //   className="rounded"
-        // />
         <Image
-          src={imageSrc}
-          alt={imageCaption}
+          src={src}
+          alt={caption?.[0]?.plain_text}
           width={width}
           height={height}
           className="rounded"
         />
       ) : (
-        <img src={imageSrc} alt={imageCaption} className="rounded" />
+        <img src={src} alt={caption?.[0]?.plain_text} className="rounded" />
       )}
-      {imageCaption && (
-        <figcaption className="text-center">{imageCaption}</figcaption>
+      {caption && caption.length != 0 && (
+        <figcaption className="text-center">{caption!![0].plain_text}</figcaption>
       )}
     </figure>
   )
