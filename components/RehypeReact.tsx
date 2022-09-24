@@ -1,6 +1,7 @@
 import { slugify } from 'transliteration'
 import NotionImage from './NotionImage';
 import { Text } from './NotionTextBlock';
+import Latex from 'react-latex-next'
 
 export default function rehypeReact() {
 
@@ -87,11 +88,17 @@ export default function rehypeReact() {
             case 'p':
                 return (<p key={index}>{node.children.map((child: any, chIndex: number) => createElement(child, chIndex))}</p>)
 
+            case 'section':
+                return <Latex>{`\\[${node.children[0].value}\\]`}</Latex>
+
             case 'div':
                 return (<div key={index}>{node.children.map((child: any, chIndex: number) => createElement(child, chIndex))}</div>)
 
             case 'img':
                 return (<NotionImage value={node.properties} />)
+
+            case 'span': 
+                return node.properties?.className?.includes('math-inline') && (<Latex>{`\\(${node.children[0].value}\\)`}</Latex>)
 
             default:
                 return (
