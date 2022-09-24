@@ -15,13 +15,11 @@ import { useRouter } from 'next/router'
 import BlogCopyright from '../../components/BlogCopyright'
 import BlogTableOfContent from '../../components/BlogTableOfContent'
 import Comments from '../../components/Comments'
-import NotionBlock from '../../components/NotionBlock'
 import probeImageSize, { proxyStaticImage } from '../../lib/imaging'
 import { getBlocks, getDatabase, getPage, type PageCompletePropertyRecord } from '../../lib/notion'
 
 import { unified } from 'unified'
 import notionRehype from '@kherrisan/notion-rehype'
-import rehypeStringify from 'rehype-stringify'
 import rehypeReact from '../../components/RehypeReact'
 import { ReactNode } from 'react'
 
@@ -174,8 +172,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   let blocks = await getBlocks(post)
   blocks = await recursiveGetBlocks(blocks)
 
-  let imageMetas = new Map<string ,ImageMeta>()
-
   // Resolve all images' dimensions
   await Promise.all(
     // blocksWithChildren
@@ -189,7 +185,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         value[value.type].url = src
         const { width, height } = await probeImageSize(src)
         value['dim'] = { width, height }
-        imageMetas.set(b.id, { width, height, src })
         b[type] = value
       })
   )
