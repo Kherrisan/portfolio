@@ -1,154 +1,121 @@
-import { Fragment } from 'react'
-import Latex from 'react-latex-next'
-import { LightAsync as SyntaxHighlighter } from 'react-syntax-highlighter'
-import { nord } from 'react-syntax-highlighter/dist/cjs/styles/hljs'
 import { slugify } from 'transliteration'
+import NotionImage from './NotionImage';
+import { Text } from './NotionTextBlock';
+import Latex from 'react-latex-next'
 
-import Bookmark from './NotionBookmark'
-import NotionImage, { getMediaCtx } from './NotionImage'
-import { Text } from './NotionTextBlock'
+const NotionBlock = (node:any) => {
+    
+    function createElement(node: any, index: number = 0) {
+        if (node.annotations != undefined) {
+            node.children?.forEach((child: any) => {
+                child.annotations = Object.assign([], node.annotations);
+                child.annotations.pushValues(node.properties?.className);
+            });
+        }
+        if (node.type === 'root') {
+            return node.children.map((child: any, chIndex: number) => createElement(child, chIndex));
+        } else if (node.type === 'text') {
+            return (<Text text={node} key={index}/>)
+        }
+        switch (node.tagName) {
+            case 'i':
+            case 'b':
+            case 'u':
+            case 's':
+                return node.children.map((child: any, chIndex: number) => {
+                    if (child.annotations === undefined) child.annotations = [];
+                    child.annotations.push(node.tagName);
+                    return createElement(child, chIndex);
+                });
+            case 'h1':
+                return (<h1
+                    id={slugify(node.children[0].value)}
+                    className="font-serif"
+                    key={index}
+                >
+                    {node.children.map((child: any, chIndex: number) => createElement(child, chIndex))}
+                </h1>)
 
-const NotionBlock = ({ block }: { block: any }) => {
-  const { type, id } = block
-  const value = block[type]
+            case 'h2':
+                return (<h2
+                    id={slugify(node.children[0].value)}
+                    className="font-serif"
+                    key={index}
+                >
+                    {node.children.map((child: any, chIndex: number) => createElement(child, chIndex))}
+                </h2>)
 
-  try {
-    switch (type) {
-      case 'paragraph':
-        return (
-          <p>
-            <Text text={value.rich_text} />
-          </p>
-        )
+            case 'h3':
+                return (<h3
+                    id={slugify(node.children[0].value)}
+                    className="font-serif"
+                    key={index}
+                >
+                    {node.children.map((child: any, chIndex: number) => createElement(child, chIndex))}
+                </h3>)
 
-      case 'heading_1':
-        return (
-          <h1
-            id={slugify(value.rich_text[0].plain_text)}
-            className="font-serif"
-          >
-            {value.rich_text[0].plain_text}
-          </h1>
-        )
+            case 'ol':
+                return (<ol key={index}>
+                    {node.children.map((child: any, chIndex: number) => createElement(child, chIndex))}
+                </ol>)
 
-      case 'heading_2':
-        return (
-          <h2
-            id={slugify(value.rich_text[0].plain_text)}
-            className="font-serif"
-          >
-            {value.rich_text[0].plain_text}
-          </h2>
-        )
+            case 'ul':
+                return (<ul key={index}>
+                    {node.children.map((child: any, chIndex: number) => createElement(child, chIndex))}
+                </ul>)
 
-      case 'heading_3':
-        return (
-          <h3
-            id={slugify(value.rich_text[0].plain_text)}
-            className="font-serif"
-          >
-            {value.rich_text[0].plain_text}
-          </h3>
-        )
+            case 'li':
+                return (<li key={index}>
+                    {node.children.map((child: any, chIndex: number) => createElement(child, chIndex))}
+                </li>)
 
-      case 'bulleted_list_item':
-        return (
-          <ul>
-            <li>
-              <Text text={value.rich_text} />
-            </li>
-          </ul>
-        )
+            case 'p':
+                return (<p key={index}>{node.children.map((child: any, chIndex: number) => createElement(child, chIndex))}</p>)
 
-      case 'numbered_list_item':
-        return (
-          <ol>
-            <li>
-              <Text text={value.rich_text} />
-            </li>
-          </ol>
-        )
+            case 'section':
+                return <Latex key={index}>{`\\[${node.children[0].value}\\]`}</Latex>
 
-      case 'to_do':
-        return (
-          <div>
-            <label htmlFor={id}>
-              <input type="checkbox" id={id} defaultChecked={value.checked} />{' '}
-              <Text text={value.rich_text} />
-            </label>
-          </div>
-        )
+            case 'div':
+                return (<div key={index}>{node.children.map((child: any, chIndex: number) => createElement(child, chIndex))}</div>)
 
-      case 'toggle':
-        return (
-          <details>
-            <summary>
-              <Text text={value.rich_text} />
-            </summary>
-            {value.children?.map((block: any) => (
-              <Fragment key={block.id}>{NotionBlock(block)}</Fragment>
-            ))}
-          </details>
-        )
+            case 'img':
+                return (<NotionImage key={index} value={node.properties} />)
 
-      case 'child_page':
-        return <p>{value.title}</p>
+            case 'span': 
+                if (node.properties.className.includes('math-inline')) {
+                    return (<Latex key={index}>{`\\(${node.children[0].value}\\)`}</Latex>)
+                } else {
+                    return node.children.map((child: any, chIndex: number) => {
+                        if (child.annotations === undefined) child.annotations = [];
+                        child.annotations.push(...node.properties.className);
+                        return createElement(child, chIndex);
+                    });
+                }
 
-      case 'image':
-        return <NotionImage value={value} />
-
-      case 'video':
-        const { src: videoSrc, caption: videoCaption } = getMediaCtx(value)
-        return (
-          <figure>
-            <video src={videoSrc} loop muted autoPlay playsInline />
-            <figcaption className="text-center">{videoCaption}</figcaption>
-          </figure>
-        )
-
-      case 'divider':
-        return <p className="py-2 text-center font-mono tracking-[1em]">...</p>
-
-      case 'quote':
-        return (
-          <p className="rounded border-l-2 bg-light-300 p-4 dark:bg-dark-600">
-            <Text text={value.rich_text} />
-          </p>
-        )
-
-      case 'callout':
-        return (
-          <p className="rounded border-l-2 bg-light-300 p-4 dark:bg-dark-600">
-            <span className="mr-2">{value.icon?.emoji || '🌟'}</span>
-            <Text text={value.rich_text} />
-          </p>
-        )
-
-      case 'bookmark':
-        return <Bookmark value={value} />
-
-      case 'code':
-        return (
-          <SyntaxHighlighter language={value.language} style={nord}>
-            {value.rich_text[0].plain_text}
-          </SyntaxHighlighter>
-        )
-
-      case 'equation':
-        return <Latex>{`\\[${value.expression}\\]`}</Latex>
-
-      default:
-        return (
-          <p>
-            `❌ Unsupported block ($
-            {type === 'unsupported' ? 'unsupported by Notion API' : type})`
-          </p>
-        )
+            default:
+                return (
+                    <p>
+                      `❌ Unsupported block ($
+                      {JSON.stringify(node)})`
+                    </p>
+                  )
+        }
     }
-  } catch (error) {
-    console.error(error)
-    return <p>{JSON.stringify(value)}</p>
-  }
+
+    function createText(textNode: any, index: number) {
+        let text = { text: { content: textNode.value }, annotations: {} }
+        if (textNode.annotations !== undefined) {
+            text.annotations = {
+                bold: textNode.annotations.includes('b'),
+                italic: textNode.annotations.includes('i'),
+                strikethrough: textNode.annotations.includes('s'),
+                underline: textNode.annotations.includes('u'),
+            }
+        }
+        return 
+    }
+
+    return createElement(node)
 }
 
 export default NotionBlock
