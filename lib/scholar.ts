@@ -18,11 +18,13 @@ const getPublications = async () => {
   const document = dom.window.document
   const elements = document.querySelectorAll('.gsc_a_tr')
   const data = Array.from(elements).map((element) => {
+    console.log(element)
     const title =
       element.querySelector('.gsc_a_at')?.textContent?.replace(/‐/g, '-') || ''
 
     // author and publication are in the same element called .gs_gray
     const gray = Array.from(element.querySelectorAll('.gs_gray'))
+    console.log(gray)
     const [author, publication] = gray.map(
       (elem) => elem?.textContent?.split('�')[0] || ''
     )
