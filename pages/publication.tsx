@@ -9,11 +9,11 @@ import getPublications from '../lib/scholar'
 const Publication: NextPage<{
   data: {
     title: string
-    author: string
-    publication: string
-    date: string
+    authors: string
+    publication?: string
+    year: string
     link: string
-    citations: string
+    cited_by: { value?: number }
   }[]
 }> = ({ data }) => {
   return (
@@ -36,19 +36,19 @@ const Publication: NextPage<{
             iconSlot={
               <div className="absolute -bottom-3 right-3">
                 <span className="rounded-full bg-red-200 text-red-700 px-2 dark:bg-red-700 dark:text-red-200 text-sm uppercase tracking-wider">
-                  {item.date}
+                  {item.year}
                 </span>
 
-                {item.citations !== '' && (
+                {item.cited_by.value && (
                   <span className="rounded-full bg-blue-200 text-blue-700 px-2 dark:bg-blue-700 dark:text-blue-200 ml-2 text-sm uppercase tracking-wider">
-                    Cited by {item.citations}
+                    Cited by {item.cited_by.value}
                   </span>
                 )}
               </div>
             }
           >
             <div className="text-sm secondary-text truncate">
-              {item.author.split(', ').map((author, index) => (
+              {item.authors.split(', ').map((author, index) => (
                 <span key={index}>
                   {author.toLowerCase() === 'd zou' ? (
                     <span className="opacity-100 font-bold">{author}</span>
@@ -56,17 +56,19 @@ const Publication: NextPage<{
                     <span className="opacity-80">{author}</span>
                   )}
 
-                  {index !== item.author.split(', ').length - 1 && (
+                  {index !== item.authors.split(', ').length - 1 && (
                     <span>, </span>
                   )}
                 </span>
               ))}
             </div>
 
-            <div className="text-sm opacity-60 secondary-text truncate">
-              <FiBookmark className="inline mr-1" />
-              {item.publication}
-            </div>
+            {item.publication && (
+              <div className="text-sm opacity-60 secondary-text truncate">
+                <FiBookmark className="inline mr-1" />
+                {item.publication}
+              </div>
+            )}
           </HoverCard>
         ))}
 
@@ -79,8 +81,13 @@ const Publication: NextPage<{
             className="hover-links"
           >
             Google Scholar
-          </a>
-          .
+          </a> through {' '}
+          <a
+            href='' target="_blank"
+            rel="noopener noreferrer"
+            className="hover-links">
+            serpapi.com
+          </a> API.
         </div>
       </div>
 
