@@ -19,7 +19,7 @@ import probeImageSize, { proxyStaticImage } from '../../lib/imaging'
 import { getBlocks, getDatabase, getPage, type PageCompletePropertyRecord } from '../../lib/notion'
 
 import { unified } from 'unified'
-import notionRehype from '@kherrisan/notion-rehype'
+import notionRehype from 'notion-rehype-k'
 import rehypeReact from '../../components/RehypeReact'
 import { ReactNode } from 'react'
 import { Data } from 'vfile'
