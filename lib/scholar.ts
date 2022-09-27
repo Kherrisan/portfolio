@@ -42,9 +42,9 @@ const getPublications = async () => {
       {
         title:
           'Benefit-Oriented Task Offloading in UAV-Aided Mobile Edge Computing: An Approximate Solution',
-        author: 'Yu Gao, Jun Tao, Haotian Wang, Zuyan Wang, Dikai Zou, Yifan Xu',
-        publication:
-          'Preprint',
+        author:
+          'Yu Gao, Jun Tao, Haotian Wang, Zuyan Wang, Dikai Zou, Yifan Xu',
+        publication: 'Preprint',
         date: '2022',
         link: 'https://scholar.google.com/citations?view_op=view_citation&hl=en&user=zILf1s4AAAAJ&citation_for_view=zILf1s4AAAAJ:u-x6o8ySG0sC',
         citations: '0',

@@ -22,6 +22,7 @@ import { unified } from 'unified'
 import notionRehype from '@kherrisan/notion-rehype'
 import rehypeReact from '../../components/RehypeReact'
 import { ReactNode } from 'react'
+import { Data } from 'vfile'
 
 const Post: NextPage<{ page: PageObjectResponse; blocks: any[] }> = ({ page, blocks }) => {
   const router = useRouter()
@@ -43,7 +44,7 @@ const Post: NextPage<{ page: PageObjectResponse; blocks: any[] }> = ({ page, blo
   const tags = 'multi_select' in prop.tags ? prop.tags.multi_select : []
 
   // enableBlockId = true
-  let reactElems = unified().use(notionRehype, {enableBlockId: true}).use(rehypeReact).processSync({data: blocks}).result as ReactNode;
+  let reactElems = unified().use(notionRehype, { enableBlockId: true }).use(rehypeReact).processSync({ data: blocks as unknown as Data }).result as ReactNode;
 
   return (
     <>
@@ -88,7 +89,7 @@ const Post: NextPage<{ page: PageObjectResponse; blocks: any[] }> = ({ page, blo
               {tags?.map((tag: any) => (
                 <span key={tag.id}>
                   <AiOutlineTag size={18} className="mr-1 inline" />
-                <span>{tag.name?.toLowerCase()}</span>
+                  <span>{tag.name?.toLowerCase()}</span>
                 </span>
               ))}
             </div>
@@ -157,15 +158,15 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const recursiveGetBlocks = async (blocks: any[]) => {
     return await Promise.all(
       blocks
-      .map(async (b: any) => {
-        if(b.type === 'image') {imageBlocks.push(b)}
-        if(b.has_children){
-          let children = await getBlocks(b.id)
-          children = await recursiveGetBlocks(children)
-          b[b.type]['children'] = children
-        }
-        return b
-      })
+        .map(async (b: any) => {
+          if (b.type === 'image') { imageBlocks.push(b) }
+          if (b.has_children) {
+            let children = await getBlocks(b.id)
+            children = await recursiveGetBlocks(children)
+            b[b.type]['children'] = children
+          }
+          return b
+        })
     )
   }
 

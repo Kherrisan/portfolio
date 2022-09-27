@@ -1,11 +1,17 @@
-export function Text({ text }: { text: { value: string, annotations?: string[] } }) {
+export function Text({
+  text,
+}: {
+  text: { value: string; annotations?: string[] }
+}) {
   if (!text) return null
 
   const { value, annotations } = text
-  const color = annotations?.filter((x) => x.startsWith('color') && !x.endsWith('background'))
-                                                        .map((x) => x.replace('color', 'text').concat('-600'))
-  const bgColor = annotations?.filter((x) => x.startsWith('color') && x.endsWith('background'))
-                                                        .map((x) => x.replace('color', 'bg').replace('_background', '-800/40'))
+  const color = annotations
+    ?.filter((x) => x.startsWith('color') && !x.endsWith('background'))
+    .map((x) => x.replace('color', 'text').concat('-600'))
+  const bgColor = annotations
+    ?.filter((x) => x.startsWith('color') && x.endsWith('background'))
+    .map((x) => x.replace('color', 'bg').replace('_background', '-800/40'))
 
   return (
     <span
@@ -30,9 +36,8 @@ export function Text({ text }: { text: { value: string, annotations?: string[] }
           {text.content}
         </a>
       ) : ( */}
-        {value}
+      {value}
       {/* )} */}
     </span>
   )
-
 }

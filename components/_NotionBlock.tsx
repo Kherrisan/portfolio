@@ -86,7 +86,7 @@ const _NotionBlock = ({ block }: { block: any }) => {
               <Text text={value.rich_text} />
             </summary>
             {value.children?.map((block: any) => (
-              <Fragment key={block.id}>{NotionBlock(block)}</Fragment>
+              <Fragment key={block.id}>{_NotionBlock(block)}</Fragment>
             ))}
           </details>
         )

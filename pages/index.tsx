@@ -6,8 +6,8 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 import NowPlaying from '../components/NowPlaying'
-import { type LatestPostProps, getLatestPostProps } from '../lib/notion'
 import Sakana from '../components/Sakana'
+import { type LatestPostProps, getLatestPostProps } from '../lib/notion'
 
 const Home: NextPage<{ latestPost: LatestPostProps }> = ({ latestPost }) => (
   <>

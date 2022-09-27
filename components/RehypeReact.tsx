@@ -1,10 +1,9 @@
-import NotionBlock from "./NotionBlock"
+import NotionBlock from './NotionBlock'
 
 export default function rehypeReact(this: any) {
+  Object.assign(this, { Compiler: compiler })
 
-    Object.assign(this, { Compiler: compiler })
-
-    function compiler(node: any) {
-        return NotionBlock(node)
-    }
+  function compiler(node: any) {
+    return NotionBlock(node)
+  }
 }

@@ -6,14 +6,14 @@ const CJK_REG = new RegExp(
 )
 
 export const countWord = (blocks: any[]) => {
-//   let trimed = text.trim()
-//   const cn = (trimed.match(CJK_REG) || []).length
-//   const en = (trimed.replace(CJK_REG, '').split(/\s+/) || []).length
-//   return [cn, en]
+  //   let trimed = text.trim()
+  //   const cn = (trimed.match(CJK_REG) || []).length
+  //   const en = (trimed.replace(CJK_REG, '').split(/\s+/) || []).length
+  //   return [cn, en]
 }
 
 export const estimateReadingTime = (text: string, { cn = 300, en = 160 }) => {
-//   const len = countWords(text)
-//   const readingTime = len[0] / cn + len[1] / en
-//   return readingTime < 1 ? '1' : readingTime.toFixed(0)
+  //   const len = countWords(text)
+  //   const readingTime = len[0] / cn + len[1] / en
+  //   return readingTime < 1 ? '1' : readingTime.toFixed(0)
 }
