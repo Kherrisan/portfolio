@@ -1,6 +1,6 @@
 import NotionBlock from "./NotionBlock"
 
-export default function rehypeReact() {
+export default function rehypeReact(this: any) {
 
     Object.assign(this, { Compiler: compiler })
 

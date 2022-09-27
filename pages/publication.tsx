@@ -48,14 +48,6 @@ const Publication: NextPage<{
             }
           >
             <div className="text-sm secondary-text truncate">
-              {/* {item.title.startsWith('Demiguise') ? (
-                <>
-                  <span className="opacity-100 font-bold">Y Wang*, S Wu*</span>
-                  <span className="opacity-80">
-                    , W Jiang, S Hao, Y Tan, Q Zhang
-                  </span>
-                </>
-              ) : ( */}
               {item.author.split(', ').map((author, index) => (
                 <span key={index}>
                   {author.toLowerCase() === 'd zou' ? (
@@ -81,7 +73,7 @@ const Publication: NextPage<{
         <div className="secondary-text text-center font-mono text-xs mt-8">
           Updates every 24 hrs, sourced from{' '}
           <a
-            href="https://scholar.google.com/citations?user=Mf-JoyQAAAAJ&hl=en"
+            href="https://scholar.google.com/citations?user=zILf1s4AAAAJ&hl=en"
             target="_blank"
             rel="noopener noreferrer"
             className="hover-links"
