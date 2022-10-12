@@ -83,7 +83,7 @@ const Publication: NextPage<{
             Google Scholar
           </a> through {' '}
           <a
-            href='' target="_blank"
+            href='serpapi.com' target="_blank"
             rel="noopener noreferrer"
             className="hover-links">
             serpapi.com
