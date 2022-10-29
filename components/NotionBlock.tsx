@@ -1,5 +1,6 @@
 import Latex from 'react-latex-next'
 import { slugify } from 'transliteration'
+import Bookmark from './NotionBookmark'
 
 import NotionImage from './NotionImage'
 import { Text } from './NotionTextBlock'
@@ -129,6 +130,9 @@ const NotionBlock = (node: any) => {
             return createElement(child, chIndex)
           })
         }
+
+      case 'bookmark':
+        return <Bookmark value={node} />
 
       default:
         return (

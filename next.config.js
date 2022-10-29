@@ -10,6 +10,7 @@ module.exports = {
       'avatars3.githubusercontent.com',
       's3.bmp.ovh',
       'i1.hdslb.com',
+      'i2.hdslb.com',
       'b2.kendrickzou.com'
     ],
   },
