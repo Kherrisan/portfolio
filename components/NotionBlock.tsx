@@ -28,6 +28,7 @@ const NotionBlock = (node: any) => {
         return node.children.map((child: any, chIndex: number) => {
           if (child.annotations === undefined) child.annotations = []
           child.annotations.push(node.tagName)
+          child.annotations = child.annotations.concat(node.properties?.className)
           return createElement(child, chIndex)
         })
       case 'h1':
