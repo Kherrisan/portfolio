@@ -42,7 +42,7 @@ const Post: NextPage<{ page: PageObjectResponse; blocks: any[] }> = ({ page, blo
     <>
       <Head>
         <title>
-          `{name} - Kendrick&apos;s Blog`
+          {name} - Kendrick&apos;s Blog
         </title>
       </Head>
 
