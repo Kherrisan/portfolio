@@ -16,18 +16,18 @@ const Home: NextPage<{ latestPost: LatestPostProps }> = ({ latestPost }) => (
       <title>Dikai Zou</title>
     </Head>
     <Script
-        strategy="lazyOnload"
-        src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_ANALYTICS_ID}`}
-      />
-      <Script id="ga-analytics">
-        {`
+      strategy="lazyOnload"
+      src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_ANALYTICS_ID}`}
+    />
+    <Script id="ga-analytics">
+      {`
           window.dataLayer = window.dataLayer || [];
           function gtag(){window.dataLayer.push(arguments);}
           gtag('js', new Date());
 
           gtag('config', '${process.env.NEXT_PUBLIC_ANALYTICS_ID}');
         `}
-      </Script>
+    </Script>
 
     <div className="mx-auto max-w-3xl px-6">
       <Image
