@@ -5,7 +5,8 @@ const previewFetcher = (url: string) =>
   fetch(`/api/bookmark/${encodeURIComponent(url)}`).then((res) => res.json())
 
 const Bookmark = ({ value }: { value: any }) => {
-  const { url } = value
+  const { properties } = value
+  const url = properties
   const { data, error } = useSWR(url, previewFetcher)
 
   if (error)

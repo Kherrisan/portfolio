@@ -7,10 +7,10 @@ export function Text({
 
   const { value, annotations } = text
   const color = annotations
-    ?.filter((x) => x.startsWith('color') && !x.endsWith('background'))
+    ?.filter((x) => x?.startsWith('color') && !x.endsWith('background'))
     .map((x) => x.replace('color', 'text').concat('-600'))
   const bgColor = annotations
-    ?.filter((x) => x.startsWith('color') && x.endsWith('background'))
+    ?.filter((x) => x?.startsWith('color') && x.endsWith('background'))
     .map((x) => x.replace('color', 'bg').replace('_background', '-800/40'))
 
   return (

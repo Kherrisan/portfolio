@@ -1,5 +1,6 @@
 import Latex from 'react-latex-next'
 import { slugify } from 'transliteration'
+import Bookmark from './NotionBookmark'
 
 import NotionImage from './NotionImage'
 import { Text } from './NotionTextBlock'
@@ -27,6 +28,7 @@ const NotionBlock = (node: any) => {
         return node.children.map((child: any, chIndex: number) => {
           if (child.annotations === undefined) child.annotations = []
           child.annotations.push(node.tagName)
+          child.annotations = child.annotations.concat(node.properties?.className)
           return createElement(child, chIndex)
         })
       case 'h1':
@@ -129,6 +131,9 @@ const NotionBlock = (node: any) => {
             return createElement(child, chIndex)
           })
         }
+
+      case 'bookmark':
+        return <Bookmark value={node} />
 
       default:
         return (
