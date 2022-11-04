@@ -137,10 +137,7 @@ const NotionBlock = (node: any) => {
 
       default:
         return (
-          <p>
-            `❌ Unsupported block ($
-            {JSON.stringify(node)})`
-          </p>
+          <code>{JSON.stringify(node)}</code>
         )
     }
   }
