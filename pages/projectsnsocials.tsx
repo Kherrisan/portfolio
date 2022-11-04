@@ -10,7 +10,7 @@ import Image from 'next/image'
 import { LinkProps, socialLinks } from '../config/link'
 import { ProjectProps, projectLinks } from '../config/project'
 import getGenshinUserInfo from '../lib/genshin'
-import arknightCard from "../public/images/arknights.jpeg"
+import arknightCard from '../public/images/arknights.jpeg'
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json())
 
@@ -102,15 +102,10 @@ const ProjectsNSocials: NextPage<{ genshinUserInfo: UserInfo }> = ({
       </Head>
 
       <div className="container mx-auto max-w-3xl px-6">
-        <h1 className="heading-text mb-8 font-serif text-4xl">
-          Arknights
-        </h1>
+        <h1 className="heading-text mb-8 font-serif text-4xl">Arknights</h1>
 
         <div className="shadow-xl text-0 rounded overflow-hidden">
-              <Image
-                src={arknightCard}
-                alt="Arknights Background"
-              />
+          <Image src={arknightCard} alt="Arknights Background" />
         </div>
 
         {/* <div className="relative shadow-lg p-4 rounded overflow-hidden text-white">

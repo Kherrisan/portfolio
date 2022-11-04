@@ -12,7 +12,8 @@
           "env": {
               "NOTION_KEY": "secret_RqA3RMxH773mD7LX7ruD3S1MuAjU3GgFY8NnZc3HupR",
               "B2_KEY_ID": "004748ef9494fe00000000001",
-              "B2_APPLICATION_KEY": "K0046yi4mMWQZNUOH5SFsfmfPtTLkww"
+              "B2_APPLICATION_KEY": "K0046yi4mMWQZNUOH5SFsfmfPtTLkww",
+              "SERPAPI_KEY": "d963d91d775bdcb7454d0eaf04826279e6958743e786214c4bd28d29f7093a77"
           }
       }
   ]

@@ -9,11 +9,11 @@ import getPublications from '../lib/scholar'
 const Publication: NextPage<{
   data: {
     title: string
-    author: string
-    publication: string
-    date: string
+    authors: string
+    publication?: string
+    year: string
     link: string
-    citations: string
+    cited_by: { value?: number }
   }[]
 }> = ({ data }) => {
   return (
@@ -36,27 +36,19 @@ const Publication: NextPage<{
             iconSlot={
               <div className="absolute -bottom-3 right-3">
                 <span className="rounded-full bg-red-200 text-red-700 px-2 dark:bg-red-700 dark:text-red-200 text-sm uppercase tracking-wider">
-                  {item.date}
+                  {item.year}
                 </span>
 
-                {item.citations !== '' && (
+                {item.cited_by.value && (
                   <span className="rounded-full bg-blue-200 text-blue-700 px-2 dark:bg-blue-700 dark:text-blue-200 ml-2 text-sm uppercase tracking-wider">
-                    Cited by {item.citations}
+                    Cited by {item.cited_by.value}
                   </span>
                 )}
               </div>
             }
           >
             <div className="text-sm secondary-text truncate">
-              {/* {item.title.startsWith('Demiguise') ? (
-                <>
-                  <span className="opacity-100 font-bold">Y Wang*, S Wu*</span>
-                  <span className="opacity-80">
-                    , W Jiang, S Hao, Y Tan, Q Zhang
-                  </span>
-                </>
-              ) : ( */}
-              {item.author.split(', ').map((author, index) => (
+              {item.authors.split(', ').map((author, index) => (
                 <span key={index}>
                   {author.toLowerCase() === 'd zou' ? (
                     <span className="opacity-100 font-bold">{author}</span>
@@ -64,31 +56,38 @@ const Publication: NextPage<{
                     <span className="opacity-80">{author}</span>
                   )}
 
-                  {index !== item.author.split(', ').length - 1 && (
+                  {index !== item.authors.split(', ').length - 1 && (
                     <span>, </span>
                   )}
                 </span>
               ))}
             </div>
 
-            <div className="text-sm opacity-60 secondary-text truncate">
-              <FiBookmark className="inline mr-1" />
-              {item.publication}
-            </div>
+            {item.publication && (
+              <div className="text-sm opacity-60 secondary-text truncate">
+                <FiBookmark className="inline mr-1" />
+                {item.publication}
+              </div>
+            )}
           </HoverCard>
         ))}
 
         <div className="secondary-text text-center font-mono text-xs mt-8">
           Updates every 24 hrs, sourced from{' '}
           <a
-            href="https://scholar.google.com/citations?user=Mf-JoyQAAAAJ&hl=en"
+            href="https://scholar.google.com/citations?user=zILf1s4AAAAJ&hl=en"
             target="_blank"
             rel="noopener noreferrer"
             className="hover-links"
           >
             Google Scholar
-          </a>
-          .
+          </a> through {' '}
+          <a
+            href='serpapi.com' target="_blank"
+            rel="noopener noreferrer"
+            className="hover-links">
+            serpapi.com
+          </a> API.
         </div>
       </div>
 

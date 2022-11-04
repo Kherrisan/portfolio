@@ -2,15 +2,19 @@ import type { PageObjectResponse } from '@notionhq/client/build/src/api-endpoint
 import type { GetStaticProps, NextPage } from 'next'
 import { AiOutlineTag } from 'react-icons/ai'
 import { BiCategory } from 'react-icons/bi'
+import { BiSearch } from 'react-icons/bi'
 
 import Head from 'next/head'
 
 import HoverCard from '../components/HoverCard'
 import { type PageCompletePropertyRecord, getDatabase } from '../lib/notion'
+import SearchModal from '../components/SearchModal'
+import { useState } from 'react'
 
 const Blog: NextPage<{ posts: PageObjectResponse[] }> = ({ posts }) => {
-  // const [searchOpen, setSearchOpen] = useState(false)
-  // const openSearchBox = () => setSearchOpen(true)
+  const [searchOpen, setSearchOpen] = useState(false)
+  const openSearchBox = () => setSearchOpen(true)
+
   const metadata = posts.map((post) => {
     const emoji = post.icon?.type === 'emoji' ? post.icon.emoji : '🎑'
     const prop = post.properties as unknown as PageCompletePropertyRecord
@@ -41,16 +45,17 @@ const Blog: NextPage<{ posts: PageObjectResponse[] }> = ({ posts }) => {
         <title>Kendrick Zou - Blog</title>
       </Head>
 
-      {/* <SearchModal searchOpen={searchOpen} setSearchOpen={setSearchOpen} /> */}
+      <SearchModal searchOpen={searchOpen} setSearchOpen={setSearchOpen} />
 
       <div className="mx-auto max-w-3xl container px-6">
-        <h1 className="heading-text mb-8 font-serif text-4xl">Blog</h1>
-        {/* <h1 className="font-serif text-4xl mb-8 heading-text flex items-center justify-between">
+        {/* <h1 className="heading-text mb-8 font-serif text-4xl">Blog</h1> */}
+        <h1 className="font-serif text-4xl mb-8 heading-text flex items-center justify-between">
             <span>Blog</span>
             <button className="p-1 cursor-pointer hover:text-gray-500" onClick={openSearchBox}>
-              <Search size={20} />
+              {/* <Search size={20} /> */}
+              <BiSearch size={20} />
             </button>
-          </h1> */}
+          </h1>
 
         {metadata.map((meta) => (
           <HoverCard

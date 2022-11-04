@@ -1,40 +1,46 @@
 import Image from 'next/image'
 
-export const getMediaCtx = (value: any) => {
-  const src = value.type === 'external' ? value.external.url : value.file.url
-  const expire = value.type === 'file' ? value.file.expiry_time : null
-  const caption = value.caption[0] ? value.caption[0].plain_text : ''
-  return { src, caption, expire }
+interface ImageProperties {
+  'data-notion-file-type': string
+  src: { url: string; expiry_time: string }
+  dim: { width: number; height: number }
+  caption?: Array<{ plain_text: string }>
 }
 
-const NotionImage = ({ value }: { value: any }) => {
-  const { src: imageSrc, caption: imageCaption } = getMediaCtx(value)
+export const getMediaCtx = (value: ImageProperties) => {
+  const src = value.src.url
+  const expire =
+    value['data-notion-file-type'] === 'file' ? value.src.expiry_time : null
+  // const caption = value.caption[0] ? value.caption[0].plain_text : ''
+  return { src, caption: 'caption', expire }
+}
+
+const NotionImage = ({ value }: { value: ImageProperties }) => {
+  const expire =
+    value['data-notion-file-type'] === 'file' ? value.src.expiry_time : null
+  const src = value.src.url
   const {
     dim: { width, height },
+    caption,
   } = value || {}
 
   return (
     <figure>
       {width && height ? (
-        // <img
-        //   src={imageSrc}
-        //   alt={imageCaption}
-        //   width={width}
-        //   height={height}
-        //   className="rounded"
-        // />
         <Image
-          src={imageSrc}
-          alt={imageCaption}
+          src={src}
+          alt={caption?.[0]?.plain_text}
           width={width}
           height={height}
           className="rounded"
         />
       ) : (
-        <img src={imageSrc} alt={imageCaption} className="rounded" />
+        <img src={src} alt={caption?.[0]?.plain_text} className="rounded" />
       )}
-      {imageCaption && (
-        <figcaption className="text-center">{imageCaption}</figcaption>
+      {caption && caption.length != 0 && (
+        <figcaption className="text-center">
+          {caption!![0].plain_text}
+        </figcaption>
       )}
     </figure>
   )

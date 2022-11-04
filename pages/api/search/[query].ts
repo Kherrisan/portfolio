@@ -7,7 +7,9 @@ export default async function handler(
   res: NextApiResponse<any>
 ) {
   const { query } = req.query
+  // console.log(`Searching for ${query}`)
   const results = await searchDatabase(query as string)
+  // console.log(`Found ${results}`)
 
   res.status(200).json(results)
 }

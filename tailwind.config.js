@@ -1,12 +1,24 @@
 const defaultTheme = require('tailwindcss/defaultTheme')
 
 module.exports = {
+  safelist: [{
+    pattern: /(bg|text|border)-(grey|brown|orange|yellow|green|blue|purple|pink|red)-(.+)/
+  }],
   content: [
     './pages/**/*.{js,jsx,ts,tsx}',
     './components/**/*.{js,jsx,ts,tsx}',
   ],
   theme: {
     extend: {
+      typography: {
+        DEFAULT: {
+          css: {
+            h2: {
+              'margin-top': '0',
+            }
+          }
+        }
+      },
       fontSize: {
         '0': '0px'
       },
