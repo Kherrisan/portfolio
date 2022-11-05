@@ -10,7 +10,7 @@ const NotionBlock = (node: any) => {
     if (node.annotations != undefined) {
       node.children?.forEach((child: any) => {
         child.annotations = Object.assign([], node.annotations)
-        child.annotations.pushValues(node.properties?.className)
+        child.annotations = child.annotations.concat(node.properties?.className)
       })
     }
     if (node.type === 'root') {
