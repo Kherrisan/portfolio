@@ -3573,10 +3573,10 @@ normalize-range@^0.1.2:
   resolved "https://registry.npmjs.org/normalize-range/-/normalize-range-0.1.2.tgz"
   integrity sha512-bdok/XvKII3nUpklnV6P2hxtMNrCboOjAcyBuQnWEhO665FwrSNRxU+AqpsyvO6LgGYPspN+lu5CLtw4jPRKNA==
 
-notion-rehype-k@^1.1.4:
-  version "1.1.4"
-  resolved "https://registry.yarnpkg.com/notion-rehype-k/-/notion-rehype-k-1.1.4.tgz#2935c482927b3dd43549942c213eca556c2bac82"
-  integrity sha512-p1spy2Szf1AwNtorokTGjerk1tWHDrv9NzseYM14WFWj5+9HY++lb91rw9RVKj23+uLFUeidhSUMX5eEdou2xA==
+notion-rehype-k@^1.1.6:
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/notion-rehype-k/-/notion-rehype-k-1.1.6.tgz#68979b42e79351b579218913d71abd3bbaf67ca8"
+  integrity sha512-bJjyBosPfxVWfyEby6DkAHNysFi6UNt3T33g/Q279KserahWGI/tm6Pk0bAcengVIkMb+/Q+Mp54EndSP4iznw==
 
 nprogress@^0.2.0:
   version "0.2.0"

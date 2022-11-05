@@ -27,7 +27,7 @@
     "next": "^12.2.5",
     "next-themes": "^0.2.0",
     "nextjs-progressbar": "^0.0.14",
-    "notion-rehype-k": "^1.1.4",
+    "notion-rehype-k": "^1.1.6",
     "probe-image-size": "^7.2.3",
     "prop-types": "15.8.1",
     "react": "18.2.0",

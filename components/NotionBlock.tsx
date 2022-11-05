@@ -25,10 +25,12 @@ const NotionBlock = (node: any) => {
       case 'b':
       case 'u':
       case 's':
+      case 'a':
         return node.children.map((child: any, chIndex: number) => {
           if (child.annotations === undefined) child.annotations = []
           child.annotations.push(node.tagName)
           child.annotations = child.annotations.concat(node.properties?.className)
+          child.annotations.push(node.properties?.href)
           return createElement(child, chIndex)
         })
       case 'h1':
@@ -69,6 +71,9 @@ const NotionBlock = (node: any) => {
             )}
           </h3>
         )
+
+      // case 'a':
+      //   return <Text text={node} key={index} />
 
       case 'ol':
         return (
@@ -134,6 +139,9 @@ const NotionBlock = (node: any) => {
 
       case 'bookmark':
         return <Bookmark value={node} />
+
+      case 'audio':
+        return <audio controls key={index} src={node.properties.src.url} />
 
       default:
         return (

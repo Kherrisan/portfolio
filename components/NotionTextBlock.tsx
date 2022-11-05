@@ -1,7 +1,7 @@
 export function Text({
   text,
 }: {
-  text: { value: string; annotations?: string[] }
+  text: { value: string; annotations?: string[]}
 }) {
   if (!text) return null
 
@@ -12,6 +12,7 @@ export function Text({
   const bgColor = annotations
     ?.filter((x) => x?.startsWith('color') && x.endsWith('background'))
     .map((x) => x.replace('color', 'bg').replace('_background', '-800/40'))
+  const link = annotations?.filter((x) => x?.startsWith('http'))[0]
 
   return (
     <span
@@ -31,13 +32,11 @@ export function Text({
         .join(' ')}
       // style={color !== 'default' ? { color } : {}}
     >
-      {/* {text.link ? (
-        <a href={text.link.url} target="_blank" rel="noopener noreferrer">
-          {text.content}
+      {link ? (
+        <a href={link} target="_blank" rel="noopener noreferrer">
+          {value}
         </a>
-      ) : ( */}
-      {value}
-      {/* )} */}
+      ) : value } 
     </span>
   )
 }
