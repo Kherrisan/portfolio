@@ -10,21 +10,28 @@ import type { AppProps } from 'next/app'
 import Script from 'next/script'
 
 import Layout from '../components/Layout'
+import { PrivateContext } from '../components/PrivateToggle'
 import '../styles/globals.css'
+import { useState } from 'react';
+
 
 function MyApp({ Component, pageProps }: AppProps) {
+  const [privateAccessable, setPrivate] = useState(false);
+
   return (
     <>
-      <ThemeProvider attribute="class">
-        <Layout>
-          <NextNProgress
-            height={1}
-            color="rgb(156, 163, 175, 0.9)"
-            options={{ showSpinner: false }}
-          />
-          <Component {...pageProps} />
-        </Layout>
-      </ThemeProvider>
+      <PrivateContext.Provider value={{ privateAccessable, setPrivate }}>
+        <ThemeProvider attribute="class">
+          <Layout>
+            <NextNProgress
+              height={1}
+              color="rgb(156, 163, 175, 0.9)"
+              options={{ showSpinner: false }}
+            />
+            <Component {...pageProps} />
+          </Layout>
+        </ThemeProvider>
+      </PrivateContext.Provider>
       <Analytics />
     </>
   )

@@ -9,12 +9,15 @@ import Head from 'next/head'
 import HoverCard from '../components/HoverCard'
 import { type PageCompletePropertyRecord, getDatabase } from '../lib/notion'
 import SearchModal from '../components/SearchModal'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
+import { PrivateContext } from '../components/PrivateToggle'
 
 const Blog: NextPage<{ posts: PageObjectResponse[] }> = ({ posts }) => {
+  const { privateAccessable } = useContext(PrivateContext);
   const [searchOpen, setSearchOpen] = useState(false)
   const openSearchBox = () => setSearchOpen(true)
 
+  !privateAccessable && (posts = posts.filter(post => !(post.properties?.private as any).checkbox))
   const metadata = posts.map((post) => {
     const emoji = post.icon?.type === 'emoji' ? post.icon.emoji : '🎑'
     const prop = post.properties as unknown as PageCompletePropertyRecord

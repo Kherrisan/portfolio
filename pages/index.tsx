@@ -9,9 +9,14 @@ import NowPlaying from '../components/NowPlaying'
 import Sakana from '../components/Sakana'
 import { type LatestPostProps, getLatestPostProps } from '../lib/notion'
 import Script from 'next/script'
+import { useContext } from 'react'
+import { PrivateContext } from '../components/PrivateToggle'
 
-const Home: NextPage<{ latestPost: LatestPostProps }> = ({ latestPost }) => (
-  <>
+const Home = ({ latestPost, latestPrivatePost}: { latestPost: LatestPostProps, latestPrivatePost: LatestPostProps }) => {
+  const { privateAccessable } = useContext(PrivateContext);
+  latestPost = privateAccessable ? latestPrivatePost : latestPost;
+
+  return (<>
     <Head>
       <title>Dikai Zou</title>
     </Head>
@@ -115,18 +120,17 @@ const Home: NextPage<{ latestPost: LatestPostProps }> = ({ latestPost }) => (
         </p>
       </div>
 
-      {/* <NowPlaying /> */}
-
       <Sakana />
     </div>
-  </>
-)
+  </>)
+}
 
 export const getStaticProps: GetStaticProps = async () => {
   const latestPost = await getLatestPostProps()
+  const latestPrivatePost = await getLatestPostProps(true)
 
   return {
-    props: { latestPost },
+    props: { latestPost, latestPrivatePost },
     revalidate: 60 * 10, // 10 minutes
   }
 }

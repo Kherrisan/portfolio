@@ -13,6 +13,7 @@ export type PageCompletePropertyRecord = Record<
   PageCompletePropertyResponse
 >
 export type LatestPostProps = {
+  private: boolean
   title: string
   slug: string
   emoji: string
@@ -21,6 +22,15 @@ export type LatestPostProps = {
 const notion = new Client({ auth: process.env.NOTION_KEY })
 const databaseId =
   process.env.NOTION_DATABASE_ID || 'b3f55ea317de4af39aefcab597bcf7d5'
+
+const propExtractor = async (propId: string, pageId: string) => {
+  const prop = await notion.pages.properties.retrieve({
+    page_id: pageId,
+    property_id: propId,
+  })
+  if (!('results' in prop)) return ''
+  return prop.results.map((r: any) => r[r.type].plain_text).join('')
+}
 
 const getPageProperty = async (pageId: string, propId: string) => {
   return await retry(
@@ -70,11 +80,11 @@ export const getDatabase = async (slug?: string) => {
   return results
 }
 
-export const getLatestPostProps = async () => {
+export const getLatestPostProps = async (privateAccessable: boolean = false) => {
   try {
     const { results } = await notion.databases.query({
       database_id: databaseId,
-      filter: { and: [{ property: 'published', checkbox: { equals: true } }] },
+      filter: { and: [{ property: 'published', checkbox: { equals: true } }, { property: 'private', checkbox: {equals: privateAccessable}}] },
       sorts: [{ property: 'date', direction: 'descending' }],
       page_size: 1,
     })
@@ -82,19 +92,16 @@ export const getLatestPostProps = async () => {
     const post = results[0]
     if (!('icon' in post && 'properties' in post)) return null
 
-    const propExtractor = async (propId: string, pageId: string) => {
-      const prop = await notion.pages.properties.retrieve({
-        page_id: pageId,
-        property_id: propId,
-      })
-      if (!('results' in prop)) return ''
-      return prop.results.map((r: any) => r[r.type].plain_text).join('')
-    }
+    const emoji = post.icon?.type === 'emoji' ? post.icon.emoji : '📝'
+    const privateProps = await notion.pages.properties.retrieve({
+      page_id: post.id,
+      property_id: 'private',
+    }) as { checkbox: boolean}
 
-    const emoji = post.icon?.type === 'emoji' ? post.icon.emoji : '🎑'
     const slug = await propExtractor(post.properties.slug.id, post.id)
     const title = await propExtractor(post.properties.name.id, post.id)
     return {
+      private: privateProps.checkbox,
       emoji,
       slug,
       title,

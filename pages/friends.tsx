@@ -2,8 +2,10 @@ import type { NextPage } from 'next'
 
 import Head from 'next/head'
 import Image from 'next/image'
+import { BsFillPeopleFill } from 'react-icons/bs'
 
 import Comments from '../components/Comments'
+import PrivateToggle from '../components/PrivateToggle'
 import { FriendProps, friends } from '../config/friend'
 
 const FriendCard = (props: FriendProps) => {
@@ -39,7 +41,10 @@ const Friends: NextPage = () => {
       </Head>
 
       <div className="container mx-auto max-w-3xl px-6">
-        <h1 className="heading-text mb-8 font-serif text-4xl">Friends</h1>
+        <h1 className="heading-text mb-8 font-serif text-4xl">
+          Friends{' '}
+          <PrivateToggle />
+        </h1>
 
         <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
           {friends.map((friend: FriendProps) => (
