@@ -20,7 +20,7 @@ export const friends: FriendProps[] = [
   },
   {
     id: '@o大粽子o',
-    link: 'https://space.bilibili.com/3236181',
+    link: 'https://space.bilibili.com/32361811',
     avatar:
       'https://i1.hdslb.com/bfs/face/c482ec73186cb69fa52873b5f0607c09f0787528.jpg',
     bgColor: '#b59672',
