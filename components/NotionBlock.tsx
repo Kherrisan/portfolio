@@ -141,7 +141,7 @@ const NotionBlock = (node: any) => {
         return <Bookmark value={node} />
 
       case 'audio':
-        return <audio controls key={index} src={node.properties.src.url} />
+        return <audio className='w-full my-4' controls key={index} src={node.properties.src.url} />
 
       default:
         return (
