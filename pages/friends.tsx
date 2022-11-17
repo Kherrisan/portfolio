@@ -2,7 +2,8 @@ import type { NextPage } from 'next'
 
 import Head from 'next/head'
 import Image from 'next/image'
-import { BsFillPeopleFill } from 'react-icons/bs'
+
+import friend_comment_9 from '../public/images/friend_comment_9.JPG'
 
 import Comments from '../components/Comments'
 import PrivateToggle from '../components/PrivateToggle'
@@ -53,8 +54,12 @@ const Friends: NextPage = () => {
         </div>
 
         <p className="secondary-text my-8 text-center">
-          👇 Leave your comments down below 👇
+          👇 随便留下点什么吧，如果实在想不到，可以参考下图： 👇
         </p>
+
+        <div className="flex mx-auto justify-center max-w-sm">
+          <Image className='mx-auto' src={friend_comment_9} alt="friend_comment_9" />
+        </div>
 
         <Comments />
       </div>
