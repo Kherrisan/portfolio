@@ -10,7 +10,7 @@ import Image from 'next/image'
 import { LinkProps, socialLinks } from '../config/link'
 import { ProjectProps, projectLinks } from '../config/project'
 import getGenshinUserInfo from '../lib/genshin'
-import arknightCard from '../public/images/arknights.jpeg'
+import arknightCard from '../public/images/arknights.png'
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json())
 
