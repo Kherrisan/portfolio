@@ -3,7 +3,7 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 
-import friend_comment_9 from '../public/images/friend_comment_9.JPG'
+import friend_comment_9 from '../public/images/friend_comment_9.jpg'
 
 import Comments from '../components/Comments'
 import PrivateToggle from '../components/PrivateToggle'
