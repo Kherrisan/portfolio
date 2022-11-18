@@ -1,5 +1,5 @@
 import { Client } from '@notionhq/client'
-import * as moment from 'moment';
+import moment from 'moment'
 import type {
   GetPagePropertyResponse,
   ListBlockChildrenResponse,
