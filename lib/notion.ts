@@ -1,4 +1,5 @@
 import { Client } from '@notionhq/client'
+import * as moment from 'moment';
 import type {
   GetPagePropertyResponse,
   ListBlockChildrenResponse,
@@ -22,6 +23,8 @@ export type LatestPostProps = {
 const notion = new Client({ auth: process.env.NOTION_KEY })
 const databaseId =
   process.env.NOTION_DATABASE_ID || 'b3f55ea317de4af39aefcab597bcf7d5'
+const tweetDatabaseId =
+  process.env.NOTION_TWEET_DATABASE_ID || '3d75457bd05b4072a8bd322b6f5eec65'
 
 const propExtractor = async (propId: string, pageId: string) => {
   const prop = await notion.pages.properties.retrieve({
@@ -41,6 +44,19 @@ const getPageProperty = async (pageId: string, propId: string) => {
       }),
     { retries: 5 }
   )
+}
+
+export const getTweets = async () => {
+  let dbQuery: any = {
+    database_id: tweetDatabaseId,
+    sorts: [{ property: 'date', direction: 'descending' }],
+  }
+  const { results } = await notion.databases.query(dbQuery)
+  return results.map((r: any) => ({
+    id: r.id,
+    datetime: moment(r.created_time).format('YYYY-MM-DD HH:mm:ss'),
+    content: r.properties.content.rich_text[0]?.plain_text
+  }))
 }
 
 export const getDatabase = async (slug?: string) => {

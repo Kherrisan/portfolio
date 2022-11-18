@@ -1,28 +1,38 @@
 import { Menu, Transition } from '@headlessui/react'
 import { useTheme } from 'next-themes'
-import { Fragment, useEffect, useState } from 'react'
+import { Fragment, useContext, useEffect, useState } from 'react'
 import { FiHome, FiMenu, FiRss } from 'react-icons/fi'
 
 import Image from 'next/image'
 import Link from 'next/link'
+import { PrivateContext } from './PrivateToggle'
 
 const navigations = [
   {
     name: 'Blog',
     link: '/blog',
+    private: false
   },
   {
     name: 'Publication',
     link: '/publication',
+    private: false
   },
   {
     name: 'Projects & Socials',
     link: '/projectsnsocials',
+    private: false
   },
   {
     name: 'Friends',
     link: '/friends',
+    private: false
   },
+  {
+    name: 'Tweets',
+    link: '/tweets',
+    private: true,
+  }
 ]
 
 const MenuItemLink = (props: { href: string; children: React.ReactNode }) => {
@@ -35,6 +45,7 @@ const MenuItemLink = (props: { href: string; children: React.ReactNode }) => {
 }
 
 const Navbar = () => {
+  const { privateAccessable } = useContext(PrivateContext);
   const { resolvedTheme, setTheme } = useTheme()
 
   return (
@@ -53,7 +64,7 @@ const Navbar = () => {
 
       <div className="flex items-center space-x-4">
         <nav className="hidden items-center space-x-2 sm:flex">
-          {navigations.map((n, i) => (
+          {navigations.filter((n) => privateAccessable || !n.private).map((n, i) => (
             <Link href={n.link} key={i} passHref>
               <a className="nav-links">{n.name}</a>
             </Link>
