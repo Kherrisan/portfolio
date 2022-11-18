@@ -1,5 +1,5 @@
 import { Client } from '@notionhq/client'
-import moment from 'moment'
+import moment from 'moment-timezone'
 import type {
   GetPagePropertyResponse,
   ListBlockChildrenResponse,
@@ -54,7 +54,7 @@ export const getTweets = async () => {
   const { results } = await notion.databases.query(dbQuery)
   return results.map((r: any) => ({
     id: r.id,
-    datetime: moment(r.created_time).format('YYYY-MM-DD HH:mm:ss'),
+    datetime: moment(r.created_time).tz("Asia/Shanghai").format('YYYY-MM-DD HH:mm:ss'),
     content: r.properties.content.rich_text[0]?.plain_text
   }))
 }
