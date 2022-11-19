@@ -13,7 +13,7 @@ const TweetCard = (tweet: Tweet) => {
     <div
       className="flex items-center justify-between overflow-hidden rounded border-b-4 bg-light-300 p-4 transition-all duration-150 hover:shadow-lg hover:opacity-80 dark:bg-dark-700"
       style={{
-        borderBottomColor: '#1da1f2',
+        borderBottomColor: '',
       }}
     >
       <div>
@@ -33,12 +33,12 @@ const Tweets: NextPage<{ tweets: Array<Tweet> }> = ({ tweets }) => {
 
       <div className="container mx-auto max-w-3xl px-6">
         <h1 className="heading-text mb-8 font-serif text-4xl">
-          Tweets{' '}还在建设中......
+          Tweets{' '}
         </h1>
 
         <div className="mb-8 gap-4">
           {tweets.map((tweet: Tweet) => (
-            <TweetCard key={tweet.id} {...tweet} />
+            <TweetCard key={tweet.id} {...tweet}/>
           ))}
         </div>
       </div>
