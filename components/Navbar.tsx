@@ -86,7 +86,7 @@ const Navbar = () => {
               leaveTo="transform scale-95 opacity-0"
             >
               <Menu.Items className="absolute right-0 mt-2 w-40 origin-top-right rounded bg-white shadow-lg grid divide-y divide-gray-400/30 dark:bg-dark-700 focus:outline-none">
-                {navigations.map((n, i) => (
+                {navigations.filter((n) => privateAccessable || !n.private).map((n, i) => (
                   <Menu.Item key={i}>
                     <MenuItemLink href={n.link}>
                       <div className="p-2">{n.name}</div>
