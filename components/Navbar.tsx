@@ -32,6 +32,11 @@ const navigations = [
     name: 'Tweets',
     link: '/tweets',
     private: true,
+  },
+  {
+    name: 'Travelling',
+    link: 'https://travellings.link',
+    private: false
   }
 ]
 
@@ -52,14 +57,6 @@ const Navbar = () => {
     <header className="primary-text z-10 flex items-center px-4 py-3 justify-between sticky top-0 backdrop-blur-lg bg-white/30 dark:bg-dark-900/50">
       <Link href="/">
         <FiHome size={20} />
-        {/* <Image
-          // className="transition-all duration-150 cursor-pointer dark:invert hover:opacity-80"
-          className="transition-all duration-150 cursor-pointer hover:opacity-80"
-          src={`/images/avatar_${resolvedTheme === 'light' ? 'white' : 'black'}.jpg`}
-          alt="home"
-          width={42}
-          height={42}
-        /> */}
       </Link>
 
       <div className="flex items-center space-x-4">
