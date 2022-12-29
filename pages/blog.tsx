@@ -15,10 +15,12 @@ import { PrivateContext } from '../components/PrivateToggle'
 const Blog: NextPage<{ posts: PageObjectResponse[] }> = ({ posts }) => {
   const { privateAccessable } = useContext(PrivateContext);
   const [searchOpen, setSearchOpen] = useState(false)
+  const [selectedCategory, selectCategory] = useState<string | null>(null)
   const openSearchBox = () => setSearchOpen(true)
 
   !privateAccessable && (posts = posts.filter(post => !(post.properties?.private as any).checkbox))
-  const metadata = posts.map((post) => {
+  const categories = new Set<string>()
+  let metadata = posts.map((post) => {
     const emoji = post.icon?.type === 'emoji' ? post.icon.emoji : '🎑'
     const prop = post.properties as unknown as PageCompletePropertyRecord
 
@@ -38,9 +40,11 @@ const Blog: NextPage<{ posts: PageObjectResponse[] }> = ({ posts }) => {
 
     const author = 'results' in prop.author ? prop.author.results : []
     const category = 'select' in prop.category ? prop.category.select : null
+    category?.name && categories.add(category.name)
 
     return { id: post.id, emoji, slug, name, preview, date, author, category }
   })
+  selectedCategory && (metadata = metadata.filter(post => post.category?.name === selectedCategory))
 
   return (
     <>
@@ -53,12 +57,28 @@ const Blog: NextPage<{ posts: PageObjectResponse[] }> = ({ posts }) => {
       <div className="mx-auto max-w-3xl container px-6">
         {/* <h1 className="heading-text mb-8 font-serif text-4xl">Blog</h1> */}
         <h1 className="font-serif text-4xl mb-8 heading-text flex items-center justify-between">
-            <span>Blog</span>
-            <button className="p-1 cursor-pointer hover:text-gray-500" onClick={openSearchBox}>
-              {/* <Search size={20} /> */}
-              <BiSearch size={20} />
+          <span>Blog</span>
+          <button className="p-1 cursor-pointer hover:text-gray-500" onClick={openSearchBox}>
+            {/* <Search size={20} /> */}
+            <BiSearch size={20} />
+          </button>
+        </h1>
+
+        <div className="mx-auto max-w-3xl container mb-8">
+          {Array.from(categories.values()).map((category) => (
+            <button
+              className='items-center overflow-hidden rounded border-b-4 bg-light-300 py-1.5 px-4 m-2 transition-all duration-150 hover:shadow-lg hover:opacity-80 dark:bg-dark-700'
+              style={{
+                borderBottomColor: 'green'
+              }}
+              onClick={() => {
+                selectCategory(category === selectedCategory ? null : category)
+              }}
+            >
+              {category}
             </button>
-          </h1>
+          ))}
+        </div>
 
         {metadata.map((meta) => (
           <HoverCard
