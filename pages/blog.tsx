@@ -67,6 +67,7 @@ const Blog: NextPage<{ posts: PageObjectResponse[] }> = ({ posts }) => {
         <div className="mx-auto max-w-3xl container mb-8">
           {Array.from(categories.values()).map((category) => (
             <button
+              key={category}
               className='items-center overflow-hidden rounded border-b-4 bg-light-300 py-1.5 px-4 m-2 transition-all duration-150 hover:shadow-lg hover:opacity-80 dark:bg-dark-700'
               style={{
                 borderBottomColor: 'green'
