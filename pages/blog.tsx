@@ -12,6 +12,23 @@ import SearchModal from '../components/SearchModal'
 import { useContext, useState } from 'react'
 import { PrivateContext } from '../components/PrivateToggle'
 
+const CategoryTag = ({ category, selectCategory, selected }: { category: string, selectCategory: Dispatch<SetStateAction<string>>, selected: boolean}) => {
+
+  return (
+    <button
+      className='items-center overflow-hidden rounded border-b-4 bg-light-300 py-1.5 px-4 m-2 transition-all duration-150 hover:shadow-lg hover:opacity-80 dark:bg-dark-700'
+      style={{
+        borderBottomColor: selected ? 'orange' : '#DCDCDC'
+      }}
+      onClick={() => {
+        selectCategory(selected ? null : category)
+      }}
+    >
+      {category}
+    </button>
+  )
+}
+
 const Blog: NextPage<{ posts: PageObjectResponse[] }> = ({ posts }) => {
   const { privateAccessable } = useContext(PrivateContext);
   const [searchOpen, setSearchOpen] = useState(false)
@@ -64,20 +81,13 @@ const Blog: NextPage<{ posts: PageObjectResponse[] }> = ({ posts }) => {
           </button>
         </h1>
 
-        <div className="mx-auto max-w-3xl container mb-8">
+        {/* <h2 className="font-serif text-2xl mb-4 heading-text flex items-center justify-between">
+          <span>Category</span>
+        </h2> */}
+
+        <div className='mb-8'>
           {Array.from(categories.values()).map((category) => (
-            <button
-              key={category}
-              className='items-center overflow-hidden rounded border-b-4 bg-light-300 py-1.5 px-4 m-2 transition-all duration-150 hover:shadow-lg hover:opacity-80 dark:bg-dark-700'
-              style={{
-                borderBottomColor: 'green'
-              }}
-              onClick={() => {
-                selectCategory(category === selectedCategory ? null : category)
-              }}
-            >
-              {category}
-            </button>
+            <CategoryTag key={category} category={category} selectCategory={selectCategory} selected={category==selectedCategory}/>
           ))}
         </div>
 
@@ -97,14 +107,6 @@ const Blog: NextPage<{ posts: PageObjectResponse[] }> = ({ posts }) => {
 
             <div className="secondary-text flex flex-wrap items-center space-x-2 text-sm">
               <span>{new Date(meta.date).toLocaleDateString()}</span>
-              <span>·</span>
-              {meta.author.map((person: any) => (
-                <span key={person.id}>
-                  {'people' in person && 'name' in person.people
-                    ? person.people.name?.toLowerCase()
-                    : ''}
-                </span>
-              ))}
               <span>·</span>
               {/* <BiCategory size={18} className="mr-1 inline" /> */}
               <span>{meta.category?.name?.toLowerCase()}</span>
