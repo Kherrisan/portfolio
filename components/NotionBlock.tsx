@@ -151,6 +151,9 @@ const NotionBlock = (node: any) => {
       case 'audio':
         return <audio className='w-full my-4' controls key={index} src={node.properties.src.url} />
 
+      case 'iframe':
+        return <iframe className='w-full h-96 my-4' key={index} src={node.properties.src} />
+
       default:
         return (
           <code>{JSON.stringify(node)}</code>

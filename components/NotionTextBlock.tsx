@@ -11,7 +11,7 @@ export function Text({
     .map((x) => x.replace('color', 'text').concat('-600'))
   const bgColor = annotations
     ?.filter((x) => x?.startsWith('color') && x.endsWith('background'))
-    .map((x) => x.replace('color', 'bg').replace('_background', '-800/40'))
+    .map((x) => x.replace('color', 'bg').replace('_background', '-400/40'))
   const link = annotations?.filter((x) => x?.startsWith('http'))[0]
 
   return (
