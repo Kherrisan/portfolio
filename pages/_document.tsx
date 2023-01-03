@@ -19,6 +19,7 @@ export default function Document() {
           src="https://gtm-proxy.kherrisan.workers.dev/ns.html?id=GTM-WTPKPDL"
           strategy="afterInteractive"
         />
+        <NextScript />
       </body>
     </Html>
   )
