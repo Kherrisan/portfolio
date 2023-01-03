@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import { FiLink, FiLink2 } from 'react-icons/fi'
 import useSWR from 'swr'
 
@@ -52,6 +53,10 @@ const Bookmark = ({ value }: { value: any }) => {
   const { title, description, favicon, open_graph } = data
   const images = open_graph?.images ?? []
 
+  // Remove the thumbnail size specification from the image URL
+  // like '//i1.hdslb.com/bfs/archive/2db7f7c4528f57b05a4e4909a9fe9e9e19d58c6b.jpg@100w_100h_1c.png'
+  images && images.length > 0 && (images[0].url = images[0].url.replace(/@.+$/, ''))
+
   return (
     <a
       href={url}
@@ -78,12 +83,8 @@ const Bookmark = ({ value }: { value: any }) => {
         </div>
       </div>
       {images && images.length > 0 && (
-        <div className="hidden overflow-hidden rounded border-l border-gray-400/50 sm:block">
-          <img
-            src={images[0].url}
-            alt={title}
-            className="m-0 h-28 w-full rounded border-gray-400/50 object-cover object-center"
-          />
+        <div className="relative overflow-hidden rounded border-l border-gray-400/50 sm:block">
+          <Image src={images[0].url} alt={title} layout="fill" width={512} className="m-0 h-28 w-full rounded border-gray-400/50 object-cover object-center" />
         </div>
       )}
     </a>
