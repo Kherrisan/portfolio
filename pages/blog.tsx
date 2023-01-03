@@ -9,10 +9,10 @@ import Head from 'next/head'
 import HoverCard from '../components/HoverCard'
 import { type PageCompletePropertyRecord, getDatabase } from '../lib/notion'
 import SearchModal from '../components/SearchModal'
-import { useContext, useState } from 'react'
+import { Dispatch, SetStateAction, useContext, useState } from 'react'
 import { PrivateContext } from '../components/PrivateToggle'
 
-const CategoryTag = ({ category, selectCategory, selected }: { category: string, selectCategory: Dispatch<SetStateAction<string>>, selected: boolean}) => {
+const CategoryTag = ({ category, selectCategory, selected }: { category: string, selectCategory: Dispatch<SetStateAction<string | null>>, selected: boolean}) => {
 
   return (
     <button
