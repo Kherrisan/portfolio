@@ -112,13 +112,14 @@ const NotionBlock = (node: any) => {
         )
 
       case 'section':
-        // callout or equation block
         if (node.children.length === 1) {
+          // equation block
           return <Latex key={index}>{`\\[${node.children[0].value}\\]`}</Latex>
         } else if (node.children.length === 2) {
-          return (<div className='grid grid-cols-12 p-4 rounded-md' style={{ backgroundColor: '#EFEFED' }}>
-            <span className=''>{node.children[0].children[0].value}</span>
-            <div className='col-span-11'>{createElement(node.children[1])}</div>
+          // callout block
+          return (<div className='p-4 flex rounded-md bg-orange-100 dark:bg-stone-700'>
+            <span className='pr-4'>{node.children[0].children[0].value}</span>
+            <div className=''>{createElement(node.children[1])}</div>
           </div>)
         }
 
