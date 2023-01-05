@@ -43,8 +43,8 @@ const navigations = [
 const MenuItemLink = (props: { href: string; children: React.ReactNode }) => {
   const { href, children, ...rest } = props
   return (
-    <Link href={href}>
-      <a {...rest}>{children}</a>
+    <Link href={href} {...rest}>
+      {children}
     </Link>
   )
 }
@@ -62,8 +62,8 @@ const Navbar = () => {
       <div className="flex items-center space-x-4">
         <nav className="hidden items-center space-x-2 sm:flex">
           {navigations.filter((n) => privateAccessable || !n.private).map((n, i) => (
-            <Link href={n.link} key={i} passHref>
-              <a className="nav-links">{n.name}</a>
+            <Link className="nav-links" href={n.link} key={i} passHref>
+              {n.name}
             </Link>
           ))}
         </nav>

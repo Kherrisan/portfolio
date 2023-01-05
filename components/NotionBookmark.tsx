@@ -84,7 +84,7 @@ const Bookmark = ({ value }: { value: any }) => {
       </div>
       {images && images.length > 0 && (
         <div className="relative overflow-hidden rounded border-l border-gray-400/50 sm:block">
-          <Image src={images[0].url} alt={title} layout="fill" width={512} className="m-0 h-28 w-full rounded border-gray-400/50 object-cover object-center" />
+          <Image src={images[0].url} alt={title} fill className="m-0 h-28 w-full rounded border-gray-400/50 object-cover object-center" />
         </div>
       )}
     </a>

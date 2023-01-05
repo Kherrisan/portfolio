@@ -50,7 +50,7 @@ const Post: NextPage<{ page: PageObjectResponse; blocks: any[] }> = ({ page, blo
     <>
       <Head>
         <title>
-          {name} - Kendrick&apos;s Blog
+        KendrickZou - {name}
         </title>
       </Head>
 
@@ -77,11 +77,9 @@ const Post: NextPage<{ page: PageObjectResponse; blocks: any[] }> = ({ page, blo
                 <span>{category?.name?.toLowerCase()}</span>
               </div>
               <span>·</span>
-              <Link href="#comments-section" passHref>
-                <a className="hover-links">
-                  <FiMessageCircle size={18} className="mr-1 inline" />
-                  <span>comments</span>
-                </a>
+              <Link className="hover-links" href="#comments-section" passHref>
+                <FiMessageCircle size={18} className="mr-1 inline" />
+                <span>comments</span>
               </Link>
             </div>
 

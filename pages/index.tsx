@@ -12,13 +12,13 @@ import Script from 'next/script'
 import { useContext } from 'react'
 import { PrivateContext } from '../components/PrivateToggle'
 
-const Home = ({ latestPost, latestPrivatePost}: { latestPost: LatestPostProps, latestPrivatePost: LatestPostProps }) => {
+const Home = ({ latestPost, latestPrivatePost }: { latestPost: LatestPostProps, latestPrivatePost: LatestPostProps }) => {
   const { privateAccessable } = useContext(PrivateContext);
   latestPost = privateAccessable ? latestPrivatePost : latestPost;
 
   return (<>
     <Head>
-      <title>Dikai Zou</title>
+      <title>KendrickZou</title>
     </Head>
 
     <div className="mx-auto max-w-3xl px-6">
@@ -72,24 +72,20 @@ const Home = ({ latestPost, latestPrivatePost}: { latestPost: LatestPostProps, l
 
       <p className="mt-8 leading-7">
         More about me (projects, links):{' '}
-        <Link href="/projectsnsocials">
-          <a className="group inline-flex flex-wrap items-center">
+        <Link className="group inline-flex flex-wrap items-center" href="/projectsnsocials">
             <span className="hover-links">📚 Projects & Socials</span>
             <FiArrowRight className="h-4 w-4 transition-all duration-150 group-hover:translate-x-1" />
-          </a>
         </Link>
       </p>
 
       {latestPost && (
         <p className="leading-7">
           Latest post:{' '}
-          <Link href={`/blog/${latestPost.slug}`}>
-            <a className="group inline-flex flex-wrap items-center">
-              <span className="hover-links">
-                {latestPost.emoji || '📚'} {latestPost.title}
-              </span>
-              <FiArrowRight className="h-4 w-4 transition-all duration-150 group-hover:translate-x-1" />
-            </a>
+          <Link className="group inline-flex flex-wrap items-center" href={`/blog/${latestPost.slug}`}>
+            <span className="hover-links">
+              {latestPost.emoji || '📚'} {latestPost.title}
+            </span>
+            <FiArrowRight className="h-4 w-4 transition-all duration-150 group-hover:translate-x-1" />
           </Link>
         </p>
       )}

@@ -132,27 +132,26 @@ const SearchModal = ({
                     ) : (
                       results.result.map((result: any, i: number) => (
                         <Link
+                          className="flex cursor-pointer justify-between border-b border-gray-400/30 p-4 hover:bg-light-200 dark:hover:bg-dark-700"
                           href={`/blog/${result.properties.slug.rich_text[0].plain_text}`}
                           key={i}
                           passHref
                         >
-                          <a className="flex cursor-pointer justify-between border-b border-gray-400/30 p-4 hover:bg-light-200 dark:hover:bg-dark-700">
-                            <div className="w-9">{result.icon.emoji}</div>
-                            <div className="flex-1 overflow-hidden truncate">
-                              <div className="pb-1 font-bold">
-                                {result.properties.name.title[0].text.content}
-                              </div>
-                              <div className="secondary-text pb-1">
-                                {
-                                  result.properties.preview.rich_text[0]
-                                    .plain_text
-                                }
-                              </div>
-                              <div className="secondary-text font-mono text-xs">
-                                {result.properties.date.date.start}
-                              </div>
+                          <div className="w-9">{result.icon.emoji}</div>
+                          <div className="flex-1 overflow-hidden truncate">
+                            <div className="pb-1 font-bold">
+                              {result.properties.name.title[0].text.content}
                             </div>
-                          </a>
+                            <div className="secondary-text pb-1">
+                              {
+                                result.properties.preview.rich_text[0]
+                                  .plain_text
+                              }
+                            </div>
+                            <div className="secondary-text font-mono text-xs">
+                              {result.properties.date.date.start}
+                            </div>
+                          </div>
                         </Link>
                       ))
                     )}

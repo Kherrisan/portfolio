@@ -29,9 +29,8 @@ const NotionImage = ({ value }: { value: ImageProperties }) => {
       {width && height ? (
         <Image
           src={src}
-          alt={caption?.[0]?.plain_text}
-          width={width}
-          height={height}
+          alt={caption?.[0]?.plain_text ?? 'Loading Image......'}
+          fill
           className="rounded"
         />
       ) : (

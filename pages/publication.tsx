@@ -19,7 +19,7 @@ const Publication: NextPage<{
   return (
     <>
       <Head>
-        <title>Dikai Zou - Publication</title>
+        <title>KendrickZou - Publication</title>
       </Head>
 
       <div className="container mx-auto max-w-3xl px-6">

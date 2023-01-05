@@ -38,7 +38,7 @@ const Friends: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Dikai Zou - Friends</title>
+        <title>KendrickZou - Friends</title>
       </Head>
 
       <div className="container mx-auto max-w-3xl px-6">

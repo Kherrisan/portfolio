@@ -28,7 +28,7 @@ const Tweets: NextPage<{ tweets: Array<Tweet> }> = ({ tweets }) => {
   return (
     <>
       <Head>
-        <title>Dikai Zou - Tweets</title>
+        <title>KendrickZou - Tweets</title>
       </Head>
 
       <div className="container mx-auto max-w-3xl px-6">
