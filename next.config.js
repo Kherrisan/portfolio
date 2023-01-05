@@ -13,6 +13,7 @@ module.exports = {
       'i2.hdslb.com',
       'b2.kendrickzou.com'
     ],
+    formats: ['image/avif', 'image/webp'],
   },
   async redirects() {
     return [
