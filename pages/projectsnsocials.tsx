@@ -102,7 +102,7 @@ const ProjectsNSocials: NextPage<{ genshinUserInfo: UserInfo }> = ({
       </Head>
 
       <div className="container mx-auto max-w-3xl px-6">
-        <h1 className="heading-text mb-8 font-serif text-4xl">Arknights</h1>
+        <h1 className="heading-text my-8 font-extrabold text-5xl">Arknights</h1>
 
         <div className="shadow-xl text-0 rounded overflow-hidden">
           <Image src={arknightCard} alt="Arknights Background" />
@@ -167,7 +167,7 @@ const ProjectsNSocials: NextPage<{ genshinUserInfo: UserInfo }> = ({
           (=ﾟωﾟ)ﾉ
         </div> */}
 
-        <h1 className="heading-text my-8 font-serif text-4xl">Projects</h1>
+        <h1 className="heading-text my-8 font-extrabold text-5xl">Projects</h1>
 
         {/* <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           {projectLinks.map((project: ProjectProps) => (
@@ -175,7 +175,7 @@ const ProjectsNSocials: NextPage<{ genshinUserInfo: UserInfo }> = ({
           ))}
         </div> */}
 
-        <h1 className="heading-text my-8 font-serif text-4xl">Socials</h1>
+        <h1 className="heading-text my-8 font-extrabold text-5xl">Socials</h1>
 
         <div className="mb-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
           {socialLinks.map((link: LinkProps) => (

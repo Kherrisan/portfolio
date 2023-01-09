@@ -7,7 +7,7 @@ import { GetServerSideProps } from 'next'
 
 import { type PageCompletePropertyRecord, getDatabase } from '../lib/notion'
 
-const domain = 'https://spencerwoo.com'
+const domain = 'https://kendrickzou.com'
 const year = new Date().getFullYear()
 
 const generateRSS = (posts: PageObjectResponse[]) => {
@@ -20,9 +20,9 @@ const generateRSS = (posts: PageObjectResponse[]) => {
     image: `${domain}/favicon.png`,
     favicon: `${domain}/favicon.ico`,
     author: {
-      name: 'Spencer Woo',
+      name: 'Kendrick Zou',
       email: 'spencer.wushangbo@gmail.com',
-      link: 'https://spencerwoo.com',
+      link: 'https://kendrickzou.com',
     },
   })
 

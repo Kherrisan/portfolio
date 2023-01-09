@@ -32,8 +32,8 @@ const Tweets: NextPage<{ tweets: Array<Tweet> }> = ({ tweets }) => {
       </Head>
 
       <div className="container mx-auto max-w-3xl px-6">
-        <h1 className="heading-text mb-8 font-serif text-4xl">
-          Tweets{' '}
+        <h1 className="heading-text my-8 font-extrabold text-5xl">
+          Tweets
         </h1>
 
         <div className="mb-8 gap-4">
@@ -52,7 +52,7 @@ export const getStaticProps: GetStaticProps = async () => {
   const db = await getTweets()
   return {
     props: { tweets: db },
-    revalidate: 60 * 60, // 10 minutes
+    revalidate: 10, // 10 seconds
   }
 }
 

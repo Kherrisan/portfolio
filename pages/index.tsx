@@ -1,14 +1,12 @@
 import type { GetStaticProps, NextPage } from 'next'
-import { FiArrowRight, FiMail } from 'react-icons/fi'
+import { FiArrowRight } from 'react-icons/fi'
 
 import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
 
-import NowPlaying from '../components/NowPlaying'
 import Sakana from '../components/Sakana'
 import { type LatestPostProps, getLatestPostProps } from '../lib/notion'
-import Script from 'next/script'
 import { useContext } from 'react'
 import { PrivateContext } from '../components/PrivateToggle'
 
@@ -31,7 +29,7 @@ const Home = ({ latestPost, latestPrivatePost }: { latestPost: LatestPostProps, 
         priority
       />
 
-      <h1 className="heading-text my-8 font-serif text-4xl">Dikai Zou</h1>
+      <h1 className="heading-text my-8 font-extrabold lg:text-5xl md:text-4xl text-3xl">Dikai Zou</h1>
 
       <p className="mb-8 leading-7">
         Researcher / Developer{' '}

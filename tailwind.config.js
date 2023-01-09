@@ -49,11 +49,11 @@ module.exports = {
         },
       },
       fontFamily: {
-        sans: ['Inter', ...defaultTheme.fontFamily.sans],
+        sans: ['Inter', 'Arial', ...defaultTheme.fontFamily.sans],
         serif: ['"DM Serif Text"', ...defaultTheme.fontFamily.serif],
         mono: ['"iA Writer Mono"', ...defaultTheme.fontFamily.mono],
       },
     },
   },
-  plugins: [require('@tailwindcss/typography')],
+  plugins: [require('@tailwindcss/typography'), require('tailwindcss-font-inter')],
 }

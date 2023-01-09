@@ -72,24 +72,13 @@ const Blog: NextPage<{ posts: PageObjectResponse[] }> = ({ posts }) => {
       <SearchModal searchOpen={searchOpen} setSearchOpen={setSearchOpen} />
 
       <div className="mx-auto max-w-3xl container px-6">
-        {/* <h1 className="heading-text mb-8 font-serif text-4xl">Blog</h1> */}
-        <h1 className="font-serif text-4xl mb-8 heading-text flex items-center justify-between">
-          <span>Blog</span>
-          <button className="p-1 cursor-pointer hover:text-gray-500" onClick={openSearchBox}>
-            {/* <Search size={20} /> */}
-            <BiSearch size={20} />
-          </button>
-        </h1>
+        <h1 className="heading-text my-8 font-extrabold lg:text-5xl md:text-4xl text-3xl">Blog</h1>
 
-        {/* <h2 className="font-serif text-2xl mb-4 heading-text flex items-center justify-between">
-          <span>Category</span>
-        </h2> */}
-
-        <div className='mb-8'>
+        {/* <div className='mb-8'>
           {Array.from(categories.values()).map((category) => (
             <CategoryTag key={category} category={category} selectCategory={selectCategory} selected={category==selectedCategory}/>
           ))}
-        </div>
+        </div> */}
 
         {metadata.map((meta) => (
           <HoverCard
@@ -109,7 +98,7 @@ const Blog: NextPage<{ posts: PageObjectResponse[] }> = ({ posts }) => {
               <span>{new Date(meta.date).toLocaleDateString()}</span>
               <span>·</span>
               {/* <BiCategory size={18} className="mr-1 inline" /> */}
-              <span>{meta.category?.name?.toLowerCase()}</span>
+              <span className='text-orange-400'>{meta.category?.name?.toLowerCase()}</span>
               {/* <span>·</span>
               {post.properties.tags.multi_select.map((tag: any) => (
                 <span>
