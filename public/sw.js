@@ -1,3 +1,4 @@
+
 const CACHE_NAME = 'kendrickzou-portfolio-cache';
 const DEFAULT_VERSION = '1.0.0'
 const DOMAINS = ["kendrickzou.com", "localhost"]
@@ -83,11 +84,18 @@ const cdnList = [
     "https://cdn1.tianli0.top/npm"
 ]
 
+const timeout = (ms) => {
+    return new Promise(resolve => setTimeout(resolve, ms))
+}
+
+const fetchParallellyAndCache = async (urls, req) => {
+    const resp = await fetchParallelly(urls)
+    const cache = await caches.open(CACHE_NAME)
+    cache.put(req, resp.clone())
+    return resp
+}
+
 const handle = async function (req) {
-    let resp = await caches.match(req)
-    if (resp) {
-        return resp
-    }
     let url = new URL(req.url)
     if (!DOMAINS.includes(url.hostname)
         || url.pathname.match(/\/sw\.js/g)
@@ -95,16 +103,19 @@ const handle = async function (req) {
         return fetch(req)
     }
     url.pathname = url.pathname.replace(/_next\/static\//, "")
-    self.cons.i(`Handle ${req.url}`)
     const version = await db.read(VERSION_STORAGE_KEY) || DEFAULT_VERSION
     const urls = cdnList.map(cdn => `${cdn}/${PORTFOLIO_PACKAGE_NAME}@${version}${url.pathname}${url.searchParams}`)
-    resp = await lfetch(urls)
-    const cache = await caches.open(CACHE_NAME)
-    await cache.put(req, resp.clone())
-    return resp
+    const resp = await caches.match(req)
+    if (!!resp) {
+        cons.i(`Cache hitted: ${req.url}`)
+        return resp;
+    }
+    cons.w(`Cache missed: ${req.url}`)
+    return fetchParallellyAndCache(urls, req)
 }
 
-const lfetch = async (urls) => {
+const fetchParallelly = async (urls) => {
+    cons.i(`Fetch parallelly: ${urls[0]}......`)
     let controller = new AbortController(); //针对此次请求新建一个AbortController,用于打断并发的其余请求
     const PauseProgress = async (res) => {
         //这个函数的作用时阻塞响应,直到主体被完整下载,避免被提前打断
@@ -131,58 +142,53 @@ const lfetch = async (urls) => {
             })
         }
     }
-    return Promise.any(urls.map(urls => {//并发请求
+    //并发请求
+    return Promise.any(urls.map(url => {
         return new Promise((resolve, reject) => {
-            fetch(urls, {
+            fetch(url, {
                 signal: controller.signal//设置打断点
             })
                 .then(PauseProgress)//阻塞当前响应直到下载完成
                 .then(res => {
                     if (res.status == 200) {
-                        self.cons.i(`LFetch from: ${res.url}`)
                         controller.abort()//打断其余响应(同时也打断了自己的,但本身自己已下载完成,打断无效)
                         resolve(res)//返回
                     } else {
                         reject(res)
                     }
                 })
+                .catch(err => { })
         })
     }))
 }
 
-const newest_version = (v1, v2) => {
+const versionLarger = (v1, v2) => {
+    if (!v2) {
+        return true
+    }
     const [maj1, min1, t1] = v1.split(".").map(x => Number(x))
     const [maj2, min2, t2] = v2.split(".").map(x => Number(x))
-    if (maj1 > maj2) {
-        return v1;
-    } else if (maj1 < maj2) {
-        return v2;
-    } else if (min1 > min2) {
-        return v1;
-    } else if (min1 < min2) {
-        return v2;
-    } else if (t1 > t2) {
-        return v1;
-    } else {
-        return v2;
-    }
+    return maj1 > maj2 || min1 > min2 || t1 > t2
 }
 
-const set_newest_version = async () => {
+const setNewestVersion = async () => {
     const registries = [
         `https://registry.npmmirror.com/${PORTFOLIO_PACKAGE_NAME}/latest`,
         `https://registry.npmjs.org/${PORTFOLIO_PACKAGE_NAME}/latest`,
         `https://mirrors.cloud.tencent.com/npm/${PORTFOLIO_PACKAGE_NAME}/latest`
     ]
     cons.i(`Searching For The Newest Version...`)
-    return lfetch(registries)
+    return fetchParallelly(registries)
         .then(res => res.json())
         .then(async res => {
-            if (!res.version) throw ('No Version Found!')
-            const result = newest_version(res.version, await db.read(VERSION_STORAGE_KEY) || DEFAULT_VERSION)
-            cons.d(`Newest Version: ${res.version} ; Local Version: ${await db.read(VERSION_STORAGE_KEY)} | Update result: ${result}`)
-            cons.s(`Update Blog Version To ${result}`);
-            await db.write(VERSION_STORAGE_KEY, result)
+            if (!res.version) throw ('No version found!')
+            const localVersion = await db.read(VERSION_STORAGE_KEY)
+            const remoteVersion = res.version
+            cons.d(`Remote version: ${remoteVersion} ; Local version: ${localVersion} `)
+            if (versionLarger(remoteVersion, localVersion)) {
+                cons.s(`Update blog version to remote version: ${remoteVersion}`);
+                await db.write(VERSION_STORAGE_KEY, remoteVersion)
+            }
         })
         .catch(e => {
             cons.e(`Get Blog Newest Version Erorr!Reseon:${e}`);
@@ -191,8 +197,8 @@ const set_newest_version = async () => {
 
 setInterval(async () => {
     cons.i('Trying to fetch the newest version...')
-    await set_newest_version()
+    await setNewestVersion()
 }, 120 * 1000);
 setTimeout(async () => {
-    await set_newest_version()
-}, 1000);
+    await setNewestVersion()
+}, 0);
