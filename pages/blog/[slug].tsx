@@ -15,13 +15,15 @@ import { useRouter } from 'next/router'
 import BlogCopyright from '../../components/BlogCopyright'
 import BlogTableOfContent from '../../components/BlogTableOfContent'
 import Comments from '../../components/Comments'
-import probeImageSize, { proxyStaticImage } from '../../lib/imaging'
-import { getBlocks, getDatabase, getPage, type PageCompletePropertyRecord } from '../../lib/notion'
+import probeImageSize, { downloadImage, imageHash, proxyStaticImage } from '../../lib/imaging'
+import { getAssetPackageVersion, getBlocks, getDatabase, getPage, type PageCompletePropertyRecord } from '../../lib/notion'
 
 import { unified } from 'unified'
 import notionRehype from 'notion-rehype-k'
 import rehypeReact from '../../components/RehypeReact'
 import { ReactNode } from 'react'
+import { imageCDNUrl, IMAGE_NPM_PACKAGE_NAME, IMAGE_NPM_PACKAGE_PATH, nextVersion } from '../../lib/npm'
+import { imageFileName } from '../../lib/imaging'
 import { Data } from 'vfile'
 
 const Post: NextPage<{ page: PageObjectResponse; blocks: any[] }> = ({ page, blocks }) => {
@@ -50,7 +52,7 @@ const Post: NextPage<{ page: PageObjectResponse; blocks: any[] }> = ({ page, blo
     <>
       <Head>
         <title>
-        KendrickZou - {name}
+          KendrickZou
         </title>
       </Head>
 
@@ -171,6 +173,9 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   let blocks = await getBlocks(post)
   blocks = await recursiveGetBlocks(blocks)
 
+  // const imgPkgIx = await imagePackageIndex()
+  const nextVer = await nextVersion(IMAGE_NPM_PACKAGE_NAME)
+
   // Resolve all images' dimensions
   await Promise.all(
     // blocksWithChildren
@@ -180,8 +185,16 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         const { type } = b
         const value = b[type]
         let src = value.type === 'external' ? value.external.url : value.file.url
-        src = await proxyStaticImage(src)
-        value[value.type].url = src
+        let imgHashName = await imageFileName(src)
+        // if (!imgPkgIx.has(imgHashName)) {
+        const remoteVersion = await getAssetPackageVersion(imgHashName)
+        if (!remoteVersion) {
+          await downloadImage(src, IMAGE_NPM_PACKAGE_PATH, imgHashName)
+          value[value.type].url = imageCDNUrl(nextVer, imgHashName)
+        } else {
+          value[value.type].url = imageCDNUrl(remoteVersion, imgHashName)
+        }
+        // src = await proxyStaticImage(src)
         const { width, height } = await probeImageSize(src)
         value['dim'] = { width, height }
         b[type] = value

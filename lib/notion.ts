@@ -25,6 +25,8 @@ const databaseId =
   process.env.NOTION_DATABASE_ID || 'b3f55ea317de4af39aefcab597bcf7d5'
 const tweetDatabaseId =
   process.env.NOTION_TWEET_DATABASE_ID || '3d75457bd05b4072a8bd322b6f5eec65'
+const assetPackageDatabaseId =
+  process.env.NOTION_ASSET_PACKAGE_DATABASE_ID || 'f2e0ae9f9ec34304be9b1df6c15a2696'
 
 const propExtractor = async (propId: string, pageId: string) => {
   const prop = await notion.pages.properties.retrieve({
@@ -100,7 +102,7 @@ export const getLatestPostProps = async (privateAccessable: boolean = false) => 
   try {
     const { results } = await notion.databases.query({
       database_id: databaseId,
-      filter: { and: [{ property: 'published', checkbox: { equals: true } }, { property: 'private', checkbox: {equals: privateAccessable}}] },
+      filter: { and: [{ property: 'published', checkbox: { equals: true } }, { property: 'private', checkbox: { equals: privateAccessable } }] },
       sorts: [{ property: 'date', direction: 'descending' }],
       page_size: 1,
     })
@@ -112,7 +114,7 @@ export const getLatestPostProps = async (privateAccessable: boolean = false) => 
     const privateProps = await notion.pages.properties.retrieve({
       page_id: post.id,
       property_id: 'private',
-    }) as { checkbox: boolean}
+    }) as { checkbox: boolean }
 
     const slug = await propExtractor(post.properties.slug.id, post.id)
     const title = await propExtractor(post.properties.name.id, post.id)
@@ -168,4 +170,56 @@ export const searchDatabase = async (query: string) => {
     page_size: 10,
   })
   return response.results
+}
+
+export const getAssetPackageVersion = async (assetName: string) => {
+  const { results } = await notion.databases.query({
+    database_id: assetPackageDatabaseId,
+    filter: {
+      property: 'name',
+      title: {
+        equals: assetName
+      }
+    }
+  })
+  if (results.length == 0) return null
+  const { properties } = results[0] as { properties: {} }
+  const { version } = properties as { version: { rich_text: { text: { content: string } }[] } }
+  return version.rich_text[0].text.content
+}
+
+export const getLatestPackageVersion = async () => {
+  const { results } = await notion.databases.query({
+    database_id: assetPackageDatabaseId,
+    sorts: [{
+      property: 'version',
+      direction: 'descending'
+    }],
+    page_size: 1
+  })
+  if (results.length == 0) return '1.0.0'
+  const { properties } = results[0] as { properties: {} }
+  const { version } = properties as { version: { rich_text: { text: { content: string } }[] } }
+  return version.rich_text[0].text.content
+}
+
+export const insertAssetPackageVersion = async (assetName: string, assetVersion: string) => {
+  await notion.pages.create({
+    parent: {
+      type: 'database_id',
+      database_id: assetPackageDatabaseId
+    },
+    properties: {
+      name: {
+        title: [{
+          text: { content: assetName }
+        }]
+      },
+      version: {
+        rich_text: [{
+          text: { content: assetVersion }
+        }]
+      }
+    }
+  })
 }

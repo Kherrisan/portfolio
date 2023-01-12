@@ -55,6 +55,7 @@ const Bookmark = ({ value }: { value: any }) => {
 
   // Remove the thumbnail size specification from the image URL
   // like '//i1.hdslb.com/bfs/archive/2db7f7c4528f57b05a4e4909a9fe9e9e19d58c6b.jpg@100w_100h_1c.png'
+  console.log(images)
   images && images.length > 0 && (images[0].url = images[0].url.replace(/@.+$/, ''))
 
   return (
