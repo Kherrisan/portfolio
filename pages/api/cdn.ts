@@ -7,7 +7,7 @@ import { generateThumbnails } from '../../lib/imaging';
 
 const exec = promisify(require('child_process').exec);
 const NPM_TOKEN = process.env.NPM_ACCESS_TOKEN
-const NEXT_STATIC_PATH = '/Users/zoudikai/Workspace/portfolio/.next/static'
+const NEXT_STATIC_PATH = process.env.NEXT_STATIC_PATH || '/Users/zoudikai/Workspace/portfolio/.next/static'
 
 const publishImage = async () => {
     const nextVer = await nextVersion(IMAGE_NPM_PACKAGE_NAME)
