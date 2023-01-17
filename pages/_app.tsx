@@ -2,7 +2,6 @@ import '@fontsource/dm-serif-text'
 import '@fontsource/ia-writer-mono'
 import '@fontsource/inter'
 import 'katex/dist/katex.min.css'
-import { Analytics } from '@vercel/analytics/react';
 import { ThemeProvider } from 'next-themes'
 import NextNProgress from 'nextjs-progressbar'
 
@@ -12,14 +11,14 @@ import Script from 'next/script'
 import Layout from '../components/Layout'
 import { PrivateContext } from '../components/PrivateToggle'
 import '../styles/globals.css'
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [privateAccessable, setPrivate] = useState(false);
 
   return (
     <>
-      <Script id="sw" strategy='beforeInteractive' dangerouslySetInnerHTML={{
+    { process.env.SERVICE_WORKER && <Script id="sw" strategy='beforeInteractive' dangerouslySetInnerHTML={{
         __html: `    if ("serviceWorker" in navigator) {
             SW_STATUS_KEY="kendrickzou-portfolio-sw-status"
             if (Number(window.localStorage.getItem(SW_STATUS_KEY)) < 1) {
@@ -33,11 +32,11 @@ function MyApp({ Component, pageProps }: AppProps) {
                     setTimeout(() => {
                       window.localStorage.setItem(SW_STATUS_KEY, "2")
                       window.location.reload() //刷新,以载入sw
-                    }, 1000); //安装后等待500ms使其激活
+                    }, 500); //安装后等待500ms使其激活
                   }
                 })
                 .catch(err => console.error("error in registering sw.js"))
-          }`}} />
+          }`}} />}
       <PrivateContext.Provider value={{ privateAccessable, setPrivate }}>
         <ThemeProvider attribute="class">
           <Layout>
@@ -50,7 +49,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           </Layout>
         </ThemeProvider>
       </PrivateContext.Provider>
-      <Analytics />
+      {/* <Analytics /> */}
     </>
   )
 }

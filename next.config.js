@@ -1,24 +1,24 @@
 /** @type {import('next').NextConfig} */
 const { merge } = require('webpack-merge')
-const path = require('path')
 
 module.exports = {
-  // webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
-  //   if (isServer) {
-  //     return merge(config, {
-  //       entry() {
-  //         return config.entry().then((entry) => {
-  //           return Object.assign({}, entry, { 'image.worker': path.resolve(process.cwd(), 'workers/image.worker.ts') })
-  //         })
-  //       }
-  //     });
-  //   } else {
-  //     return config;
-  //   }
-  // },
+  async headers() {
+    return [
+      {
+        // matching all API routes
+        source: "/api/:path*",
+        headers: [
+          { key: "Access-Control-Allow-Credentials", value: "true" },
+          { key: "Access-Control-Allow-Origin", value: "*" },
+          { key: "Access-Control-Allow-Methods", value: "GET,OPTIONS,PATCH,DELETE,POST,PUT" },
+          { key: "Access-Control-Allow-Headers", value: "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version" },
+        ]
+      }
+    ]
+  },
   reactStrictMode: true,
   images: {
-    // unoptimized: true,
+    unoptimized: true,
     domains: [
       'avatars.githubusercontent.com',
       'avatars0.githubusercontent.com',
@@ -34,19 +34,5 @@ module.exports = {
     formats: ['image/webp'],
     deviceSizes: [640, 1080, 1200, 1920, 2560],
     imageSizes: [256]
-  },
-  async redirects() {
-    return [
-      {
-        source: '/posts/index.xml',
-        destination: '/feed',
-        permanent: false,
-      },
-      {
-        source: '/feed.xml',
-        destination: '/feed',
-        permanent: false,
-      },
-    ]
-  },
+  }
 }

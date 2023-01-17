@@ -23,7 +23,9 @@ const Publication: NextPage<{
       </Head>
 
       <div className="container mx-auto max-w-3xl px-6">
-        <h1 className="heading-text my-8 font-extrabold text-5xl">Publication</h1>
+        <h1 className="heading-text page-heading">
+          Publication
+        </h1>
 
         {data.map((item, index) => (
           <HoverCard

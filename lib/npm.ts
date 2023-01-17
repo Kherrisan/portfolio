@@ -1,35 +1,30 @@
-import { promisify } from "util";
-import fs from 'fs'
-import axios from "axios";
 import { getLatestPackageVersion } from "./notion";
+import fetch from 'node-fetch'
 
 export const IMAGE_NPM_PACKAGE_NAME = 'kendrickzou-portfolio-img'
-
 const NPM_MIRROR = 'https://cdn.bilicdn.tk/npm'
 export const IMAGE_NPM_PACKAGE_PATH = process.env.CDN_IMG_TMP_PATH || '/Users/zoudikai/.portfolio/image'
 
 export const remoteVersion = async (pkgName: string) => {
-    let remoteVersion: string
+    let remoteVersion: string;
     try {
-        const resp = await fetch(`https://registry.npmjs.org/${pkgName}/latest`)
-        const respJson = await resp.json()
-        remoteVersion = respJson.version
+        const resp = await fetch(`https://registry.npmjs.org/${pkgName}/latest`);
+        const respJson = await resp.json();
+        remoteVersion = respJson.version;
         if (!remoteVersion) {
-            remoteVersion = '1.0.0'
+            remoteVersion = '1.0.0';
         }
-    } catch {
-        remoteVersion = '1.0.0'
+    } catch (err) {
+        remoteVersion = '1.0.0';
+        console.error(`Error in fetching remote version for: ${pkgName}}`);
+        throw (err);
     }
     return remoteVersion
 }
 
 export const nextVersion = async (pkgName: string, version?: string) => {
     if (!version) {
-        if (pkgName === IMAGE_NPM_PACKAGE_NAME) {
-            version = await getLatestPackageVersion()
-        } else {
-            version = await remoteVersion(pkgName);
-        }
+        version = await remoteVersion(pkgName);
     }
     const remoteZ = Number(version.split('.')[2])
     return `${version.split('.')[0]}.${version.split('.')[1]}.${remoteZ + 1}`

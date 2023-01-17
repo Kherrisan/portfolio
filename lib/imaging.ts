@@ -8,21 +8,28 @@ const exec = util.promisify(require('child_process').exec)
 import { probeImageInB2, storeImage2B2 } from './backblaze'
 import { Md5 } from 'ts-md5'
 
-const THUMBNAIL_WIDTHS = [
-  640,
-  1080,
-  1200,
-  1920,
-  2560
+const IMAGE_SCALE_FACTORS = [
+  '@1x',
+  '@2x',
+  '@3x'
 ]
+const IMAGE_BASE_WIDTH = 768
 
 export const generateThumbnails = async (folder: string, imgs: string[]) => {
-  await Promise.all(imgs.map(img => {
+  let pArr: Promise<{ stdout: string, stderr: string }>[] = []
+  console.log(imgs)
+  for (let i in imgs) {
+    let img = imgs[i]
     const imgTokens = img.split('.')
-    return THUMBNAIL_WIDTHS.map(w => {
-      return exec(`magick "${img}" -auto-orient -quality 75 -thumbnail ${w}x "${imgTokens[0]}-${w}.${imgTokens[1]}"`, { cwd: folder }) as Promise<{ stdout: string, stderr: string }>
+    const { stdout } = await exec(`magick identify -format "%w \\n" ${img}`, { cwd: folder })
+    const imgWidth = Number(stdout)
+    Array.from({length: 3}, (x, i) => i).map(f => {
+      const scaledWidth = (f + 1) * IMAGE_BASE_WIDTH
+      const w = scaledWidth > imgWidth ? imgWidth : scaledWidth
+      pArr.push(exec(`magick "${img}" -auto-orient -resize ${w}x "${imgTokens[0]}${IMAGE_SCALE_FACTORS[f]}.jpeg"`, { cwd: folder }) as Promise<{ stdout: string, stderr: string }>)
     })
-  }).flat())
+  }
+  await Promise.all(pArr)
 }
 
 export const imageHash = async (file: string) => {

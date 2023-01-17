@@ -42,7 +42,7 @@ const Friends: NextPage = () => {
       </Head>
 
       <div className="container mx-auto max-w-3xl px-6">
-        <h1 className="heading-text my-8 font-extrabold text-5xl">
+        <h1 className="heading-text page-heading">
           Friends{' '}
           <PrivateToggle />
         </h1>

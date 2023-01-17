@@ -72,7 +72,7 @@ const Blog: NextPage<{ posts: PageObjectResponse[] }> = ({ posts }) => {
       <SearchModal searchOpen={searchOpen} setSearchOpen={setSearchOpen} />
 
       <div className="mx-auto max-w-3xl container px-6">
-        <h1 className="heading-text my-8 font-extrabold lg:text-5xl md:text-4xl text-3xl">Blog</h1>
+        <h1 className="heading-text page-heading">Blog</h1>
 
         {/* <div className='mb-8'>
           {Array.from(categories.values()).map((category) => (

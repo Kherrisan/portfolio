@@ -202,7 +202,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   )
 
   // return { props: { page, blocks: blocksWithChildren }, revalidate: 1 }
-  return { props: { page, blocks: blocks }, revalidate: 60 * 60 } // 1 hour
+  return { props: { page, blocks: blocks }} // 1 hour
 }
 
 export default Post

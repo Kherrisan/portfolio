@@ -9,8 +9,8 @@ import Image from 'next/image'
 
 import { LinkProps, socialLinks } from '../config/link'
 import { ProjectProps, projectLinks } from '../config/project'
-import getGenshinUserInfo from '../lib/genshin'
-import arknightCard from '../public/images/arknights.png'
+import arknightCard from '../public/images/arknights@2x.jpeg'
+import KImage from '../components/KImage'
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json())
 
@@ -102,10 +102,16 @@ const ProjectsNSocials: NextPage<{ genshinUserInfo: UserInfo }> = ({
       </Head>
 
       <div className="container mx-auto max-w-3xl px-6">
-        <h1 className="heading-text my-8 font-extrabold text-5xl">Arknights</h1>
+        <h1 className="heading-text page-heading">
+          Arknights
+        </h1>
 
         <div className="shadow-xl text-0 rounded overflow-hidden">
           <Image src={arknightCard} alt="Arknights Background" />
+        </div>
+
+        <div className="shadow-xl text-0 rounded overflow-hidden">
+          <KImage src={"https://cdn.bilicdn.tk/npm/kendrickzou-portfolio-img@1.0.32/28e524805df5828dacb9115e3a091733.jpeg"} width={280} height={280} alt={"alt"} />
         </div>
 
         {/* <div className="relative shadow-lg p-4 rounded overflow-hidden text-white">
@@ -167,7 +173,9 @@ const ProjectsNSocials: NextPage<{ genshinUserInfo: UserInfo }> = ({
           (=ﾟωﾟ)ﾉ
         </div> */}
 
-        <h1 className="heading-text my-8 font-extrabold text-5xl">Projects</h1>
+        <h1 className="heading-text page-heading">
+          Projects
+        </h1>
 
         {/* <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           {projectLinks.map((project: ProjectProps) => (
@@ -175,7 +183,9 @@ const ProjectsNSocials: NextPage<{ genshinUserInfo: UserInfo }> = ({
           ))}
         </div> */}
 
-        <h1 className="heading-text my-8 font-extrabold text-5xl">Socials</h1>
+        <h1 className="heading-text page-heading">
+          Socials
+        </h1>
 
         <div className="mb-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
           {socialLinks.map((link: LinkProps) => (

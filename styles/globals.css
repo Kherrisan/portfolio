@@ -13,6 +13,11 @@
 .heading-text {
   @apply text-dark-900 dark:text-light-900;
 }
+
+.page-heading {
+  @apply my-8 font-extrabold lg:text-5xl md:text-4xl text-3xl
+}
+
 .primary-text {
   @apply text-dark-900/80 dark:text-light-900/80;
 }

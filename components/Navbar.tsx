@@ -94,15 +94,6 @@ const Navbar = () => {
             </Transition>
           </Menu>
         </div>
-
-        <a
-          href="/feed"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="nav-links"
-        >
-          <FiRss size={20} />
-        </a>
       </div>
     </header>
   )

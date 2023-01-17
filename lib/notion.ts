@@ -5,6 +5,9 @@ import type {
   ListBlockChildrenResponse,
 } from '@notionhq/client/build/src/api-endpoints'
 import { retry } from 'ts-retry-promise'
+import { loadEnvConfig } from '@next/env'
+
+loadEnvConfig(process.cwd())
 
 export type PageCompletePropertyResponse = {
   id: string

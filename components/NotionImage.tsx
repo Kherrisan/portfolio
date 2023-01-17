@@ -1,4 +1,41 @@
 import Image from 'next/image'
+import { useEffect, useState } from 'react';
+import KImage from './KImage';
+
+// Hook
+function useWindowSize() {
+  // Initialize state with undefined width/height so server and client renders match
+  // Learn more here: https://joshwcomeau.com/react/the-perils-of-rehydration/
+  const [windowSize, setWindowSize] = useState<{
+    width: number | undefined,
+    height: number | undefined,
+  }>({
+    width: undefined,
+    height: undefined,
+  });
+
+  useEffect(() => {
+    // only execute all the code below in client side
+    // Handler to call on window resize
+    function handleResize() {
+      // Set window width/height to state
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    }
+
+    // Add event listener
+    window.addEventListener("resize", handleResize);
+
+    // Call handler right away so state gets updated with initial window size
+    handleResize();
+
+    // Remove event listener on cleanup
+    return () => window.removeEventListener("resize", handleResize);
+  }, []); // Empty array ensures that effect is only run on mount
+  return windowSize;
+}
 
 interface ImageProperties {
   'data-notion-file-type': string
@@ -23,23 +60,11 @@ const NotionImage = ({ value }: { value: ImageProperties }) => {
     dim: { width, height },
     caption,
   } = value || {}
+  const { width: deviceWidth, height: deviceHeight } = useWindowSize();
 
   return (
     <figure>
-      {width && height ? (
-        <Image
-          src={src}
-          alt={caption?.[0]?.plain_text ?? 'Loading......'}
-          width={width}
-          height={height}
-          className="rounded"
-          sizes="(max-width: 768px) 100vw,
-              (max-width: 1200px) 40vw,
-              25vw"
-        />
-      ) : (
-        <img src={src} alt={caption?.[0]?.plain_text} className="rounded" />
-      )}
+      <KImage src={src} width={width} height={height} alt={caption ? caption[0].plain_text : src} />
       {caption && caption.length != 0 && (
         <figcaption className="text-center">
           {caption!![0].plain_text}
