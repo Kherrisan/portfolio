@@ -1,5 +1,4 @@
 /** @type {import('next').NextConfig} */
-const { merge } = require('webpack-merge')
 
 module.exports = {
   async headers() {
