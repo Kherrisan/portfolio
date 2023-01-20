@@ -25,6 +25,7 @@ import { ReactNode } from 'react'
 import { imageCDNUrl, IMAGE_NPM_PACKAGE_NAME, IMAGE_NPM_PACKAGE_PATH, nextVersion } from '../../lib/npm'
 import { imageFileName } from '../../lib/imaging'
 import { Data } from 'vfile'
+import { Hr } from '../../components/Header'
 
 const Post: NextPage<{ page: PageObjectResponse; blocks: any[] }> = ({ page, blocks }) => {
   const router = useRouter()
@@ -59,20 +60,20 @@ const Post: NextPage<{ page: PageObjectResponse; blocks: any[] }> = ({ page, blo
       <div className="container mx-auto grid max-w-3xl grid-cols-10 gap-8 px-6 lg:max-w-5xl">
         <div className="col-span-10 lg:col-span-7">
           <div className="-mx-4 rounded border-gray-400/30 p-4 md:border">
-            <h1 className="mb-2 flex justify-between space-x-2 font-serif text-3xl">
+            <h1 className="mb-2 flex justify-between space-x-2 text-3xl">
               <span className="font-bold">{name}</span>
               <span>{emoji}</span>
             </h1>
-            <div className="secondary-text flex flex-wrap items-center gap-2">
+            <div className="secondary-text flex flex-wrap items-center gap-2 mb-8">
               <span>{new Date(date).toLocaleDateString()}</span>
-              <span>·</span>
+              {/* <span>·</span>
               {author.map((person: any) => (
                 <span key={person.id}>
                   {'people' in person && 'name' in person.people
                     ? person.people.name?.toLowerCase()
                     : ''}
                 </span>
-              ))}
+              ))} */}
               <span>·</span>
               <div>
                 <BiCategory size={18} className="mr-1 inline" />
@@ -85,19 +86,18 @@ const Post: NextPage<{ page: PageObjectResponse; blocks: any[] }> = ({ page, blo
               </Link>
             </div>
 
-            <div className="secondary-text flex flex-wrap items-center gap-2">
+            {/* <div className="secondary-text flex flex-wrap items-center gap-2 mb-8">
               {tags?.map((tag: any) => (
                 <span key={tag.id}>
                   <AiOutlineTag size={18} className="mr-1 inline" />
                   <span>{tag.name?.toLowerCase()}</span>
                 </span>
               ))}
-            </div>
+            </div> */}
+
+            <Hr />
 
             <article className="prose my-8 dark:prose-invert max-w-none">
-              {/* {blocks.map((block) => (
-                <NotionBlock key={block.id} block={block} />
-              ))} */}
               {
                 reactElems
               }

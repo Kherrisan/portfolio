@@ -11,6 +11,7 @@ import { type PageCompletePropertyRecord, getDatabase } from '../lib/notion'
 import SearchModal from '../components/SearchModal'
 import { Dispatch, SetStateAction, useContext, useState } from 'react'
 import { PrivateContext } from '../components/PrivateToggle'
+import { H1, Hr } from '../components/Header'
 
 const CategoryTag = ({ category, selectCategory, selected }: { category: string, selectCategory: Dispatch<SetStateAction<string | null>>, selected: boolean}) => {
 
@@ -61,6 +62,7 @@ const Blog: NextPage<{ posts: PageObjectResponse[] }> = ({ posts }) => {
 
     return { id: post.id, emoji, slug, name, preview, date, author, category }
   })
+  
   selectedCategory && (metadata = metadata.filter(post => post.category?.name === selectedCategory))
 
   return (
@@ -72,20 +74,21 @@ const Blog: NextPage<{ posts: PageObjectResponse[] }> = ({ posts }) => {
       <SearchModal searchOpen={searchOpen} setSearchOpen={setSearchOpen} />
 
       <div className="mx-auto max-w-3xl container px-6">
-        <h1 className="heading-text page-heading">Blog</h1>
+        <H1>Blog</H1>
+        <Hr />
 
-        {/* <div className='mb-8'>
+        <div className='mb-8'>
           {Array.from(categories.values()).map((category) => (
             <CategoryTag key={category} category={category} selectCategory={selectCategory} selected={category==selectedCategory}/>
           ))}
-        </div> */}
+        </div>
 
         {metadata.map((meta) => (
           <HoverCard
             key={meta.id}
             href={`/blog/${meta.slug}`}
             isExternal={false}
-            headingSlot={<span className="font-bold text-lg">{meta.name}</span>}
+            headingSlot={<span className="font-bold text-xl">{meta.name}</span>}
             iconSlot={
               <div className="absolute right-4 -bottom-4 text-2xl">
                 {meta.emoji}

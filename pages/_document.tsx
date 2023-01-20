@@ -1,6 +1,8 @@
-import { Html, Head, Main, NextScript } from 'next/document'
+import React from 'react'
+import Document, { Html, Head, Main, NextScript, DocumentContext } from 'next/document'
+import { ServerStyleSheet } from 'styled-components'
 
-export default function Document() {
+export default function MyDocument() {
   return (
     <Html>
       <Head>
@@ -22,4 +24,28 @@ export default function Document() {
       </body>
     </Html>
   )
+}
+
+MyDocument.getInitialProps = async (ctx: DocumentContext): Promise<any> => {
+  const sheet = new ServerStyleSheet()
+  const originalRenderPage = ctx.renderPage
+  try {
+    ctx.renderPage = () =>
+      originalRenderPage({
+        enhanceApp: App => props => sheet.collectStyles(<App {...props} />),
+      })
+    const initialProps = await Document.getInitialProps(ctx)
+
+    return {
+      ...initialProps,
+      styles: [
+        <React.Fragment key="styles">
+          {initialProps.styles}
+          {sheet.getStyleElement()}
+        </React.Fragment>,
+      ],
+    }
+  } finally {
+    sheet.seal()
+  }
 }

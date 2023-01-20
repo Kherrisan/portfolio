@@ -25,7 +25,7 @@ const _NotionBlock = ({ block }: { block: any }) => {
         return (
           <h1
             id={slugify(value.rich_text[0].plain_text)}
-            className="font-serif"
+            className="font-sans"
           >
             {value.rich_text[0].plain_text}
           </h1>
@@ -35,7 +35,7 @@ const _NotionBlock = ({ block }: { block: any }) => {
         return (
           <h2
             id={slugify(value.rich_text[0].plain_text)}
-            className="font-serif"
+            className="font-sans"
           >
             {value.rich_text[0].plain_text}
           </h2>
@@ -45,7 +45,7 @@ const _NotionBlock = ({ block }: { block: any }) => {
         return (
           <h3
             id={slugify(value.rich_text[0].plain_text)}
-            className="font-serif"
+            className="font-sans"
           >
             {value.rich_text[0].plain_text}
           </h3>

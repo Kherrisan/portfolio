@@ -1,7 +1,9 @@
+import { Link } from "./Link";
+
 export function Text({
   text,
 }: {
-  text: { value: string; annotations?: string[]}
+  text: { value: string; annotations?: string[] }
 }) {
   if (!text) return null
 
@@ -30,13 +32,13 @@ export function Text({
       ]
         .filter((x) => x) // remove nulls
         .join(' ')}
-      // style={color !== 'default' ? { color } : {}}
+    // style={color !== 'default' ? { color } : {}}
     >
       {link ? (
-        <a href={link} target="_blank" rel="noopener noreferrer">
+        <Link href={link} target="_blank" rel="noopener noreferrer">
           {value}
-        </a>
-      ) : value } 
+        </Link>
+      ) : value}
     </span>
   )
 }

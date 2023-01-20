@@ -53,33 +53,33 @@ const BlogTableOfContent = ({ blocks }: { blocks: any }) => {
           className="text-red-600 absolute top-4 right-4"
           size={20}
         />
-        <h1 className="primary-text font-serif text-lg leading-8">
+        <h1 className="primary-text text-lg leading-8">
           <span>Table of contents </span>
         </h1>
         <ul className="list-inside list-disc">
           {nestedHeadings.map((h: headingType) => (
-            <Link className="hover-links" href={`#${slugify(h.text)}`} key={h.id} passHref>
-              <li className="leading-7">
+            <li className="leading-7" key={h.id}>
+              <Link href={`#${slugify(h.text)}`} passHref>
                 {h.text}
-                {h.children.length > 0 && (
+              </Link>
+              {h.children.length > 0 && (
                   <ul className="ml-6 list-inside list-disc">
                     {h.children.map(
-                      (h: {
+                      (hc: {
                         id: string
                         type: 'heading_2' | 'heading_3'
                         text: string
                       }) => (
-                        <Link className="hover-links" href={`#${slugify(h.text)}`} key={h.id} passHref>
-                          <li className="leading-7">
-                            {h.text}
-                          </li>
-                        </Link>
+                        <li className="leading-7" key={hc.id}>
+                          <Link href={`#${slugify(hc.text)}`} passHref>
+                            {hc.text}
+                          </Link>
+                        </li>
                       )
                     )}
                   </ul>
                 )}
-              </li>
-            </Link>
+            </li>
           ))}
         </ul>
       </div>

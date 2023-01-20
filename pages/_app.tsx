@@ -1,9 +1,7 @@
-import '@fontsource/dm-serif-text'
-import '@fontsource/ia-writer-mono'
-import '@fontsource/inter'
 import 'katex/dist/katex.min.css'
 import { ThemeProvider } from 'next-themes'
 import NextNProgress from 'nextjs-progressbar'
+import GlobalStyles from '../styles/GlobalStyles'
 
 import type { AppProps } from 'next/app'
 import Script from 'next/script'
@@ -13,12 +11,13 @@ import { PrivateContext } from '../components/PrivateToggle'
 import '../styles/globals.css'
 import { useState } from 'react';
 
+
 function MyApp({ Component, pageProps }: AppProps) {
   const [privateAccessable, setPrivate] = useState(false);
 
   return (
     <>
-    { process.env.SERVICE_WORKER && <Script id="sw" strategy='beforeInteractive' dangerouslySetInnerHTML={{
+      {process.env.SERVICE_WORKER && <Script id="sw" strategy='beforeInteractive' dangerouslySetInnerHTML={{
         __html: `    if ("serviceWorker" in navigator) {
             SW_STATUS_KEY="kendrickzou-portfolio-sw-status"
             if (Number(window.localStorage.getItem(SW_STATUS_KEY)) < 1) {
@@ -38,7 +37,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                 .catch(err => console.error("error in registering sw.js"))
           }`}} />}
       <PrivateContext.Provider value={{ privateAccessable, setPrivate }}>
-        <ThemeProvider attribute="class">
+        <ThemeProvider attribute="class" disableTransitionOnChange>
           <Layout>
             <NextNProgress
               height={1}

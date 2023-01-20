@@ -4,11 +4,14 @@ import { FiArrowRight } from 'react-icons/fi'
 import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
+import tw from 'twin.macro'
 
 import Sakana from '../components/Sakana'
 import { type LatestPostProps, getLatestPostProps } from '../lib/notion'
 import { useContext } from 'react'
 import { PrivateContext } from '../components/PrivateToggle'
+import { H1 } from '../components/Header'
+import { LinkArrowRight, UnderlineLink } from '../components/Link'
 
 const Home = ({ latestPost, latestPrivatePost }: { latestPost: LatestPostProps, latestPrivatePost: LatestPostProps }) => {
   const { privateAccessable } = useContext(PrivateContext);
@@ -29,11 +32,12 @@ const Home = ({ latestPost, latestPrivatePost }: { latestPost: LatestPostProps, 
         priority
       />
 
-      <h1 className="heading-text my-8 font-extrabold lg:text-5xl md:text-4xl text-3xl">Dikai Zou</h1>
+      <H1>Dikai Zou</H1>
 
-      <p className="mb-8 leading-7">
-        Researcher / Developer{' '}
-        {/* <a
+      <div className='primary-text'>
+        <p className="mb-8 leading-7">
+          Researcher / Developer{' '}
+          {/* <a
           href="https://genshin-impact.fandom.com/wiki/Hu_Tao"
           target="_blank"
           rel="noopener noreferrer"
@@ -44,62 +48,53 @@ const Home = ({ latestPost, latestPrivatePost }: { latestPost: LatestPostProps, 
           </abbr>
         </a>{' '}
         main */}
-      </p>
+        </p>
 
-      <p className="leading-7">
-        Graduate student at{' '}
-        <a
-          href="https://cyber.seu.edu.cn"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="bg-emerald-600/10 text-emerald-600 p-1 rounded font-bold transition-all duration-150 hover:bg-emerald-600/20"
-        >
-          🌲 CYBER#SEU
-        </a>{' '}
-        on astrology, alchemy. Graduated from{' '}
-        <a
-          href="https://cose.seu.edu.cn"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hover-links"
-        >
-          COSE#SEU
-        </a>{' '}
-        (BSc).
-      </p>
-
-      <p className="mt-8 leading-7">
-        More about me (projects, links):{' '}
-        <Link className="group inline-flex flex-wrap items-center" href="/projectsnsocials">
-            <span className="hover-links">📚 Projects & Socials</span>
-            <FiArrowRight className="h-4 w-4 transition-all duration-150 group-hover:translate-x-1" />
-        </Link>
-      </p>
-
-      {latestPost && (
         <p className="leading-7">
-          Latest post:{' '}
-          <Link className="group inline-flex flex-wrap items-center" href={`/blog/${latestPost.slug}`}>
-            <span className="hover-links">
-              {latestPost.emoji || '📚'} {latestPost.title}
-            </span>
-            <FiArrowRight className="h-4 w-4 transition-all duration-150 group-hover:translate-x-1" />
+          Graduate student at{' '}
+          <a
+            href="https://cyber.seu.edu.cn"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-emerald-600/10 text-emerald-600 p-1 rounded font-bold transition-all duration-150 hover:bg-emerald-600/20"
+          >
+            🌲 CYBER#SEU
+          </a>{' '}
+          on astrology, alchemy (=ﾟωﾟ)ﾉ. Graduated from{' '}
+          <Link href="https://cose.seu.edu.cn" target='_blank'>
+            <UnderlineLink >COSE#SEU</UnderlineLink>{' '}
+          </Link>
+          (BSc).
+        </p>
+
+        <p className="mt-8 leading-7">
+          More about me (projects, links):{' '}
+          <Link className="group inline-flex flex-wrap items-center" href="/projectsnsocials">
+            <UnderlineLink>📚 Projects & Socials</UnderlineLink>
+            <LinkArrowRight />
           </Link>
         </p>
-      )}
 
-      <p className="mt-8 leading-7">
-        Contact me:{' '}
-        <a
-          href="mailto:zoudikai@outlook.com"
-          className="group inline-flex flex-wrap items-center"
-        >
-          <span className="hover-links">
-            {/* <FiMail size={15} className="mr-2 inline" /> */}
-            📨 zoudikai#outlook.com
-          </span>
-        </a>
-      </p>
+        {latestPost && (
+          <p className="leading-7">
+            Latest post:{' '}
+            <Link className="group inline-flex flex-wrap items-center" href={`/blog/${latestPost.slug}`}>
+              <UnderlineLink>{latestPost.emoji || '📚'} {latestPost.title}</UnderlineLink>
+              <LinkArrowRight />
+            </Link>
+          </p>
+        )}
+
+        <p className="mt-8 leading-7">
+          Contact me:{' '}
+          <a
+            href="mailto:zoudikai@outlook.com"
+            className="group inline-flex flex-wrap items-center"
+          >
+            <UnderlineLink>📨 zoudikai#outlook.com</UnderlineLink>
+          </a>
+        </p>
+      </div>
 
       <div className="secondary-text text-center font-mono text-xs">
         <p className="leading-7 mt-8">

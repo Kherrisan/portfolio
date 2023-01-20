@@ -2,20 +2,16 @@ import { useTheme } from 'next-themes'
 import { useEffect, useState } from 'react'
 import { FiMoon, FiSun } from 'react-icons/fi'
 
-import { useRouter } from 'next/router'
-
-const Toggle = () => {
+const ThemeSwitch = () => {
   const [mounted, setMounted] = useState(false)
   const { resolvedTheme, setTheme } = useTheme()
-
-  const { asPath } = useRouter()
 
   useEffect(() => {
     setMounted(true)
   }, [])
 
   // do not render theme toggle if not on home page or if not mounted
-  // if (!mounted || asPath === '/') return null
+  if (!mounted) return null
 
   return (
     <button
@@ -33,4 +29,4 @@ const Toggle = () => {
   )
 }
 
-export default Toggle
+export default ThemeSwitch

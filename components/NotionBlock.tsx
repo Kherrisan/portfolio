@@ -37,7 +37,6 @@ const NotionBlock = (node: any) => {
         return (
           <h1
             id={slugify(node.children[0].value)}
-            className="font-serif"
             key={index}
           >
             {node.children.map((child: any, chIndex: number) =>
@@ -50,7 +49,6 @@ const NotionBlock = (node: any) => {
         return (
           <h2
             id={slugify(node.children[0].value)}
-            className="font-serif"
             key={index}
           >
             {node.children.map((child: any, chIndex: number) =>
@@ -63,7 +61,6 @@ const NotionBlock = (node: any) => {
         return (
           <h3
             id={slugify(node.children[0].value)}
-            className="font-serif"
             key={index}
           >
             {node.children.map((child: any, chIndex: number) =>
@@ -117,7 +114,7 @@ const NotionBlock = (node: any) => {
           return <Latex key={index}>{`\\[${node.children[0].value}\\]`}</Latex>
         } else if (node.children.length === 2) {
           // callout block
-          return (<div className='p-4 flex rounded-md bg-orange-100 dark:bg-stone-700'>
+          return (<div key={index} className='p-4 flex rounded-md bg-orange-100 dark:bg-stone-700'>
             <span className='pr-4'>{node.children[0].children[0].value}</span>
             <div className=''>{createElement(node.children[1])}</div>
           </div>)
@@ -157,7 +154,7 @@ const NotionBlock = (node: any) => {
 
       default:
         return (
-          <code>{JSON.stringify(node)}</code>
+          <code key={index}>{JSON.stringify(node)}</code>
         )
     }
   }

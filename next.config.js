@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
+const withTwin = require('./withTwin.js')
 
-module.exports = {
+module.exports = withTwin({
   async headers() {
     return [
       {
@@ -34,4 +35,4 @@ module.exports = {
     deviceSizes: [640, 1080, 1200, 1920, 2560],
     imageSizes: [256]
   }
-}
+})

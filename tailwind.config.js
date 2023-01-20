@@ -1,6 +1,8 @@
-const defaultTheme = require('tailwindcss/defaultTheme')
+const colors = require('tailwindcss/colors')
+const { fontFamily } = require('tailwindcss/defaultTheme')
 
 module.exports = {
+  darkMode: 'class',
   safelist: [{
     pattern: /(bg|text|border)-(grey|brown|orange|yellow|green|blue|purple|pink|red)-(.+)/
   }],
@@ -10,18 +12,6 @@ module.exports = {
   ],
   theme: {
     extend: {
-      typography: {
-        DEFAULT: {
-          css: {
-            h2: {
-              'margin-top': '0',
-            }
-          }
-        }
-      },
-      fontSize: {
-        '0': '0px'
-      },
       colors: {
         light: {
           50: '#fdfdfd',
@@ -47,13 +37,27 @@ module.exports = {
           800: '#181818',
           900: '#0f0f0f',
         },
+        gray: colors.neutral,
+        primary: colors.amber
+      },
+      typography: (theme) => ({
+        DEFAULT: {
+          css: {
+            h2: {
+              'margin-top': '0',
+            }
+          }
+        },
+      }),
+      fontSize: {
+        '0': '0px'
       },
       fontFamily: {
-        sans: ['Inter', 'Arial', ...defaultTheme.fontFamily.sans],
-        serif: ['"DM Serif Text"', ...defaultTheme.fontFamily.serif],
-        mono: ['"iA Writer Mono"', ...defaultTheme.fontFamily.mono],
+        sans: ['Inter', ...fontFamily.sans],
+        // serif: ['"Source Serif 4"', ...defaultTheme.fontFamily.serif],
+        // mono: ['"Source Code Pro"', ...defaultTheme.fontFamily.mono],
       },
     },
   },
-  plugins: [require('@tailwindcss/typography'), require('tailwindcss-font-inter')],
+  plugins: [require('@tailwindcss/typography')],
 }

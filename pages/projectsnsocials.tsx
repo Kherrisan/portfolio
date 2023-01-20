@@ -1,4 +1,3 @@
-import type { UserInfo } from '@genshin-kit/core/lib/types'
 import type { GetStaticProps, NextPage } from 'next'
 import { FiExternalLink } from 'react-icons/fi'
 import { GiChest } from 'react-icons/gi'
@@ -11,6 +10,8 @@ import { LinkProps, socialLinks } from '../config/link'
 import { ProjectProps, projectLinks } from '../config/project'
 import arknightCard from '../public/images/arknights@2x.jpeg'
 import KImage from '../components/KImage'
+import { H1, Hr } from '../components/Header'
+import { BlockCallout } from '../components/Link'
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json())
 
@@ -69,31 +70,7 @@ const ProjectCard = (props: ProjectProps) => {
   )
 }
 
-const GenshinCardStat = ({
-  stat,
-  name,
-}: {
-  stat: number | string
-  name: string
-}) => (
-  <div>
-    <div className="font-bold text-xl sm:text-3xl font-mono">{stat}</div>
-    <div className="opacity-80 text-xs uppercase tracking-wider">{name}</div>
-  </div>
-)
-
-const ProjectsNSocials: NextPage<{ genshinUserInfo: UserInfo }> = ({
-  genshinUserInfo,
-}) => {
-  // const randomGenshinBackground = () =>
-  //   `/images/genshin/${Math.floor(Math.random() * 21) + 1}.jpg`
-
-  // const stats = genshinUserInfo.stats
-  // const exploration = genshinUserInfo.world_explorations.map(
-  //   (a) => a.exploration_percentage
-  // )
-  // const worldExplorationPercentage =
-  //   exploration.reduce((sum, val) => sum + val) / exploration.length
+const ProjectsNSocials: NextPage<{}> = ({ }) => {
 
   return (
     <>
@@ -102,90 +79,32 @@ const ProjectsNSocials: NextPage<{ genshinUserInfo: UserInfo }> = ({
       </Head>
 
       <div className="container mx-auto max-w-3xl px-6">
-        <h1 className="heading-text page-heading">
-          Arknights
-        </h1>
+        <H1>Arknights</H1>
+        <Hr />
 
-        <div className="shadow-xl text-0 rounded overflow-hidden">
+        <div className="shadow-xl text-0 rounded overflow-hidden mb-8">
           <Image src={arknightCard} alt="Arknights Background" />
         </div>
 
-        <div className="shadow-xl text-0 rounded overflow-hidden">
-          <KImage src={"https://cdn.bilicdn.tk/npm/kendrickzou-portfolio-img@1.0.32/28e524805df5828dacb9115e3a091733.jpeg"} width={280} height={280} alt={"alt"} />
-        </div>
-
-        {/* <div className="relative shadow-lg p-4 rounded overflow-hidden text-white">
-          <div className="flex justify-between">
-            <div>
-              <div className="text-2xl">阿巴阿巴 Lv.59</div>
-              <div className="font-mono text-sm font-bold opacity-80">
-                UID: 168305666
-              </div>
-            </div>
-
-            <div className="text-right text-xs tracking-wider hidden sm:block">
-              <div className="opacity-60 uppercase">Server 天空岛</div>
-              <div className="font-mono mt-2 flex items-center space-x-1">
-                <GiChest className="inline text-orange-500" />
-                <span>{stats.luxurious_chest_number}</span>
-                <GiChest className="inline text-orange-400" />
-                <span>{stats.exquisite_chest_number}</span>
-                <GiChest className="inline text-orange-300" />
-                <span>{stats.precious_chest_number}</span>
-                <GiChest className="inline text-orange-200" />
-                <span>{stats.common_chest_number}</span>
-              </div>
-            </div>
+        <BlockCallout emoji='🎮'>
+          <div className='primary-text text-center'>
+            明日方舟国服开服老玩家，退坑约两年半之后重新回到罗德岛。目前是无情的抄作业机器+屯屯鼠，希望能够组建一支法术蒸发和深海猎人组合队。我永远喜欢斯卡蒂~
           </div>
-
-          <div className="mt-16 grid grid-cols-2 gap-4 sm:grid-cols-6">
-            <GenshinCardStat
-              stat={stats.active_day_number}
-              name={'Active days'}
-            />
-            <GenshinCardStat stat={stats.avatar_number} name={'Characters'} />
-            <GenshinCardStat
-              stat={stats.achievement_number}
-              name={'Achievements'}
-            />
-            <GenshinCardStat stat={stats.spiral_abyss} name={'Spiral Abyss'} />
-            <GenshinCardStat
-              stat={`${Math.round(worldExplorationPercentage / 10)}%`}
-              name={'Exploration'}
-            />
+          <div className='primary-text text-center font-bold mt-6'>
+            国服 ID:{' '}KendrickZou
           </div>
-
-          <div className="absolute top-0 bottom-0 left-0 right-0 w-full h-full -z-10 bg-gradient-to-b from-white/20 via-white/0 to-white/40 dark:from-gray-800/20 dark:via-gray-800/40 dark:to-gray-800/40" />
-
-          <div className="absolute top-0 left-0 right-0 bottom-0 -z-20 bg-gray-800">
-            <Image
-              src={randomGenshinBackground()}
-              alt="Genshin Background"
-              layout="fill"
-              objectFit="cover"
-              objectPosition="50% 60%"
-            />
-          </div>
-        </div> */}
+        </BlockCallout>
 
         {/* <div className="secondary-text text-center font-mono text-xs mt-4">
           Updates every 24 hrs. Background images shot by myself in-game.
-          (=ﾟωﾟ)ﾉ
+          
         </div> */}
 
-        <h1 className="heading-text page-heading">
-          Projects
-        </h1>
+        <H1>Projects</H1>
+        <Hr />
 
-        {/* <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          {projectLinks.map((project: ProjectProps) => (
-            <ProjectCard key={project.slug} {...project} />
-          ))}
-        </div> */}
-
-        <h1 className="heading-text page-heading">
-          Socials
-        </h1>
+        <H1>Socials</H1>
+        <Hr />
 
         <div className="mb-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
           {socialLinks.map((link: LinkProps) => (
@@ -211,13 +130,5 @@ const ProjectsNSocials: NextPage<{ genshinUserInfo: UserInfo }> = ({
     </>
   )
 }
-
-// export const getStaticProps: GetStaticProps = async () => {
-//   // const genshinUserInfo = await getGenshinUserInfo()
-//   return {
-//     props: { genshinUserInfo },
-//     revalidate: 86400, // 24 hours
-//   }
-// }
 
 export default ProjectsNSocials

@@ -226,3 +226,7 @@ export const insertAssetPackageVersion = async (assetName: string, assetVersion:
     }
   })
 }
+
+export const getAssetCount = async () => {
+  return 0;
+}

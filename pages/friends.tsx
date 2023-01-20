@@ -8,6 +8,7 @@ import friend_comment_9 from '../public/images/friend_comment_9.jpg'
 import Comments from '../components/Comments'
 import PrivateToggle from '../components/PrivateToggle'
 import { FriendProps, friends } from '../config/friend'
+import { H1, Hr } from '../components/Header'
 
 const FriendCard = (props: FriendProps) => {
   return (
@@ -19,7 +20,7 @@ const FriendCard = (props: FriendProps) => {
         }}
       >
         <div>
-          <div className="font-serif text-lg">{props.id}</div>
+          <div className="text-lg">{props.id}</div>
           <div className="secondary-text text-sm">{props.link}</div>
         </div>
         <Image
@@ -42,10 +43,11 @@ const Friends: NextPage = () => {
       </Head>
 
       <div className="container mx-auto max-w-3xl px-6">
-        <h1 className="heading-text page-heading">
+        <H1>
           Friends{' '}
           <PrivateToggle />
-        </h1>
+        </H1>
+        <Hr />
 
         <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
           {friends.map((friend: FriendProps) => (

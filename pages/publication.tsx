@@ -5,6 +5,7 @@ import Head from 'next/head'
 
 import HoverCard from '../components/HoverCard'
 import getPublications from '../lib/scholar'
+import { H1, Hr } from '../components/Header'
 
 const Publication: NextPage<{
   data: {
@@ -23,9 +24,8 @@ const Publication: NextPage<{
       </Head>
 
       <div className="container mx-auto max-w-3xl px-6">
-        <h1 className="heading-text page-heading">
-          Publication
-        </h1>
+        <H1>Publication</H1>
+        <Hr />
 
         {data.map((item, index) => (
           <HoverCard
@@ -33,7 +33,7 @@ const Publication: NextPage<{
             href={item.link}
             isExternal
             headingSlot={
-              <span className="font-serif text-xl">{item.title}</span>
+              <span className="text-xl font-semibold">{item.title}</span>
             }
             iconSlot={
               <div className="absolute -bottom-3 right-3">
