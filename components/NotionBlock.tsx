@@ -147,10 +147,10 @@ const NotionBlock = (node: any) => {
         return <Bookmark key={index} value={node} />
 
       case 'audio':
-        return <audio className='w-full my-4' controls key={index} src={node.properties.src.url} />
+        return <audio className='w-full my-4' controls style={{aspectRatio: '16 / 10'}} key={index} src={node.properties.src.url} />
 
       case 'iframe':
-        return <iframe className='w-full h-96 my-4' key={index} src={node.properties.src} />
+        return <iframe className='w-full my-4' style={{aspectRatio: '16 / 10'}} key={index} src={node.properties.src} />
 
       default:
         return (
