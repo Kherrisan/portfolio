@@ -14,6 +14,7 @@ const IMAGE_SCALE_FACTORS = [
   '@3x'
 ]
 const IMAGE_BASE_WIDTH = 768
+const BIN = 'convert'
 
 export const generateThumbnails = async (folder: string, imgs: string[]) => {
   let pArr: Promise<{ stdout: string, stderr: string }>[] = []
@@ -21,12 +22,12 @@ export const generateThumbnails = async (folder: string, imgs: string[]) => {
   for (let i in imgs) {
     let img = imgs[i]
     const imgTokens = img.split('.')
-    const { stdout } = await exec(`magick identify -format "%w \\n" ${img}`, { cwd: folder })
+    const { stdout } = await exec(`identify -format "%w \\n" ${img}`, { cwd: folder })
     const imgWidth = Number(stdout)
     Array.from({length: 3}, (x, i) => i).map(f => {
       const scaledWidth = (f + 1) * IMAGE_BASE_WIDTH
       const w = scaledWidth > imgWidth ? imgWidth : scaledWidth
-      pArr.push(exec(`magick "${img}" -auto-orient -resize ${w}x "${imgTokens[0]}${IMAGE_SCALE_FACTORS[f]}.jpeg"`, { cwd: folder }) as Promise<{ stdout: string, stderr: string }>)
+      pArr.push(exec(`${BIN} "${img}" -auto-orient -resize ${w}x "${imgTokens[0]}${IMAGE_SCALE_FACTORS[f]}.jpeg"`, { cwd: folder }) as Promise<{ stdout: string, stderr: string }>)
     })
   }
   await Promise.all(pArr)

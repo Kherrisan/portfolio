@@ -3,7 +3,7 @@ import fetch from 'node-fetch'
 
 export const IMAGE_NPM_PACKAGE_NAME = 'kendrickzou-portfolio-img'
 const NPM_MIRROR = 'https://cdn.bilicdn.tk/npm'
-export const IMAGE_NPM_PACKAGE_PATH = process.env.CDN_IMG_TMP_PATH || '/Users/zoudikai/.portfolio/image'
+export const IMAGE_NPM_PACKAGE_PATH = process.env.CDN_IMG_TMP_PATH || '.temp/image'
 
 export const remoteVersion = async (pkgName: string) => {
     let remoteVersion: string;
@@ -46,13 +46,13 @@ export const nextVersion = async (pkgName: string, version?: string) => {
 export const imageCDNUrl = (version: string, fileName: string) =>
     `${NPM_MIRROR}/${IMAGE_NPM_PACKAGE_NAME}@${version}/${fileName}`
 
-// const { stdout } = await exec(`magick identify -format "%w \n" ${fileName}`)
+// const { stdout } = await exec(`${BIN} identify -format "%w \n" ${fileName}`)
         // const width = Number(stdout)
         // const promises = THUMBNAIL_WIDTHS.map(w => {
         //     const prefix = fileName.split('.')[0]
         //     const suffix = fileName.split('.')[1]
         //     // logo-256.jpg, logo-512.jpg
-        //     return exec(`magick ${fileName} -quality 75 -auto-orient -thumbnail ${w}x ${prefix}-${w}.${suffix}`, { cwd: this.pkgPath })
+        //     return exec(`${BIN} ${fileName} -quality 75 -auto-orient -thumbnail ${w}x ${prefix}-${w}.${suffix}`, { cwd: this.pkgPath })
         // })
         // await Promise.all(promises)
         // console.log(`Compressed image: ${fileName}`)
