@@ -3,5 +3,5 @@
   "build": {
     "dockerfile": "Dockerfile"
   },
-  "postCreateCommand": "npm install"
+  "postCreateCommand": "yarn install"
 }
