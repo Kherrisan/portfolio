@@ -1,0 +1,5 @@
+{
+  "name": "portfolio-docker",
+  "build": {
+    "dockerfile": "Dockerfile"
+}
