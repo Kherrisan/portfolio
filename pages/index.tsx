@@ -13,6 +13,8 @@ import { PrivateContext } from '../components/PrivateToggle'
 import { H1 } from '../components/Header'
 import { LinkArrowRight, UnderlineLink } from '../components/Link'
 
+import doudou from '../public/images/doudou_spring_320x320.jpg'
+
 const Home = ({ latestPost, latestPrivatePost }: { latestPost: LatestPostProps, latestPrivatePost: LatestPostProps }) => {
   const { privateAccessable } = useContext(PrivateContext);
   latestPost = privateAccessable ? latestPrivatePost : latestPost;
@@ -25,7 +27,7 @@ const Home = ({ latestPost, latestPrivatePost }: { latestPost: LatestPostProps, 
     <div className="mx-auto max-w-3xl px-6">
       <Image
         className="rounded-full"
-        src="/images/avatar.jpeg"
+        src={doudou}
         alt="avatar"
         width={120}
         height={120}

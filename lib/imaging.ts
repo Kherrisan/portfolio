@@ -1,33 +1,49 @@
 import axios from 'axios'
-import probe from 'probe-image-size'
-import fs from 'fs'
 import crypto from 'crypto'
+import fs from 'fs'
+import probe from 'probe-image-size'
+import { Md5 } from 'ts-md5'
 import util from 'util'
-const exec = util.promisify(require('child_process').exec)
 
 import { probeImageInB2, storeImage2B2 } from './backblaze'
-import { Md5 } from 'ts-md5'
 
-const IMAGE_SCALE_FACTORS = [
-  '@1x',
-  '@2x',
-  '@3x'
-]
+const exec = util.promisify(require('child_process').exec)
+
+const IMAGE_SCALE_FACTORS = ['@1x', '@2x', '@3x']
 const IMAGE_BASE_WIDTH = 768
 const BIN = 'convert'
 
 export const generateThumbnails = async (folder: string, imgs: string[]) => {
-  let pArr: Promise<{ stdout: string, stderr: string }>[] = []
+  let pArr: Promise<{ stdout: string; stderr: string }>[] = []
   console.log(imgs)
   for (let i in imgs) {
     let img = imgs[i]
     const imgTokens = img.split('.')
-    const { stdout } = await exec(`identify -format "%w \\n" ${img}`, { cwd: folder })
+    const { stdout } = await exec(`identify -format "%w \\n" ${img}`, {
+      cwd: folder,
+    })
     const imgWidth = Number(stdout)
-    Array.from({length: 3}, (x, i) => i).map(f => {
+    Array.from({ length: 3 }, (x, i) => i).map((f) => {
       const scaledWidth = (f + 1) * IMAGE_BASE_WIDTH
       const w = scaledWidth > imgWidth ? imgWidth : scaledWidth
-      pArr.push(exec(`${BIN} "${img}" -auto-orient -resize ${w}x "${imgTokens[0]}${IMAGE_SCALE_FACTORS[f]}.jpeg"`, { cwd: folder }) as Promise<{ stdout: string, stderr: string }>)
+      pArr.push(
+        exec(
+          `${BIN} "${img}" -auto-orient -resize ${w}x "${imgTokens[0]}${IMAGE_SCALE_FACTORS[f]}.jpeg"`,
+          { cwd: folder }
+        ) as Promise<{ stdout: string; stderr: string }>
+      )
+      pArr.push(
+        exec(
+          `${BIN} "${img}" -auto-orient -resize ${w}x "${imgTokens[0]}${IMAGE_SCALE_FACTORS[f]}.avif"`,
+          { cwd: folder }
+        ) as Promise<{ stdout: string; stderr: string }>
+      )
+      pArr.push(
+        exec(
+          `${BIN} "${img}" -auto-orient -resize ${w}x "${imgTokens[0]}${IMAGE_SCALE_FACTORS[f]}.webp"`,
+          { cwd: folder }
+        ) as Promise<{ stdout: string; stderr: string }>
+      )
     })
   }
   await Promise.all(pArr)
@@ -35,12 +51,12 @@ export const generateThumbnails = async (folder: string, imgs: string[]) => {
 
 export const imageHash = async (file: string) => {
   return new Promise((resolve, reject) => {
-    const hash = crypto.createHash('sha1');
-    const stream = fs.createReadStream(file);
-    stream.on('error', err => reject(err));
-    stream.on('data', chunk => hash.update(chunk));
-    stream.on('end', () => resolve(hash.digest('hex')));
-  });
+    const hash = crypto.createHash('sha1')
+    const stream = fs.createReadStream(file)
+    stream.on('error', (err) => reject(err))
+    stream.on('data', (chunk) => hash.update(chunk))
+    stream.on('end', () => resolve(hash.digest('hex')))
+  })
 }
 
 export const imageFileName = async (url: string) => {
@@ -56,12 +72,12 @@ export const imageFileName = async (url: string) => {
   try {
     resp = await axios({
       url: url,
-      method: 'HEAD'
+      method: 'HEAD',
     })
   } catch (err) {
     console.error(`Error fetching content-type of: ${url}`)
     console.error(err)
-    throw (err)
+    throw err
   }
   const t = resp.headers['content-type']!
   const ext = t.split('/')[1]
@@ -77,7 +93,7 @@ export const downloadImage = async (url: string, dir: string, img: string) => {
     resp = await axios({
       url: url,
       method: 'GET',
-      responseType: 'stream'
+      responseType: 'stream',
     })
   } catch (err) {
     console.error(`Error in fetching ${url}`)
