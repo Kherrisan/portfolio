@@ -46,8 +46,8 @@ const KImage = (props: KImageProps) => {
         aspectRatio: aspectRatio,
       }}
     >
-      <source srcSet={srcset.replace('.jpeg', '.avif')} type={`image/avif`} />
-      <source srcSet={srcset.replace('.jpeg', '.webp')} type={`image/webp`} />
+      {/* <source srcSet={srcset.replace('.jpeg', '.avif')} type={`image/avif`} />
+      <source srcSet={srcset.replace('.jpeg', '.webp')} type={`image/webp`} /> */}
       <source srcSet={srcset} type={`image/jpeg`} />
       <img src={src} alt={alt} />
     </picture>

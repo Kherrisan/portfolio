@@ -32,18 +32,18 @@ export const generateThumbnails = async (folder: string, imgs: string[]) => {
           { cwd: folder }
         ) as Promise<{ stdout: string; stderr: string }>
       )
-      pArr.push(
-        exec(
-          `${BIN} "${img}" -auto-orient -resize ${w}x "${imgTokens[0]}${IMAGE_SCALE_FACTORS[f]}.avif"`,
-          { cwd: folder }
-        ) as Promise<{ stdout: string; stderr: string }>
-      )
-      pArr.push(
-        exec(
-          `${BIN} "${img}" -auto-orient -resize ${w}x "${imgTokens[0]}${IMAGE_SCALE_FACTORS[f]}.webp"`,
-          { cwd: folder }
-        ) as Promise<{ stdout: string; stderr: string }>
-      )
+      // pArr.push(
+      //   exec(
+      //     `${BIN} "${img}" -auto-orient -resize ${w}x "${imgTokens[0]}${IMAGE_SCALE_FACTORS[f]}.avif"`,
+      //     { cwd: folder }
+      //   ) as Promise<{ stdout: string; stderr: string }>
+      // )
+      // pArr.push(
+      //   exec(
+      //     `${BIN} "${img}" -auto-orient -resize ${w}x "${imgTokens[0]}${IMAGE_SCALE_FACTORS[f]}.webp"`,
+      //     { cwd: folder }
+      //   ) as Promise<{ stdout: string; stderr: string }>
+      // )
     })
   }
   await Promise.all(pArr)
