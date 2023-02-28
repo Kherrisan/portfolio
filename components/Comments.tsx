@@ -1,6 +1,9 @@
+import { useTheme } from 'next-themes'
 import Giscus from '@giscus/react'
 
 const Comments = () => {
+  const { resolvedTheme, setTheme } = useTheme()
+
   return (
     <div
       id="comments-section"
@@ -13,7 +16,7 @@ const Comments = () => {
         categoryId="DIC_kwDOHrXU0s4CQSsV"
         mapping="pathname"
         reactionsEnabled="1"
-        theme="preferred_color_scheme"
+        theme={resolvedTheme}
         loading="lazy"
         inputPosition="top"
       />
