@@ -1,25 +1,33 @@
 import type { PageObjectResponse } from '@notionhq/client/build/src/api-endpoints'
 import type { GetStaticProps, NextPage } from 'next'
+import { Dispatch, SetStateAction, useContext, useState } from 'react'
 import { AiOutlineTag } from 'react-icons/ai'
 import { BiCategory } from 'react-icons/bi'
 import { BiSearch } from 'react-icons/bi'
 
 import Head from 'next/head'
 
+import { H1, H2, Heading, Hr } from '../components/Header'
 import HoverCard from '../components/HoverCard'
-import { type PageCompletePropertyRecord, getDatabase } from '../lib/notion'
-import SearchModal from '../components/SearchModal'
-import { Dispatch, SetStateAction, useContext, useState } from 'react'
+import { Link } from '../components/Link'
 import { PrivateContext } from '../components/PrivateToggle'
-import { H1, Hr } from '../components/Header'
+import SearchModal from '../components/SearchModal'
+import { type PageCompletePropertyRecord, getDatabase } from '../lib/notion'
 
-const CategoryTag = ({ category, selectCategory, selected }: { category: string, selectCategory: Dispatch<SetStateAction<string | null>>, selected: boolean}) => {
-
+const CategoryTag = ({
+  category,
+  selectCategory,
+  selected,
+}: {
+  category: string
+  selectCategory: Dispatch<SetStateAction<string | null>>
+  selected: boolean
+}) => {
   return (
     <button
-      className='items-center overflow-hidden rounded border-b-4 bg-light-300 py-1.5 px-4 m-2 transition-all duration-150 hover:shadow-lg hover:opacity-80 dark:bg-dark-700'
+      className="items-center overflow-hidden rounded border-b-4 bg-light-300 py-1.5 px-4 m-2 transition-all duration-150 hover:shadow-lg hover:opacity-80 dark:bg-dark-700"
       style={{
-        borderBottomColor: selected ? 'orange' : '#DCDCDC'
+        borderBottomColor: selected ? 'orange' : '#DCDCDC',
       }}
       onClick={() => {
         selectCategory(selected ? null : category)
@@ -31,12 +39,15 @@ const CategoryTag = ({ category, selectCategory, selected }: { category: string,
 }
 
 const Blog: NextPage<{ posts: PageObjectResponse[] }> = ({ posts }) => {
-  const { privateAccessable } = useContext(PrivateContext);
+  const { privateAccessable } = useContext(PrivateContext)
   const [searchOpen, setSearchOpen] = useState(false)
   const [selectedCategory, selectCategory] = useState<string | null>(null)
   const openSearchBox = () => setSearchOpen(true)
 
-  !privateAccessable && (posts = posts.filter(post => !(post.properties?.private as any).checkbox))
+  !privateAccessable &&
+    (posts = posts.filter(
+      (post) => !(post.properties?.private as any).checkbox
+    ))
   const categories = new Set<string>()
   let metadata = posts.map((post) => {
     const emoji = post.icon?.type === 'emoji' ? post.icon.emoji : '🎑'
@@ -62,8 +73,11 @@ const Blog: NextPage<{ posts: PageObjectResponse[] }> = ({ posts }) => {
 
     return { id: post.id, emoji, slug, name, preview, date, author, category }
   })
-  
-  selectedCategory && (metadata = metadata.filter(post => post.category?.name === selectedCategory))
+
+  selectedCategory &&
+    (metadata = metadata.filter(
+      (post) => post.category?.name === selectedCategory
+    ))
 
   return (
     <>
@@ -75,44 +89,37 @@ const Blog: NextPage<{ posts: PageObjectResponse[] }> = ({ posts }) => {
 
       <div className="mx-auto max-w-3xl container px-6">
         <H1>Blog</H1>
-        <Hr />
+        {/* <Hr /> */}
 
-        <div className='mb-8'>
+        {/* <div className="mb-8">
           {Array.from(categories.values()).map((category) => (
-            <CategoryTag key={category} category={category} selectCategory={selectCategory} selected={category==selectedCategory}/>
+            <CategoryTag
+              key={category}
+              category={category}
+              selectCategory={selectCategory}
+              selected={category == selectedCategory}
+            />
           ))}
-        </div>
+        </div> */}
 
         {metadata.map((meta) => (
-          <HoverCard
-            key={meta.id}
-            href={`/blog/${meta.slug}`}
-            isExternal={false}
-            headingSlot={<span className="font-bold text-xl">{meta.name}</span>}
-            iconSlot={
-              <div className="absolute right-4 -bottom-4 text-2xl">
-                {meta.emoji}
+          <div key={meta.id} className="mt-10">
+            <Hr></Hr>
+            <div className="grid grid-flow-row-dense grid-cols-2 sm:grid-cols-4">
+              <div className="col-span-1 mb-4 text-gray-500/90 dark:text-gray-400/90">
+                {new Date(meta.date).toLocaleDateString()}
               </div>
-            }
-          >
-            <div className="primary-text text-sm truncate">{meta.preview}</div>
-
-            <div className="secondary-text flex flex-wrap items-center space-x-2 text-sm">
-              <span>{new Date(meta.date).toLocaleDateString()}</span>
-              <span>·</span>
-              {/* <BiCategory size={18} className="mr-1 inline" /> */}
-              <span className='text-orange-400'>{meta.category?.name?.toLowerCase()}</span>
-              {/* <span>·</span>
-              {post.properties.tags.multi_select.map((tag: any) => (
-                <span>
-                  <AiOutlineTag size={16} className="mr-1 inline" />
-                  <span key={tag.id}>{tag.name?.toLowerCase()}</span>
-                </span>
-              ))} */}
+              <div className="col-span-3">
+                <Heading>
+                  <a href={`/blog/${meta.slug}`}>{meta.emoji} {meta.name}</a>
+                </Heading>
+                <Link href={`/blog/${meta.slug}`}>
+                  {meta.category?.name.toUpperCase()}
+                </Link>
+                <div className="mt-6 text-gray-400/90 dark:text-gray-300/90">{meta.preview}</div>
+              </div>
             </div>
-
-            <div className="secondary-text flex flex-wrap items-center space-x-2 text-sm"></div>
-          </HoverCard>
+          </div>
         ))}
       </div>
 

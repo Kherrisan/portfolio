@@ -26,11 +26,9 @@ export const H2 = ({ children }: { children: React.ReactNode | React.ReactNode[]
 )
 
 export const Heading = ({ children }: { children: React.ReactNode | React.ReactNode[] }) => (
-    <div className='my-2
+    <div className='
     font-semibold
-    text-lg
-    sm:text-xl
-    md:text-2xl
+    text-2xl
     text-dark-900/90 
     dark:text-light-900/90'>
         {children}
