@@ -1,4 +1,5 @@
 import type { PropertyItemObjectResponse } from '@notionhq/client/build/src/api-endpoints'
+import { DateTime } from 'luxon'
 
 const BlogCopyright = ({
   title,
@@ -52,7 +53,7 @@ const BlogCopyright = ({
         </div>
         <div>
           <div className="text-xs">Date</div>
-          <div>{new Date(date).toLocaleDateString()}</div>
+          <div>{DateTime.fromISO(date).setZone('UTC+8').toFormat('yyyy-MM-dd')}</div>
         </div>
         <div>
           <div className="text-xs">License</div>

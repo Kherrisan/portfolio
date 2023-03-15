@@ -26,6 +26,7 @@ import { imageCDNUrl, IMAGE_NPM_PACKAGE_NAME, IMAGE_NPM_PACKAGE_PATH, nextVersio
 import { imageFileName } from '../../lib/imaging'
 import { Data } from 'vfile'
 import { Hr } from '../../components/Header'
+import { DateTime } from 'luxon'
 
 const Post: NextPage<{ page: PageObjectResponse; blocks: any[] }> = ({ page, blocks }) => {
   const router = useRouter()
@@ -59,13 +60,13 @@ const Post: NextPage<{ page: PageObjectResponse; blocks: any[] }> = ({ page, blo
 
       <div className="container mx-auto grid max-w-3xl grid-cols-10 gap-8 px-6 lg:max-w-5xl">
         <div className="col-span-10 lg:col-span-7">
-          <div className="-mx-4 rounded border-gray-400/30 p-4 md:border">
-            <h1 className="mb-2 flex justify-between space-x-2 text-3xl">
+          <div className="-mx-4 rounded p-4">
+            <h1 className="my-5 flex justify-between space-x-2 text-3xl">
               <span className="font-bold">{name}</span>
               <span>{emoji}</span>
             </h1>
-            <div className="secondary-text flex flex-wrap items-center gap-2 mb-8">
-              <span>{new Date(date).toLocaleDateString()}</span>
+            <div className="secondary-text flex flex-wrap items-center gap-2 my-5">
+              <span>{DateTime.fromISO(date).setZone('UTC+8').toFormat('yyyy-MM-dd')}</span>
               {/* <span>·</span>
               {author.map((person: any) => (
                 <span key={person.id}>
