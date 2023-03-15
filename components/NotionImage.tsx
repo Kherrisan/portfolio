@@ -53,24 +53,23 @@ export const getMediaCtx = (value: ImageProperties) => {
 }
 
 const NotionImage = ({ value }: { value: ImageProperties }) => {
-  const expire =
-    value['data-notion-file-type'] === 'file' ? value.src.expiry_time : null
   const src = value.src.url
   const {
     dim: { width, height },
     caption,
   } = value || {}
-  const { width: deviceWidth, height: deviceHeight } = useWindowSize();
 
   return (
-    <figure>
-      <KImage src={src} width={width} height={height} alt={caption ? caption[0].plain_text : src} />
-      {caption && caption.length != 0 && (
-        <figcaption className="text-center">
-          {caption!![0].plain_text}
-        </figcaption>
-      )}
-    </figure>
+    <div className='flex justify-center my-5'>
+      <figure className={`m-0 aspect-[${width}/${height}] h-auto`} style={{ width: `min(90%, ${width}px)`}}>
+        <KImage src={src} width={width} height={height} alt={caption ? caption[0].plain_text : src} />
+        {caption && caption.length != 0 && (
+          <figcaption className="text-center">
+            {caption!![0].plain_text}
+          </figcaption>
+        )}
+      </figure>
+    </div>
   )
 }
 

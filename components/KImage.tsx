@@ -1,3 +1,5 @@
+import { HTMLAttributes } from "react"
+
 const IMAGE_SCALE_FACTORS = ['@1x', '@2x', '@3x']
 const IMAGE_BASE_WIDTH = 768
 
@@ -13,15 +15,20 @@ type KImageProps = {
  *
  * 响应式图片尺寸：
  * 1. 从宽度的角度出发考虑图片尺寸的要求。
- * 2. 请求的图片的最大逻辑分辨率宽度为 768px，可以根据显示器的 scale factor 选择 768、768@2、768@3。
+ * 2. 请求的图片的最大逻辑分辨率宽度为 768px，可以根据显示器的 scale factor 选择 1x、2x、3x。
  *
  * 阻止 layout shift：
  *
  * @param props
  * @returns
  */
-const KImage = (props: KImageProps) => {
-  let { src, width, height, alt } = props
+const KImage = (props: {
+  src: string
+  width: number
+  height: number
+  alt?: string
+} & HTMLAttributes<HTMLSourceElement>) => {
+  let { src, width, height, alt, ...attrs } = props
   const aspectRatio = `${width} / ${height}`
   const imgExt = src.split('.').slice(-1)[0]
   const imgPrefix = src.replace(`.${imgExt}`, '')
@@ -40,16 +47,13 @@ const KImage = (props: KImageProps) => {
 
   return (
     <picture
-      style={{
-        width: width,
-        height: 'auto',
-        aspectRatio: aspectRatio,
-      }}
+      className="block w-full h-full"
+      {...attrs}
     >
       {/* <source srcSet={srcset.replace('.jpeg', '.avif')} type={`image/avif`} /> */}
-      <source srcSet={srcset.replace('.jpeg', '.webp')} type={`image/webp`} />
+      <source className="" srcSet={srcset.replace('.jpeg', '.webp')} type={`image/webp`} />
       <source srcSet={srcset} type={`image/jpeg`} />
-      <img src={src} alt={alt} />
+      <img src={src} alt={alt} className='m-0 w-full h-full'/>
     </picture>
   )
 }

@@ -40,17 +40,6 @@ const Home = ({ latestPost, latestPrivatePost }: { latestPost: LatestPostProps, 
       <div className='primary-text'>
         <p className="mb-8 leading-7">
           Researcher / Developer{' '}
-          {/* <a
-          href="https://genshin-impact.fandom.com/wiki/Hu_Tao"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="bg-pink-600/10 text-pink-600 p-1 rounded font-bold transition-all duration-150 hover:bg-pink-600/20"
-        >
-          <abbr title="🔥 C6 by the way" className="!no-underline">
-            #HuTao
-          </abbr>
-        </a>{' '}
-        main */}
         </p>
 
         <p className="leading-7">

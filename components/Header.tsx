@@ -36,7 +36,7 @@ export const Heading = ({ children }: { children: React.ReactNode | React.ReactN
 )
 
 export const Hr = () => (
-    <hr className='mb-8 
+    <hr className='my-5 
     h-px 
     bg-gray-300
     dark:bg-gray-300/50

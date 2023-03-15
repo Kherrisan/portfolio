@@ -25,7 +25,7 @@ const BlogTableOfContent = ({ blocks }: { blocks: any }) => {
   if (headings.length === 0) {
     return (
       <div className="sticky top-0 col-span-3 hidden h-0 xl:block">
-        <div className="max-h-screen-md rounded border border-gray-400/30 p-4">
+        <div className="max-h-screen-md rounded p-4">
           <h1 className="primary-text font-bold leading-8">
             Table of contents
           </h1>
@@ -48,14 +48,13 @@ const BlogTableOfContent = ({ blocks }: { blocks: any }) => {
 
   return (
     <div className="sticky top-20 col-span-3 hidden h-0 lg:block">
-      <div className="max-h-screen-md rounded border border-gray-400/30 p-4 relative">
-        <RiBookmark2Line
-          className="text-red-600 absolute top-4 right-4"
-          size={20}
-        />
-        <h1 className="primary-text text-lg leading-8">
-          <span>Table of contents </span>
-        </h1>
+      <div className="max-h-screen-md rounded p-4">
+        <div className='flex'>
+          <h1 className="primary-text text-lg">
+            <span>Table of contents </span>
+          </h1>
+        </div>
+
         <ul className="list-inside list-disc">
           {nestedHeadings.map((h: headingType) => (
             <li className="leading-7" key={h.id}>
@@ -63,22 +62,22 @@ const BlogTableOfContent = ({ blocks }: { blocks: any }) => {
                 {h.text}
               </Link>
               {h.children.length > 0 && (
-                  <ul className="ml-6 list-inside list-disc">
-                    {h.children.map(
-                      (hc: {
-                        id: string
-                        type: 'heading_2' | 'heading_3'
-                        text: string
-                      }) => (
-                        <li className="leading-7" key={hc.id}>
-                          <Link href={`#${slugify(hc.text)}`} passHref>
-                            {hc.text}
-                          </Link>
-                        </li>
-                      )
-                    )}
-                  </ul>
-                )}
+                <ul className="ml-6 list-inside list-disc">
+                  {h.children.map(
+                    (hc: {
+                      id: string
+                      type: 'heading_2' | 'heading_3'
+                      text: string
+                    }) => (
+                      <li className="leading-7" key={hc.id}>
+                        <Link href={`#${slugify(hc.text)}`} passHref>
+                          {hc.text}
+                        </Link>
+                      </li>
+                    )
+                  )}
+                </ul>
+              )}
             </li>
           ))}
         </ul>

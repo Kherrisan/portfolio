@@ -17,8 +17,9 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <>
-      {process.env.SERVICE_WORKER && <Script id="sw" strategy='beforeInteractive' dangerouslySetInnerHTML={{
-        __html: `    if ("serviceWorker" in navigator) {
+      {(process.env.NEXT_PUBLIC_SERVICE_WORKER === 'true')
+        && <Script id="sw" strategy='beforeInteractive' dangerouslySetInnerHTML={{
+          __html: `if ("serviceWorker" in navigator) {
             SW_STATUS_KEY="kendrickzou-portfolio-sw-status"
             if (Number(window.localStorage.getItem(SW_STATUS_KEY)) < 1) {
               window.localStorage.setItem(SW_STATUS_KEY, "1")

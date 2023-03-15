@@ -4,6 +4,7 @@ import { Dispatch, SetStateAction, useContext, useState } from 'react'
 import { AiOutlineTag } from 'react-icons/ai'
 import { BiCategory } from 'react-icons/bi'
 import { BiSearch } from 'react-icons/bi'
+import { DateTime } from "luxon";
 
 import Head from 'next/head'
 
@@ -107,7 +108,8 @@ const Blog: NextPage<{ posts: PageObjectResponse[] }> = ({ posts }) => {
             <Hr></Hr>
             <div className="grid grid-flow-row-dense grid-cols-2 sm:grid-cols-4">
               <div className="col-span-1 mb-4 text-gray-500/90 dark:text-gray-400/90">
-                {new Date(meta.date).toLocaleDateString()}
+                {DateTime.fromISO(meta.date).setZone('UTC+8').toFormat('yyyy-MM-dd')}
+                {/* {new Date(meta.date).toLocaleDateString('zh-Hans-CN')} */}
               </div>
               <div className="col-span-3">
                 <Heading>
