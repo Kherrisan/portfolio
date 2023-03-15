@@ -103,7 +103,7 @@ const Blog: NextPage<{ posts: PageObjectResponse[] }> = ({ posts }) => {
         </div> */}
 
         {metadata.map((meta) => (
-          <div key={meta.id} className="mt-10">
+          <div key={meta.id} className="mb-10">
             <Hr></Hr>
             <div className="grid grid-flow-row-dense grid-cols-2 sm:grid-cols-4">
               <div className="col-span-1 mb-4 text-gray-500/90 dark:text-gray-400/90">

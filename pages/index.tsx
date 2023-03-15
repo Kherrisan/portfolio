@@ -11,9 +11,10 @@ import { type LatestPostProps, getLatestPostProps } from '../lib/notion'
 import { useContext } from 'react'
 import { PrivateContext } from '../components/PrivateToggle'
 import { H1 } from '../components/Header'
-import { LinkArrowRight, UnderlineLink } from '../components/Link'
+import { BlockCallout, LinkArrowRight, UnderlineLink } from '../components/Link'
 
 import doudou from '../public/images/doudou_spring_320x320.jpg'
+import dst_zy from '../public/images/dst_zy.jpg'
 
 const Home = ({ latestPost, latestPrivatePost }: { latestPost: LatestPostProps, latestPrivatePost: LatestPostProps }) => {
   const { privateAccessable } = useContext(PrivateContext);
@@ -62,7 +63,7 @@ const Home = ({ latestPost, latestPrivatePost }: { latestPost: LatestPostProps, 
           >
             🌲 CYBER#SEU
           </a>{' '}
-          on astrology, alchemy (=ﾟωﾟ)ﾉ. Graduated from{' '}
+          on 🧪astrology, 🔭alchemy (=ﾟωﾟ)ﾉ. Graduated from{' '}
           <Link href="https://cose.seu.edu.cn" target='_blank'>
             <UnderlineLink >COSE#SEU</UnderlineLink>{' '}
           </Link>
@@ -98,6 +99,20 @@ const Home = ({ latestPost, latestPrivatePost }: { latestPost: LatestPostProps, 
         </p>
       </div>
 
+      <div className='mt-8'>
+        <BlockCallout emoji='🥦'>
+          今天是3.8妇女节，祝我的宗宗宝贝节日快乐~
+          <Image
+            className="rounded mt-2"
+            src={dst_zy}
+            alt="avatar"
+            width={120}
+            height={120}
+            priority
+          />
+        </BlockCallout>
+      </div>      
+
       <div className="secondary-text text-center font-mono text-xs">
         <p className="leading-7 mt-8">
           This site is forked from{' '}
@@ -111,7 +126,9 @@ const Home = ({ latestPost, latestPrivatePost }: { latestPost: LatestPostProps, 
         </p>
       </div>
 
-      <Sakana />
+      
+
+      {/* <Sakana /> */}
     </div>
   </>)
 }
