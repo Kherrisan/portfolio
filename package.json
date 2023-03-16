@@ -12,7 +12,7 @@
     "lint": "next lint",
     "format": "prettier --write '{components,config,lib,pages,styles}/*.{js,jsx,ts,tsx,css,json}'",
     "export": "next export",
-    "publish": "SERVICE_WORKER=true && next build && next export && tsx ci/publish.ts"
+    "publish": "NEXT_PUBLIC_SERVICE_WORKER=true && next build && next export && tsx ci/publish.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.142.0",

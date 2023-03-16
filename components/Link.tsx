@@ -1,15 +1,32 @@
-import React, { ReactNode } from 'react'
+import React, { HTMLAttributes, ReactNode } from 'react'
 import { FiArrowRight } from 'react-icons/fi'
-import tw from 'twin.macro'
+import tw, { styled } from 'twin.macro'
 
-export const Link = tw.a`
-    transition-all 
-    duration-150 
+export const AmberTextStyle = tw`
     text-amber-500 
     hover:text-amber-600 
     dark:text-amber-500/90 
     dark:hover:text-amber-400/90
 `
+
+export const Link = ({ children, underline, ...props }: { children: ReactNode | ReactNode[], underline?: Boolean } & Record<string, any>) => (
+    <a {...props} css={[
+        tw`transition-all duration-150 font-semibold`,
+        AmberTextStyle,
+        underline && tw`no-underline border-b border-b-amber-500 hover:border-b-amber-600 dark:border-b-amber-500/90 dark:hover:border-b-amber-400/90 `
+    ]}>
+        {children}
+    </a>
+)
+
+// export const Link = ({ children, underline, ...props }: { children: ReactNode, underline: Boolean }) => (
+//     <a {...props} className='transition-all 
+//     duration-150 
+//     text-amber-500 
+//     hover:text-amber-600 
+//     dark:text-amber-500/90 
+//     dark:hover:text-amber-400/90' />
+// )
 
 export const UnderlineLink = tw.span`
     no-underline 
@@ -34,11 +51,9 @@ export const LinkArrowRight = tw(FiArrowRight)`
     group-hover:translate-x-1
 `
 
-const BlockCalloutP = tw.p`p-4 flex rounded-md bg-orange-100 dark:bg-stone-700`
-
-export const BlockCallout = (props: { children: React.ReactNode | ReactNode[], emoji?: string }) => (
-        <BlockCalloutP>
-            <span className='pr-4'>{props.emoji || '🌟'}</span>
-            <div>{props.children}</div>
-        </BlockCalloutP>
-    )
+export const Callout = (props: { children: React.ReactNode | ReactNode[], emoji?: string }) => (
+    <div className='p-4 flex rounded-md bg-orange-100 dark:bg-stone-700'>
+        <span className='pr-4'>{props.emoji || '🌟'}</span>
+        <div>{props.children}</div>
+    </div>
+)

@@ -25,7 +25,7 @@ import { ReactNode } from 'react'
 import { imageCDNUrl, IMAGE_NPM_PACKAGE_NAME, IMAGE_NPM_PACKAGE_PATH, nextVersion } from '../../lib/npm'
 import { imageFileName } from '../../lib/imaging'
 import { Data } from 'vfile'
-import { Hr } from '../../components/Header'
+import { H1, Hr } from '../../components/Header'
 import { DateTime } from 'luxon'
 
 const Post: NextPage<{ page: PageObjectResponse; blocks: any[] }> = ({ page, blocks }) => {
@@ -42,13 +42,36 @@ const Post: NextPage<{ page: PageObjectResponse; blocks: any[] }> = ({ page, blo
       ? prop.name.results[0].title.plain_text
       : ''
   const date = prop.date.type === 'date' ? prop.date.date?.start ?? '' : ''
-
-  const author = 'results' in prop.author ? prop.author.results : []
+  const authors = 'results' in prop.author ? prop.author.results : []
+  const author = authors.length == 0 ? '_' : (
+    'people' in authors[0] && 'name' in authors[0].people
+      ? authors[0].people.name
+      : '_'
+  )
   const category = 'select' in prop.category ? prop.category.select : null
   const tags = 'multi_select' in prop.tags ? prop.tags.multi_select : []
 
+  const headings = blocks
+    .filter((b: any) => b.type === 'heading_2' || b.type === 'heading_3')
+    .map((b: any) => {
+      return {
+        id: b.id,
+        type: b.type,
+        text: b[b.type].rich_text[0].plain_text,
+        children: [],
+      }
+    })
+  // const date = prop.date.type === 'date' ? prop.date.date?.start ?? '' : ''
+
+  // const author = 'results' in prop.author ? prop.author.results : []
+  // const category = 'select' in prop.category ? prop.category.select : null
+  // const tags = 'multi_select' in prop.tags ? prop.tags.multi_select : []
+
   // enableBlockId = true
-  let reactElems = unified().use(notionRehype, { enableBlockId: true }).use(rehypeReact).processSync({ data: blocks as unknown as Data }).result as ReactNode;
+  let reactElems = unified()
+    .use(notionRehype, { enableBlockId: true })
+    .use(rehypeReact)
+    .processSync({ data: blocks as unknown as Data }).result as ReactNode;
 
   return (
     <>
@@ -58,23 +81,15 @@ const Post: NextPage<{ page: PageObjectResponse; blocks: any[] }> = ({ page, blo
         </title>
       </Head>
 
-      <div className="container mx-auto grid max-w-3xl grid-cols-10 gap-8 px-6 lg:max-w-5xl">
-        <div className="col-span-10 lg:col-span-7">
+      <div className="container mx-auto grid max-w-5xl grid-cols-12 gap-8 px-6 lg:max-w-5xl">
+        <div className="col-span-12 lg:col-span-9">
           <div className="-mx-4 rounded p-4">
-            <h1 className="my-5 flex justify-between space-x-2 text-3xl">
-              <span className="font-bold">{name}</span>
+            <H1>
               <span>{emoji}</span>
-            </h1>
-            <div className="secondary-text flex flex-wrap items-center gap-2 my-5">
+              <span className="font-bold">{name}</span>
+            </H1>
+            {/* <div className="secondary-text flex flex-wrap items-center gap-2 my-5">
               <span>{DateTime.fromISO(date).setZone('UTC+8').toFormat('yyyy-MM-dd')}</span>
-              {/* <span>·</span>
-              {author.map((person: any) => (
-                <span key={person.id}>
-                  {'people' in person && 'name' in person.people
-                    ? person.people.name?.toLowerCase()
-                    : ''}
-                </span>
-              ))} */}
               <span>·</span>
               <div>
                 <BiCategory size={18} className="mr-1 inline" />
@@ -85,7 +100,7 @@ const Post: NextPage<{ page: PageObjectResponse; blocks: any[] }> = ({ page, blo
                 <FiMessageCircle size={18} className="mr-1 inline" />
                 <span>comments</span>
               </Link>
-            </div>
+            </div> */}
 
             {/* <div className="secondary-text flex flex-wrap items-center gap-2 mb-8">
               {tags?.map((tag: any) => (
@@ -104,12 +119,12 @@ const Post: NextPage<{ page: PageObjectResponse; blocks: any[] }> = ({ page, blo
               }
             </article>
 
-            <BlogCopyright
+            {/* <BlogCopyright
               title={name}
               author={author}
               date={date}
               absoluteLink={`${hostname}/blog/${router.query.slug}`}
-            />
+            /> */}
           </div>
 
           <Link href="/blog" passHref>
@@ -122,7 +137,7 @@ const Post: NextPage<{ page: PageObjectResponse; blocks: any[] }> = ({ page, blo
           <Comments />
         </div>
 
-        <BlogTableOfContent blocks={blocks} />
+        <BlogTableOfContent blocks={blocks} prop={page.properties as unknown as PageCompletePropertyRecord}/>
       </div>
 
       <div className="flex-1" />
@@ -203,7 +218,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   )
 
   // return { props: { page, blocks: blocksWithChildren }, revalidate: 1 }
-  return { props: { page, blocks: blocks }} // 1 hour
+  return { props: { page, blocks: blocks } } // 1 hour
 }
 
 export default Post

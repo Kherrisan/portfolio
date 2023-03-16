@@ -1,14 +1,14 @@
 import React from 'react'
 import tw from 'twin.macro'
 
-export const H1 = ({ children }: { children: React.ReactNode | React.ReactNode[] }) => (
+export const H1 = ({ children, ...props }: { children: React.ReactNode | React.ReactNode[] }) => (
     <h1 className='my-8 
     font-extrabold 
     md:text-5xl 
     sm:text-4xl 
-    text-3xl 
+    text-2xl 
     text-dark-900/90 
-    dark:text-light-900/90'>
+    dark:text-light-900/90' {...props}>
         {children}
     </h1>
 )

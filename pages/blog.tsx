@@ -88,7 +88,7 @@ const Blog: NextPage<{ posts: PageObjectResponse[] }> = ({ posts }) => {
 
       <SearchModal searchOpen={searchOpen} setSearchOpen={setSearchOpen} />
 
-      <div className="mx-auto max-w-3xl container px-6">
+      <div className="mx-auto max-w-4xl container px-6">
         <H1>Blog</H1>
         {/* <Hr /> */}
 

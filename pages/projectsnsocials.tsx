@@ -11,7 +11,7 @@ import { ProjectProps, projectLinks } from '../config/project'
 import arknightCard from '../public/images/arknights@2x.jpeg'
 import KImage from '../components/KImage'
 import { H1, Hr } from '../components/Header'
-import { BlockCallout } from '../components/Link'
+import { Callout } from '../components/Link'
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json())
 
@@ -86,14 +86,14 @@ const ProjectsNSocials: NextPage<{}> = ({ }) => {
           <Image src={arknightCard} alt="Arknights Background" />
         </div>
 
-        <BlockCallout emoji='🎮'>
+        <Callout emoji='🎮'>
           <div className='primary-text text-center'>
             明日方舟国服开服老玩家，退坑约两年半之后重新回到罗德岛。目前是无情的抄作业机器+屯屯鼠，希望能够组建一支法术蒸发和深海猎人组合队。我永远喜欢斯卡蒂~
           </div>
           <div className='primary-text text-center font-bold mt-6'>
             国服 ID:{' '}KendrickZou
           </div>
-        </BlockCallout>
+        </Callout>
 
         {/* <div className="secondary-text text-center font-mono text-xs mt-4">
           Updates every 24 hrs. Background images shot by myself in-game.

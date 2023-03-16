@@ -123,7 +123,7 @@ const NotionBlock = (node: any) => {
 
       case 'div':
         return (
-          <div className='my-5' key={index}>
+          <div key={index}>
             {node.children.map((child: any, chIndex: number) =>
               createElement(child, chIndex)
             )}
