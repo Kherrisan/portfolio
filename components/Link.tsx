@@ -1,20 +1,15 @@
 import React, { HTMLAttributes, ReactNode } from 'react'
 import { FiArrowRight } from 'react-icons/fi'
 import tw, { styled } from 'twin.macro'
-
-export const AmberTextStyle = tw`
-    text-amber-500 
-    hover:text-amber-600 
-    dark:text-amber-500/90 
-    dark:hover:text-amber-400/90
-`
+import { AmberText } from '../styles/global'
 
 export const Link = ({ children, underline, ...props }: { children: ReactNode | ReactNode[], underline?: Boolean } & Record<string, any>) => (
     <a {...props} css={[
         tw`transition-all duration-150 font-semibold`,
-        AmberTextStyle,
-        underline && tw`no-underline border-b border-b-amber-500 hover:border-b-amber-600 dark:border-b-amber-500/90 dark:hover:border-b-amber-400/90 `
-    ]}>
+     AmberText
+    ,
+        underline && tw`no-underline border-b-2 border-b-amber-500 hover:border-b-amber-600 dark:border-b-amber-500/90 dark:hover:border-b-amber-400/90 `
+    ].concat(props.css)}>
         {children}
     </a>
 )

@@ -97,7 +97,7 @@ const fetchParallellyAndCache = async (urls, req) => {
         resp = await generateHtml(resp)
     }
     await cache.put(req, resp.clone())
-    cons.d(`Fetched parallelly and cached: ${req.url}`)
+    // cons.d(`Fetched parallelly and cached: ${req.url}`)
     return resp
 }
 
@@ -172,16 +172,16 @@ const handle = async function (req) {
         setTimeout(() => {
             caches.match(req).then(resp => {
                 if (!!resp) {
-                    cons.d(`Cache hitted: ${req.url}`)
+                    // cons.d(`Cache hitted: ${req.url}`)
                     setTimeout(() => {
-                        cons.d(`Cache hitted and respond with cache: ${req.url}`)
+                        // cons.d(`Cache hitted and respond with cache: ${req.url}`)
                         resolve(resp)
                     }, 200)
                     setTimeout(() => {
                         fetchParallellyAndCache(urls, req).then(resolve)
                     }, 0)
                 } else {
-                    cons.w(`Cache missed: ${req.url}`)
+                    // cons.w(`Cache missed: ${req.url}`)
                     setTimeout(() => {
                         fetchParallellyAndCache(urls, req).then(resolve)
                     }, 0)
@@ -203,7 +203,7 @@ const handle = async function (req) {
 }
 
 const fetchParallelly = async (urls, req) => {
-    cons.d(`Start fetching parallelly: ${urls[0]}......`)
+    // cons.d(`Start fetching parallelly: ${urls[0]}......`)
     let controller = new AbortController(); //针对此次请求新建一个AbortController,用于打断并发的其余请求
     const PauseProgress = async (res) => {
         //这个函数的作用时阻塞响应,直到主体被完整下载,避免被提前打断
@@ -220,17 +220,17 @@ const fetchParallelly = async (urls, req) => {
                     if (res.status == 200) {
                         // 打断其余响应(同时也打断了自己的,但本身自己已下载完成,打断无效)
                         controller.abort()
-                        cons.d(`Fetch parallelly successfully from: ${url}, abort others.`)
+                        // cons.d(`Fetch parallelly successfully from: ${url}, abort others.`)
                         resolve(res)
                     } else {
-                        cons.e(`Error code ${res.status} for ${url}`)
+                        // cons.e(`Error code ${res.status} for ${url}`)
                         reject(res)
                     }
                 })
                 .catch(err => {
                     if (typeof err == 'object' && err.name != 'AbortError') {
                         cons.e(err)
-                        reject(err)
+                        // reject(err)
                     }
                 })
         })

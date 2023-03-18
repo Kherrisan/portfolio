@@ -1,6 +1,7 @@
 import type { NextPage, GetStaticProps } from 'next'
 import Head from 'next/head'
-import { H1, Hr } from '../components/Header'
+import { HrStyle } from '../components/Border'
+import { H1 } from '../components/Header'
 import { getTweets } from '../lib/notion'
 
 export interface Tweet {
@@ -33,8 +34,7 @@ const Tweets: NextPage<{ tweets: Array<Tweet> }> = ({ tweets }) => {
       </Head>
 
       <div className="container mx-auto max-w-3xl px-6">
-        <H1>Tweets</H1>
-        <Hr />
+        <H1 css={HrStyle}>Tweets</H1>
 
         <div className="mb-8 gap-4">
           {tweets.map((tweet: Tweet) => (

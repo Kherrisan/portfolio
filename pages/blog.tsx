@@ -8,12 +8,13 @@ import { DateTime } from "luxon";
 
 import Head from 'next/head'
 
-import { H1, H2, Heading, Hr } from '../components/Header'
-import HoverCard from '../components/HoverCard'
+import { H1, H2, Heading } from '../components/Header'
 import { Link } from '../components/Link'
 import { PrivateContext } from '../components/PrivateToggle'
 import SearchModal from '../components/SearchModal'
 import { type PageCompletePropertyRecord, getDatabase } from '../lib/notion'
+import { HrStyle } from '../components/Border'
+import tw from 'twin.macro'
 
 const CategoryTag = ({
   category,
@@ -89,8 +90,7 @@ const Blog: NextPage<{ posts: PageObjectResponse[] }> = ({ posts }) => {
       <SearchModal searchOpen={searchOpen} setSearchOpen={setSearchOpen} />
 
       <div className="mx-auto max-w-4xl container px-6">
-        <H1>Blog</H1>
-        {/* <Hr /> */}
+        <H1 css={HrStyle}>Blog</H1>
 
         {/* <div className="mb-8">
           {Array.from(categories.values()).map((category) => (
@@ -104,21 +104,19 @@ const Blog: NextPage<{ posts: PageObjectResponse[] }> = ({ posts }) => {
         </div> */}
 
         {metadata.map((meta) => (
-          <div key={meta.id} className="mb-10">
-            <Hr></Hr>
+          <div key={meta.id} className="pb-10 pt-6">
             <div className="grid grid-flow-row-dense grid-cols-2 sm:grid-cols-4">
               <div className="col-span-1 mb-4 text-gray-500/90 dark:text-gray-400/90">
                 {DateTime.fromISO(meta.date).setZone('UTC+8').toFormat('yyyy-MM-dd')}
-                {/* {new Date(meta.date).toLocaleDateString('zh-Hans-CN')} */}
               </div>
               <div className="col-span-3">
                 <Heading>
-                  <a href={`/blog/${meta.slug}`}>{meta.emoji} {meta.name}</a>
+                  <a href={`/blog/${meta.slug}`}>{meta.emoji}{' '}{meta.name}</a>
                 </Heading>
-                <Link href={`/blog/${meta.slug}`}>
+                <Link css={tw`pl-1`} href={`/blog/${meta.slug}`}>
                   {meta.category?.name.toUpperCase()}
                 </Link>
-                <div className="mt-6 text-gray-400/90 dark:text-gray-300/90">{meta.preview}</div>
+                <div className="mt-6 text-gray-400/90 dark:text-gray-300/90 pl-1">{meta.preview}</div>
               </div>
             </div>
           </div>
