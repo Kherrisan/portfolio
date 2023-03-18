@@ -7,7 +7,7 @@ const Comments = () => {
   return (
     <div
       id="comments-section"
-      className="mt-4 rounded border border-gray-400/30 p-4 md:-mx-4"
+      className="mt-4 rounded border border-gray-400/30 col-span-12 lg:col-span-9 rounded p-4"
     >
       <Giscus
         repo="kherrisan/giscus-discussions"

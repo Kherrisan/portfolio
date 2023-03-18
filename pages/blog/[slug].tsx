@@ -25,8 +25,11 @@ import { ReactNode } from 'react'
 import { imageCDNUrl, IMAGE_NPM_PACKAGE_NAME, IMAGE_NPM_PACKAGE_PATH, nextVersion } from '../../lib/npm'
 import { imageFileName } from '../../lib/imaging'
 import { Data } from 'vfile'
-import { H1, Hr } from '../../components/Header'
+import { H1 } from '../../components/Header'
 import { DateTime } from 'luxon'
+import { HrStyle } from '../../components/Border'
+import tw from 'twin.macro'
+import { HeadingText } from '../../styles/global'
 
 const Post: NextPage<{ page: PageObjectResponse; blocks: any[] }> = ({ page, blocks }) => {
   const router = useRouter()
@@ -81,10 +84,10 @@ const Post: NextPage<{ page: PageObjectResponse; blocks: any[] }> = ({ page, blo
         </title>
       </Head>
 
-      <div className="container mx-auto grid max-w-5xl grid-cols-12 gap-8 px-6 lg:max-w-5xl">
-        <div className="col-span-12 lg:col-span-9">
+      <div className="container mx-auto grid max-w-5xl grid-cols-12 px-6 lg:max-w-5xl">
+        <div css={[HrStyle, tw`col-span-12 lg:col-span-9`]}>
           <div className="-mx-4 rounded p-4">
-            <H1>
+            <H1 css={[HrStyle]}>
               <span>{emoji}</span>
               <span className="font-bold">{name}</span>
             </H1>
@@ -111,7 +114,6 @@ const Post: NextPage<{ page: PageObjectResponse; blocks: any[] }> = ({ page, blo
               ))}
             </div> */}
 
-            <Hr />
 
             <article className="prose my-8 dark:prose-invert max-w-none">
               {
@@ -127,20 +129,17 @@ const Post: NextPage<{ page: PageObjectResponse; blocks: any[] }> = ({ page, blo
             /> */}
           </div>
 
-          <Link href="/blog" passHref>
+          {/* <Link href="/blog" passHref>
             <div className="group mt-4 flex cursor-pointer items-center justify-between rounded border border-gray-400/30 p-4 hover:bg-light-200 hover:opacity-80 dark:hover:bg-dark-700 md:-mx-4">
               <span>cd /blog</span>
               <FiArrowLeft className="h-4 w-4 transition-all duration-150 group-hover:-translate-x-1" />
             </div>
-          </Link>
+          </Link> */}
 
-          <Comments />
         </div>
-
         <BlogTableOfContent blocks={blocks} prop={page.properties as unknown as PageCompletePropertyRecord}/>
+        <Comments/>
       </div>
-
-      <div className="flex-1" />
     </>
   )
 }

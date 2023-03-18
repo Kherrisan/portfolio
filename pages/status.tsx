@@ -3,7 +3,7 @@ import Head from "next/head";
 import { string } from "prop-types";
 import React from "react";
 import useSWR from "swr";
-import { H1, H2, Heading, Hr } from "../components/Header";
+import { H1, H2 } from "../components/Header";
 import { Container } from "../components/Layout";
 import { Link } from "../components/Link";
 
@@ -141,7 +141,6 @@ const ServiceStatus: NextPage = () => {
             </Head>
             <Container>
                 <H1>ServiceStatus</H1>
-                <Hr />
 
                 <H2>Portfolio</H2>
                 <div className="grid gap-4 grid-cols-1 sm:grid-cols-3">

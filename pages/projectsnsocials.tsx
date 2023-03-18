@@ -10,8 +10,9 @@ import { LinkProps, socialLinks } from '../config/link'
 import { ProjectProps, projectLinks } from '../config/project'
 import arknightCard from '../public/images/arknights@2x.jpeg'
 import KImage from '../components/KImage'
-import { H1, Hr } from '../components/Header'
+import { H1 } from '../components/Header'
 import { Callout } from '../components/Link'
+import { HrStyle } from '../components/Border'
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json())
 
@@ -79,8 +80,7 @@ const ProjectsNSocials: NextPage<{}> = ({ }) => {
       </Head>
 
       <div className="container mx-auto max-w-3xl px-6">
-        <H1>Arknights</H1>
-        <Hr />
+        <H1 css={HrStyle}>Arknights</H1>
 
         <div className="shadow-xl text-0 rounded overflow-hidden mb-8">
           <Image src={arknightCard} alt="Arknights Background" />
@@ -100,11 +100,9 @@ const ProjectsNSocials: NextPage<{}> = ({ }) => {
           
         </div> */}
 
-        <H1>Projects</H1>
-        <Hr />
+        <H1 css={HrStyle}>Projects</H1>
 
-        <H1>Socials</H1>
-        <Hr />
+        <H1 css={HrStyle}>Socials</H1>
 
         <div className="mb-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
           {socialLinks.map((link: LinkProps) => (
