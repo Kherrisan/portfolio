@@ -2,7 +2,7 @@ import { getLatestPackageVersion } from "./notion";
 import fetch from 'node-fetch'
 
 export const IMAGE_NPM_PACKAGE_NAME = 'kendrickzou-portfolio-img'
-const NPM_MIRROR = 'https://cdn.bilicdn.tk/npm'
+const NPM_MIRROR = 'https://npm.elemecdn.com'
 export const IMAGE_NPM_PACKAGE_PATH = process.env.CDN_IMG_TMP_PATH || '.temp/image'
 
 export const remoteVersion = async (pkgName: string) => {
