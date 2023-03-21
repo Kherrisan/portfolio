@@ -77,21 +77,14 @@ const handleerr = async (req, msg) => {
     <b>${msg}</b>`, { headers: { "content-type": "text/html; charset=utf-8" } })
 }
 
-const cdnList = [
-    "https://npm.elemecdn.com",
-    "https://cdn.jsdelivr.net/npm",
-    "https://npm.sourcegcdn.com",
-    "https://cdn.bilicdn.tk/npm",
-    "https://cdn-jsd.pigax.cn",
-    "https://cdn1.tianli0.top/npm"
-]
+const CDN_HOST = "https://npm.elemecdn.com"
 
 const timeout = (ms) => {
     return new Promise(resolve => setTimeout(resolve, ms))
 }
 
-const fetchParallellyAndCache = async (urls, req) => {
-    let resp = await fetchParallelly(urls, req)
+const fetchAndCache = async (url, req) => {
+    let resp = await fetch(url)
     const cache = await caches.open(CACHE_NAME)
     if (fullpath(req.url).match(/\.html$/)) {
         resp = await generateHtml(resp)
@@ -124,23 +117,17 @@ const generateHtml = async (res) => {
     })
 }
 
-const shouldFetchParallelly = (req) => {
+const shouldRewriteToCdn = (req) => {
     let url = new URL(req.url)
     if (url.pathname.match(/\/sw\.js/g) || url.pathname.match('/va/script.js')) {
         return false
     }
-    for (let i = 0; i < cdnList.length; i++) {
-        if (url.origin === new URL(cdnList[i]).origin) {
-            // 是去往 NPM-CDN 的请求
-            return true
-        }
-    }
-    return DOMAINS.includes(url.hostname)
+    return url.origin != new URL(CDN_HOST).origin && DOMAINS.includes(url.hostname)
 }
 
 const handle = async function (req) {
     let url = new URL(req.url)
-    if (!shouldFetchParallelly(req)) {
+    if (!shouldRewriteToCdn(req)) {
         const resp = await fetch(req, { referrerPolicy: 'no-referrer' })
         if (CACHABLE_DOMAIN.includes(url.hostname)) {
             const cache = await caches.open(CACHE_NAME)
@@ -161,13 +148,7 @@ const handle = async function (req) {
     if (url.pathname.indexOf('.html.json') !== -1) {
         url.pathname = url.pathname.replace('.html', '')
     }
-    let urls
-    if (url.pathname.match(/\/kendrickzou-portfolio-img/g)) {
-        urls = cdnList.map(cdn => url.href.replace(DEFAULT_IMG_CDN, cdn))
-    } else {
-        const version = await db.read(VERSION_STORAGE_KEY) || DEFAULT_VERSION
-        urls = cdnList.map(cdn => `${cdn}/${PORTFOLIO_PACKAGE_NAME}@${version}${url.pathname}`)
-    }
+    let rewrittenUrl = `${CDN_HOST}/${PORTFOLIO_PACKAGE_NAME}@${version}${url.pathname}`
     return new Promise((resolve, reject) => {
         setTimeout(() => {
             caches.match(req).then(resp => {
@@ -178,12 +159,12 @@ const handle = async function (req) {
                         resolve(resp)
                     }, 200)
                     setTimeout(() => {
-                        fetchParallellyAndCache(urls, req).then(resolve)
+                        fetchAndCache(rewrittenUrl, req).then(resolve)
                     }, 0)
                 } else {
                     // cons.w(`Cache missed: ${req.url}`)
                     setTimeout(() => {
-                        fetchParallellyAndCache(urls, req).then(resolve)
+                        fetchAndCache(rewrittenUrl, req).then(resolve)
                     }, 0)
                     setTimeout(() => {
                         // timeout
@@ -200,41 +181,6 @@ const handle = async function (req) {
             })
         }, 0)
     })
-}
-
-const fetchParallelly = async (urls, req) => {
-    // cons.d(`Start fetching parallelly: ${urls[0]}......`)
-    let controller = new AbortController(); //针对此次请求新建一个AbortController,用于打断并发的其余请求
-    const PauseProgress = async (res) => {
-        //这个函数的作用时阻塞响应,直到主体被完整下载,避免被提前打断
-        return new Response(await res.blob(), { status: res.status, headers: res.headers });
-    };
-
-    // 并发请求
-    return Promise.any(urls.map(url => {
-        return new Promise((resolve, reject) => {
-            // 设置打断点
-            fetch(url, { signal: controller.signal })
-                .then(PauseProgress)//阻塞当前响应直到下载完成
-                .then(res => {
-                    if (res.status == 200) {
-                        // 打断其余响应(同时也打断了自己的,但本身自己已下载完成,打断无效)
-                        controller.abort()
-                        // cons.d(`Fetch parallelly successfully from: ${url}, abort others.`)
-                        resolve(res)
-                    } else {
-                        // cons.e(`Error code ${res.status} for ${url}`)
-                        reject(res)
-                    }
-                })
-                .catch(err => {
-                    if (typeof err == 'object' && err.name != 'AbortError') {
-                        cons.e(err)
-                        // reject(err)
-                    }
-                })
-        })
-    }))
 }
 
 const versionLarger = (v1, v2) => {
