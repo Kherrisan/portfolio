@@ -28,7 +28,7 @@ const Home = ({ latestPost, latestPrivatePost }: { latestPost: LatestPostProps, 
     <div className="mx-auto max-w-3xl px-6">
       <Image
         className="rounded-full"
-        src={doudou}
+        src={'https://npm.elemecdn.com/kendrickzou-portfolio-img@1.0.42-924cd7/d55cc4bef95b61b23cb27516b44bd99e@1x.jpeg'}
         alt="avatar"
         width={120}
         height={120}

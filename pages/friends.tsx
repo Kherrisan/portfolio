@@ -10,6 +10,7 @@ import PrivateToggle from '../components/PrivateToggle'
 import { FriendProps, friends } from '../config/friend'
 import { H1 } from '../components/Header'
 import { HrStyle } from '../components/Border'
+import KImage from '../components/KImage'
 
 const FriendCard = (props: FriendProps) => {
   return (
@@ -60,7 +61,7 @@ const Friends: NextPage = () => {
         </p>
 
         <div className="flex mx-auto justify-center max-w-sm">
-          <Image className='mx-auto' src={friend_comment_9} alt="friend_comment_9" />
+          <KImage width={659} height={758} className='mx-auto' src={'https://npm.elemecdn.com/kendrickzou-portfolio-img@1.0.42-924cd7/e7afd4f9a0f4401eddc8f46976a8a4fa.jpeg'} alt="friend_comment_9" />
         </div>
 
         <Comments />

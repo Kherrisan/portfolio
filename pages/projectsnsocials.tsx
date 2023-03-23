@@ -83,12 +83,12 @@ const ProjectsNSocials: NextPage<{}> = ({ }) => {
         <H1 css={HrStyle}>Arknights</H1>
 
         <div className="shadow-xl text-0 rounded overflow-hidden mb-8">
-          <Image src={arknightCard} alt="Arknights Background" />
+          <KImage width={1536} height={710} src={'https://npm.elemecdn.com/kendrickzou-portfolio-img@1.0.42-924cd7/fd79e234dfaae90a966c4017db4b5ac8.jpeg'} alt="Arknights Background" />
         </div>
 
         <Callout emoji='🎮'>
           <div className='primary-text text-center'>
-            明日方舟国服开服老玩家，退坑约两年半之后重新回到罗德岛。目前是无情的抄作业机器+屯屯鼠，希望能够组建一支法术蒸发和深海猎人组合队。我永远喜欢斯卡蒂~
+            明日方舟国服开服老玩家，退坑两年半（嗯？也是两年半？）之后重新回到罗德岛。目前是无情的抄作业机器+屯屯鼠，希望能够组建一支法术蒸发和深海猎人组合队。我永远喜欢斯卡蒂~
           </div>
           <div className='primary-text text-center font-bold mt-6'>
             国服 ID:{' '}KendrickZou
