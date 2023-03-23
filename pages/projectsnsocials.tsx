@@ -13,6 +13,7 @@ import KImage from '../components/KImage'
 import { H1 } from '../components/Header'
 import { Callout } from '../components/Link'
 import { HrStyle } from '../components/Border'
+import tw from 'twin.macro'
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json())
 
@@ -86,7 +87,7 @@ const ProjectsNSocials: NextPage<{}> = ({ }) => {
           <KImage width={1536} height={710} src={'https://npm.elemecdn.com/kendrickzou-portfolio-img@1.0.42-924cd7/fd79e234dfaae90a966c4017db4b5ac8.jpeg'} alt="Arknights Background" />
         </div>
 
-        <Callout emoji='🎮'>
+        <Callout css={tw`mt-6`} emoji='🎮'>
           <div className='primary-text text-center'>
             明日方舟国服开服老玩家，退坑两年半（嗯？也是两年半？）之后重新回到罗德岛。目前是无情的抄作业机器+屯屯鼠，希望能够组建一支法术蒸发和深海猎人组合队。我永远喜欢斯卡蒂~
           </div>
@@ -104,7 +105,7 @@ const ProjectsNSocials: NextPage<{}> = ({ }) => {
 
         <H1 css={HrStyle}>Socials</H1>
 
-        <div className="mb-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
+        <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
           {socialLinks.map((link: LinkProps) => (
             <LinkCard key={link.name} {...link} />
           ))}

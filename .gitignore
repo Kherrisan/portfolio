@@ -42,3 +42,4 @@ yarn-error.log*
 .vscode
 .env
 github-codespaces-key
+.temp

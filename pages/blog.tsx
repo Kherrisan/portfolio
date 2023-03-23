@@ -130,7 +130,6 @@ const Blog: NextPage<{ posts: PageObjectResponse[] }> = ({ posts }) => {
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-  console.log('revalidate')
   const db = await getDatabase()
   return {
     props: { posts: db },

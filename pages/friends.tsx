@@ -50,13 +50,13 @@ const Friends: NextPage = () => {
           <PrivateToggle />
         </H1>
 
-        <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
           {friends.map((friend: FriendProps) => (
             <FriendCard key={friend.id} {...friend} />
           ))}
         </div>
 
-        <p className="secondary-text my-8 text-center">
+        <p className="secondary-text mt-6 text-center">
           👇 随便留下点什么吧，如果实在想不到，可以参考下图： 👇
         </p>
 

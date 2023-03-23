@@ -37,9 +37,14 @@ export const LinkArrowRight = tw(FiArrowRight)`
     group-hover:translate-x-1
 `
 
-export const Callout = (props: { children: React.ReactNode | ReactNode[], emoji?: string }) => (
-    <div className='p-4 flex rounded-md bg-orange-100 dark:bg-stone-700'>
-        <span className='pr-4'>{props.emoji || '🌟'}</span>
-        <div>{props.children}</div>
-    </div>
-)
+export const Callout = ({children, emoji, ...props}: { children: React.ReactNode | ReactNode[], emoji?: string} & Record<string, any>) => {
+    console.log(props)
+    return (
+        <div {...props} css={[
+            tw`p-4 flex rounded-md bg-orange-100 dark:bg-stone-700`
+        ].concat(props.css)}>
+            <span className='pr-4'>{emoji || '🌟'}</span>
+            <div>{children}</div>
+        </div>
+    )
+}
