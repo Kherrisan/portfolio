@@ -10,6 +10,7 @@ export default async function handler(
   // console.log(`Searching for ${query}`)
   const results = await searchDatabase(query as string)
   // console.log(`Found ${results}`)
+  res.revalidate('1m')
 
   res.status(200).json(results)
 }

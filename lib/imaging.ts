@@ -10,6 +10,7 @@ import { probeImageInB2, storeImage2B2 } from './backblaze'
 const exec = util.promisify(require('child_process').exec)
 
 const IMAGE_SCALE_FACTORS = ['@1x', '@2x', '@3x']
+const IMAGE_COMPRESSED_QUALITIES = [95, 85, 75]
 const IMAGE_BASE_WIDTH = 768
 const BIN = 'convert'
 
@@ -27,7 +28,7 @@ export const generateThumbnails = async (folder: string, imgs: string[]) => {
       const scaledWidth = (f + 1) * IMAGE_BASE_WIDTH
       const w = scaledWidth > imgWidth ? imgWidth : scaledWidth
       return exec(
-        `${BIN} "${img}" -auto-orient -resize ${w}x "${imgTokens[0]}${IMAGE_SCALE_FACTORS[f]}.jpeg"`,
+        `${BIN} "${img}" -quality ${IMAGE_COMPRESSED_QUALITIES[f]} -auto-orient -resize ${w}x "${imgTokens[0]}${IMAGE_SCALE_FACTORS[f]}.jpeg"`,
         { cwd: folder }
       ) as Promise<{ stdout: string; stderr: string }>
     }))
@@ -35,19 +36,11 @@ export const generateThumbnails = async (folder: string, imgs: string[]) => {
       const scaledWidth = (f + 1) * IMAGE_BASE_WIDTH
       const w = scaledWidth > imgWidth ? imgWidth : scaledWidth
       return exec(
-        `${BIN} "${img}" -auto-orient -resize ${w}x "${imgTokens[0]}${IMAGE_SCALE_FACTORS[f]}.webp"`,
+        `${BIN} "${img}" -quality ${IMAGE_COMPRESSED_QUALITIES[f]} -auto-orient -resize ${w}x "${imgTokens[0]}${IMAGE_SCALE_FACTORS[f]}.webp"`,
         { cwd: folder }
       ) as Promise<{ stdout: string; stderr: string }>
     }))
     console.log(`[${i}/${imgs.length}] Encoded ${img}.`)
-    // await Promise.all(Array.from({ length: 3 }, (x, i) => i).map((f) => {
-    //   const scaledWidth = (f + 1) * IMAGE_BASE_WIDTH
-    //   const w = scaledWidth > imgWidth ? imgWidth : scaledWidth
-    //   return exec(
-    //     `${BIN} "${img}" -auto-orient -resize ${w}x "${imgTokens[0]}${IMAGE_SCALE_FACTORS[f]}.avif"`,
-    //     { cwd: folder }
-    //   ) as Promise<{ stdout: string; stderr: string }>
-    // }))
   }
 }
 

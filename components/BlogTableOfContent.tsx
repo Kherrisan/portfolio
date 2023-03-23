@@ -1,7 +1,7 @@
 import { RiBookmark2Line } from 'react-icons/ri'
 import { slugify } from 'transliteration'
 import Link from 'next/link'
-import { Link as KLink } from './Link'
+import { KLink } from './Link'
 import { PageCompletePropertyRecord } from '../lib/notion'
 import { DateTime } from 'luxon'
 import tw from 'twin.macro'
@@ -23,7 +23,7 @@ const BlogTableOfContent = ({ blocks, prop, ...props }: { blocks: any, prop: Pag
       : ''
   const date = prop.date.type === 'date' ? prop.date.date?.start ?? '' : ''
   const authors = 'results' in prop.author ? prop.author.results : []
-  console.log(authors)
+  // console.log(authors)
   const author = authors.length == 0 ? '_' : (
     'people' in authors[0] && 'name' in authors[0].people
       ? authors[0].people.name

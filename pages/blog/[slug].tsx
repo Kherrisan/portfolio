@@ -12,6 +12,8 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
+import fs from 'fs'
+
 import BlogCopyright from '../../components/BlogCopyright'
 import BlogTableOfContent from '../../components/BlogTableOfContent'
 import Comments from '../../components/Comments'
@@ -30,6 +32,7 @@ import { DateTime } from 'luxon'
 import { HrStyle } from '../../components/Border'
 import tw from 'twin.macro'
 import { HeadingText } from '../../styles/global'
+import { publishImage } from '../../lib/npm'
 
 const Post: NextPage<{ page: PageObjectResponse; blocks: any[] }> = ({ page, blocks }) => {
   const router = useRouter()
@@ -70,11 +73,13 @@ const Post: NextPage<{ page: PageObjectResponse; blocks: any[] }> = ({ page, blo
   // const category = 'select' in prop.category ? prop.category.select : null
   // const tags = 'multi_select' in prop.tags ? prop.tags.multi_select : []
 
+  const st = Date.now()
   // enableBlockId = true
   let reactElems = unified()
     .use(notionRehype, { enableBlockId: true })
     .use(rehypeReact)
     .processSync({ data: blocks as unknown as Data }).result as ReactNode;
+  console.log(` [notion-rehype-k] ${Date.now() - st}ms`)
 
   return (
     <>
@@ -137,8 +142,8 @@ const Post: NextPage<{ page: PageObjectResponse; blocks: any[] }> = ({ page, blo
           </Link> */}
 
         </div>
-        <BlogTableOfContent blocks={blocks} prop={page.properties as unknown as PageCompletePropertyRecord}/>
-        <Comments/>
+        <BlogTableOfContent blocks={blocks} prop={page.properties as unknown as PageCompletePropertyRecord} />
+        <Comments />
       </div>
     </>
   )
@@ -160,12 +165,25 @@ interface Props extends ParsedUrlQuery {
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   // res.setHeader('Cache-Control', 'max-age=0, s-maxage=60, stale-while-revalidate')
-
   const { slug } = params as Props
+
   const db = await getDatabase(slug)
   const post = db[0].id
 
   const page = await getPage(post)
+  const { last_edited_time } = (page as any)
+
+  // if json props exists, and the last_edited time is the same, return the old one.
+  if (fs.existsSync(`${process.cwd()}/.next/server/pages/${slug}.json`)) {
+    const oldProps = JSON.parse(fs.readFileSync(`${process.cwd()}/.next/server/pages/${slug}.json`, 'utf8'))
+    if (oldProps.page.last_edited_time === last_edited_time) {
+      console.log(` ${slug} has not been modified since last build. Skipping revalidation.`)
+      return {
+        props: oldProps,
+        revalidate: 60,
+      }
+    }
+  }
   // const blocks = await getBlocks(post)
 
   const imageBlocks: any[] = []
@@ -189,7 +207,9 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   blocks = await recursiveGetBlocks(blocks)
 
   // const imgPkgIx = await imagePackageIndex()
-  const nextVer = await nextVersion(IMAGE_NPM_PACKAGE_NAME)
+  const nextXYZ = await nextVersion(IMAGE_NPM_PACKAGE_NAME)
+  const newVersion = `${nextXYZ}-${page.id.substring(0, 6)}`
+  let addedImages = 0
 
   // Resolve all images' dimensions
   await Promise.all(
@@ -204,20 +224,26 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         // if (!imgPkgIx.has(imgHashName)) {
         const remoteVersion = await getAssetPackageVersion(imgHashName)
         if (!remoteVersion) {
-          await downloadImage(src, IMAGE_NPM_PACKAGE_PATH, imgHashName)
-          value[value.type].url = imageCDNUrl(nextVer, imgHashName)
+          await downloadImage(src, `${IMAGE_NPM_PACKAGE_PATH}/${newVersion}`, imgHashName)
+          value[value.type].url = imageCDNUrl(newVersion, imgHashName)
+          addedImages += 1
         } else {
           value[value.type].url = imageCDNUrl(remoteVersion, imgHashName)
         }
         // src = await proxyStaticImage(src)
         const { width, height } = await probeImageSize(src)
+        // const { width, height } = { width: 100, height: 100}
         value['dim'] = { width, height }
         b[type] = value
       })
   )
 
-  // return { props: { page, blocks: blocksWithChildren }, revalidate: 1 }
-  return { props: { page, blocks: blocks } } // 1 hour
+  if (addedImages > 0) {
+    await publishImage(newVersion)
+  }
+
+  // return { props: { page, blocks: blocksWithChildren }, revalidate: 1 } // 1 hour
+  return { props: { page, blocks: blocks } }
 }
 
 export default Post

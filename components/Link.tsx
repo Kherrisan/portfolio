@@ -2,26 +2,17 @@ import React, { HTMLAttributes, ReactNode } from 'react'
 import { FiArrowRight } from 'react-icons/fi'
 import tw, { styled } from 'twin.macro'
 import { AmberText } from '../styles/global'
+import Link from 'next/link'
 
-export const Link = ({ children, underline, ...props }: { children: ReactNode | ReactNode[], underline?: Boolean } & Record<string, any>) => (
-    <a {...props} css={[
+export const KLink = ({ children, underline, href, ...props }: { children: ReactNode | ReactNode[], underline?: Boolean, href: string } & Record<string, any>) => (
+    <Link href={href} {...props} css={[
         tw`transition-all duration-150 font-semibold`,
-     AmberText
-    ,
+        AmberText,
         underline && tw`no-underline border-b-2 border-b-amber-500 hover:border-b-amber-600 dark:border-b-amber-500/90 dark:hover:border-b-amber-400/90 `
     ].concat(props.css)}>
         {children}
-    </a>
+    </Link>
 )
-
-// export const Link = ({ children, underline, ...props }: { children: ReactNode, underline: Boolean }) => (
-//     <a {...props} className='transition-all 
-//     duration-150 
-//     text-amber-500 
-//     hover:text-amber-600 
-//     dark:text-amber-500/90 
-//     dark:hover:text-amber-400/90' />
-// )
 
 export const UnderlineLink = tw.span`
     no-underline 
