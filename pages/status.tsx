@@ -3,9 +3,10 @@ import Head from "next/head";
 import { string } from "prop-types";
 import React from "react";
 import useSWR from "swr";
+import { HrStyle } from "../components/Border";
 import { H1, H2 } from "../components/Header";
 import { Container } from "../components/Layout";
-import { Link } from "../components/Link";
+import { KLink } from "../components/Link";
 
 const capacityFormatter = (bytes: number) => {
     if (bytes < 1024) {
@@ -99,11 +100,11 @@ const PortfolioCDNCard = () => {
         <StatusCard title="CDN" status={data?.["portfolio-version"]}>
             <div className="my-1">
                 <span className="">Version: </span>
-                <Link className="font-semibold underline" href="https://www.npmjs.com/package/kendrickzou-portfolio" target="_blank">{data?.["portfolio-version"] ?? ''}</Link>
+                <KLink className="font-semibold underline" href="https://www.npmjs.com/package/kendrickzou-portfolio" target="_blank">{data?.["portfolio-version"] ?? ''}</KLink>
             </div>
             <div className="my-1">
                 <span className="">IMG-Version: </span>
-                <Link className="font-semibold underline" href="https://www.npmjs.com/package/kendrickzou-portfolio-img" target="_blank">{data?.["portfolio-img-version"] ?? ''}</Link>
+                <KLink className="font-semibold underline" href="https://www.npmjs.com/package/kendrickzou-portfolio-img" target="_blank">{data?.["portfolio-img-version"] ?? ''}</KLink>
             </div>
         </StatusCard >
     )
@@ -125,7 +126,7 @@ const VercelAPICard = () => {
             {Object.entries(VERCEL_API_SET).map(([key, url], index) => (
                 <div key={index} className="my-1">
                     <span className="">{key}:{' '}</span>
-                    <Link className="font-semibold underline" href={url} target='_blank'>{data?.[index]}</Link>
+                    <KLink className="font-semibold underline" href={url} target='_blank'>{data?.[index]}</KLink>
                 </div>
             ))}
         </StatusCard>
@@ -137,10 +138,10 @@ const ServiceStatus: NextPage = () => {
     return (
         <>
             <Head>
-                <title>KendrickZou - ServiceStatus</title>
+                <title>KendrickZou - Service Status</title>
             </Head>
             <Container>
-                <H1>ServiceStatus</H1>
+                <H1 css={HrStyle}>Service Status</H1>
 
                 <H2>Portfolio</H2>
                 <div className="grid gap-4 grid-cols-1 sm:grid-cols-3">

@@ -8,13 +8,14 @@ import { DateTime } from "luxon";
 
 import Head from 'next/head'
 
-import { H1, H2, Heading } from '../components/Header'
-import { Link } from '../components/Link'
+import { H1, Heading } from '../components/Header'
+import { KLink } from '../components/Link'
 import { PrivateContext } from '../components/PrivateToggle'
 import SearchModal from '../components/SearchModal'
 import { type PageCompletePropertyRecord, getDatabase } from '../lib/notion'
 import { HrStyle } from '../components/Border'
 import tw from 'twin.macro'
+import Link from 'next/link'
 
 const CategoryTag = ({
   category,
@@ -106,16 +107,16 @@ const Blog: NextPage<{ posts: PageObjectResponse[] }> = ({ posts }) => {
         {metadata.map((meta) => (
           <div key={meta.id} className="pb-10 pt-6">
             <div className="grid grid-flow-row-dense grid-cols-2 sm:grid-cols-4">
-              <div className="col-span-1 mb-4 text-gray-500/90 dark:text-gray-400/90">
+              <div className="col-span-1 mb-4 text-gray-500/90 dark:text-gray-400/90 pl-1">
                 {DateTime.fromISO(meta.date).setZone('UTC+8').toFormat('yyyy-MM-dd')}
               </div>
               <div className="col-span-3">
                 <Heading>
-                  <a href={`/blog/${meta.slug}`}>{meta.emoji}{' '}{meta.name}</a>
+                  <Link href={`/blog/${meta.slug}`}>{meta.emoji}{' '}{meta.name}</Link>
                 </Heading>
-                <Link css={tw`pl-1`} href={`/blog/${meta.slug}`}>
+                <KLink css={tw`pl-1`} href={`/blog/${meta.slug}`}>
                   {meta.category?.name.toUpperCase()}
-                </Link>
+                </KLink>
                 <div className="mt-6 text-gray-400/90 dark:text-gray-300/90 pl-1">{meta.preview}</div>
               </div>
             </div>
@@ -129,10 +130,11 @@ const Blog: NextPage<{ posts: PageObjectResponse[] }> = ({ posts }) => {
 }
 
 export const getStaticProps: GetStaticProps = async () => {
+  console.log('revalidate')
   const db = await getDatabase()
   return {
     props: { posts: db },
-    revalidate: 60 * 60, // 10 minutes
+    revalidate: 10, // 10 minutes
   }
 }
 

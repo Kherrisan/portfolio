@@ -1,4 +1,4 @@
-import { Link } from "./Link";
+import { KLink } from "./Link";
 
 export function Text({
   text,
@@ -35,9 +35,9 @@ export function Text({
     // style={color !== 'default' ? { color } : {}}
     >
       {link ? (
-        <Link href={link} target="_blank" rel="noopener noreferrer">
+        <KLink href={link} target="_blank" rel="noopener noreferrer">
           {value}
-        </Link>
+        </KLink>
       ) : value}
     </span>
   )

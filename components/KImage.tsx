@@ -51,7 +51,7 @@ const KImage = (props: {
       {...attrs}
     >
       {/* <source srcSet={srcset.replace('.jpeg', '.avif')} type={`image/avif`} /> */}
-      <source className="" srcSet={srcset.replace('.jpeg', '.webp')} type={`image/webp`} />
+      <source srcSet={srcset.replace(/\.jpeg/g, '.webp')} type={`image/webp`} />
       <source srcSet={srcset} type={`image/jpeg`} />
       <img src={src} alt={alt} className='m-0 w-full h-full'/>
     </picture>
