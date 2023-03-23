@@ -23,7 +23,6 @@ const BlogTableOfContent = ({ blocks, prop, ...props }: { blocks: any, prop: Pag
       : ''
   const date = prop.date.type === 'date' ? prop.date.date?.start ?? '' : ''
   const authors = 'results' in prop.author ? prop.author.results : []
-  // console.log(authors)
   const author = authors.length == 0 ? '_' : (
     'people' in authors[0] && 'name' in authors[0].people
       ? authors[0].people.name
@@ -31,6 +30,7 @@ const BlogTableOfContent = ({ blocks, prop, ...props }: { blocks: any, prop: Pag
   )
   const category = 'select' in prop.category ? prop.category.select : null
   const tags = 'multi_select' in prop.tags ? prop.tags.multi_select : []
+  const { results: [{ rich_text: { plain_text: xLogText, text: { link: { url: xLogUrl } } } }] } = (prop as any).xLog
 
   const headings = blocks
     .filter((b: any) => b.type === 'heading_2' || b.type === 'heading_3')
@@ -67,14 +67,19 @@ const BlogTableOfContent = ({ blocks, prop, ...props }: { blocks: any, prop: Pag
           <p css={[PrimaryText, tw`text-sm`]}>Category</p>
           <span css={[AmberText, tw`font-semibold`]}>{category?.name ?? '_'}</span>
         </div>
-        <div css={[HrStyle, tw`my-4 pb-4 border-0 lg:border-b`]}>
+        {tags && tags.length != 0 && <div css={[HrStyle, tw`my-4 pb-4 border-0 lg:border-b`]}>
           <p css={[PrimaryText, tw`text-sm`]}>Tag</p>
-          {tags.length == 0 ? '-' : tags?.map((tag: any) => (
+          {tags?.map((tag: any) => (
             <span key={tag.id} css={[SecondaryText, tw`text-sm`]}>
               {tag.name ?? '-'}{' '}
             </span>
           ))}
+        </div>}
+        <div css={[HrStyle, tw`my-4 pb-4 border-0 lg:border-b`]}>
+          <p css={[PrimaryText, tw`text-sm`]}>xLog</p>
+          <KLink href={xLogUrl}>{xLogText}</KLink>
         </div>
+
 
         {headings.length === 0 ? (
           <div className='hidden lg:block'>
