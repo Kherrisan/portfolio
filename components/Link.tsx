@@ -38,7 +38,6 @@ export const LinkArrowRight = tw(FiArrowRight)`
 `
 
 export const Callout = ({children, emoji, ...props}: { children: React.ReactNode | ReactNode[], emoji?: string} & Record<string, any>) => {
-    console.log(props)
     return (
         <div {...props} css={[
             tw`p-4 flex rounded-md bg-orange-100 dark:bg-stone-700`

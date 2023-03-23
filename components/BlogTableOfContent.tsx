@@ -30,7 +30,6 @@ const BlogTableOfContent = ({ blocks, prop, ...props }: { blocks: any, prop: Pag
   )
   const category = 'select' in prop.category ? prop.category.select : null
   const tags = 'multi_select' in prop.tags ? prop.tags.multi_select : []
-  const { results: [{ rich_text: { plain_text: xLogText, text: { link: { url: xLogUrl } } } }] } = (prop as any).xLog
 
   const headings = blocks
     .filter((b: any) => b.type === 'heading_2' || b.type === 'heading_3')
@@ -75,11 +74,16 @@ const BlogTableOfContent = ({ blocks, prop, ...props }: { blocks: any, prop: Pag
             </span>
           ))}
         </div>}
-        <div css={[HrStyle, tw`my-4 pb-4 border-0 lg:border-b`]}>
-          <p css={[PrimaryText, tw`text-sm`]}>xLog</p>
-          <KLink href={xLogUrl}>{xLogText}</KLink>
-        </div>
-
+        {
+          (prop as any).xLog.results.length > 0 &&
+          (prop as any).xLog.results[0] &&
+          <div css={[HrStyle, tw`my-4 pb-4 border-0 lg:border-b`]}>
+            <p css={[PrimaryText, tw`text-sm`]}>xLog</p>
+            <KLink href={(prop as any).xLog.results[0].rich_text.text.link.url}>{
+              (prop as any).xLog.results[0].rich_text.plain_text
+            }</KLink>
+          </div>
+        }
 
         {headings.length === 0 ? (
           <div className='hidden lg:block'>
