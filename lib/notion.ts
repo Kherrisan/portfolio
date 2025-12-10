@@ -6,6 +6,8 @@ import type {
 } from '@notionhq/client/build/src/api-endpoints'
 import { retry } from 'ts-retry-promise'
 import { loadEnvConfig } from '@next/env'
+import { HttpsProxyAgent } from 'https-proxy-agent'
+import fetch from 'node-fetch'
 
 loadEnvConfig(process.cwd())
 
@@ -23,9 +25,33 @@ export type LatestPostProps = {
   emoji: string
 } | null
 
-const notion = new Client({ auth: process.env.NOTION_KEY })
+// 配置代理
+const createNotionClient = () => {
+  const proxyUrl = process.env.NOTION_PROXY_URL || process.env.HTTPS_PROXY || process.env.HTTP_PROXY
+  
+  // 使用新版本 API (2025-09-03)
+  // 新版本引入了数据源（DataSource）的概念，将数据库容器与数据表分离
+  
+  if (proxyUrl) {
+    const agent = new HttpsProxyAgent(proxyUrl)
+    
+    // 在 SDK 5.x 中，可以直接传递 agent 参数
+    return new Client({
+      auth: process.env.NOTION_KEY,
+      agent,
+    })
+  }
+  
+  // 没有配置代理时使用默认配置
+  console.log(`[INFO] Notion API version: 2025-09-03 (default)`)
+  return new Client({ 
+    auth: process.env.NOTION_KEY,
+  })
+}
+
+const notion = createNotionClient()
 const databaseId =
-  process.env.NOTION_DATABASE_ID || 'b3f55ea317de4af39aefcab597bcf7d5'
+  process.env.NOTION_DATABASE_ID || '80f855f1-07f1-4626-8961-023570f13467'
 const tweetDatabaseId =
   process.env.NOTION_TWEET_DATABASE_ID || '3d75457bd05b4072a8bd322b6f5eec65'
 const assetPackageDatabaseId =
@@ -40,7 +66,7 @@ const propExtractor = async (propId: string, pageId: string) => {
   return prop.results.map((r: any) => r[r.type].plain_text).join('')
 }
 
-const getPageProperty = async (pageId: string, propId: string) => {
+const getPageProperty = async (pageId: string, propId: string): Promise<any> => {
   return await retry(
     () =>
       notion.pages.properties.retrieve({
@@ -52,11 +78,12 @@ const getPageProperty = async (pageId: string, propId: string) => {
 }
 
 export const getTweets = async () => {
+  // 使用新版本 API: dataSources.query 替代 databases.query
   let dbQuery: any = {
-    database_id: tweetDatabaseId,
+    data_source_id: tweetDatabaseId, // 参数名从 database_id 改为 data_source_id
     sorts: [{ property: 'date', direction: 'descending' }],
   }
-  const { results } = await notion.databases.query(dbQuery)
+  const { results } = await notion.dataSources.query(dbQuery)
   return results.map((r: any) => ({
     id: r.id,
     datetime: moment(r.created_time).tz("Asia/Shanghai").format('YYYY-MM-DD HH:mm:ss'),
@@ -65,8 +92,9 @@ export const getTweets = async () => {
 }
 
 export const getDatabase = async (slug?: string) => {
+  // 使用新版本 API: dataSources.query 替代 databases.query
   let dbQuery: any = {
-    database_id: databaseId,
+    data_source_id: databaseId, // 参数名从 database_id 改为 data_source_id
     filter: { and: [{ property: 'published', checkbox: { equals: true } }] },
     sorts: [{ property: 'date', direction: 'descending' }],
   }
@@ -75,7 +103,7 @@ export const getDatabase = async (slug?: string) => {
     dbQuery.filter.and.push({ property: 'slug', rich_text: { equals: slug } })
   }
 
-  const { results } = await notion.databases.query(dbQuery)
+  const { results } = await notion.dataSources.query(dbQuery)
 
   // Each result (post) contains properties that should be extracted
   // Props include - { published, tag, slug, author, date, preview, name }
@@ -89,7 +117,9 @@ export const getDatabase = async (slug?: string) => {
 
             // Dumping every property into the result object as there is much
             // to take care of (which will happen in React)
-            res.properties[prop] = { id: propId, ...propObj }
+            // 使用临时变量绕过类型检查和编译器限制
+            const properties: any = res.properties
+            properties[prop] = { id: propId, ...propObj }
           }
         }
       }
@@ -103,8 +133,9 @@ export const getDatabase = async (slug?: string) => {
 
 export const getLatestPostProps = async (privateAccessable: boolean = false) => {
   try {
-    const { results } = await notion.databases.query({
-      database_id: databaseId,
+    // 使用新版本 API: dataSources.query 替代 databases.query
+    const { results } = await notion.dataSources.query({
+      data_source_id: databaseId, // 参数名从 database_id 改为 data_source_id
       filter: { and: [{ property: 'published', checkbox: { equals: true } }, { property: 'private', checkbox: { equals: privateAccessable } }] },
       sorts: [{ property: 'date', direction: 'descending' }],
       page_size: 1,
@@ -142,7 +173,9 @@ export const getPage = async (pageId: string) => {
         const propObj = await getPageProperty(response.id, propId)
 
         // Same as the above implementation
-        response.properties[prop] = { id: propId, ...propObj }
+        // 使用临时变量绕过类型检查和编译器限制
+        const properties: any = response.properties
+        properties[prop] = { id: propId, ...propObj }
       }
     }
   }
@@ -176,8 +209,9 @@ export const searchDatabase = async (query: string) => {
 }
 
 export const getAssetPackageVersion = async (assetName: string) => {
-  const { results } = await notion.databases.query({
-    database_id: assetPackageDatabaseId,
+  // 使用新版本 API: dataSources.query 替代 databases.query
+  const { results } = await notion.dataSources.query({
+    data_source_id: assetPackageDatabaseId, // 参数名从 database_id 改为 data_source_id
     filter: {
       property: 'name',
       title: {
@@ -192,8 +226,9 @@ export const getAssetPackageVersion = async (assetName: string) => {
 }
 
 export const getLatestPackageVersion = async () => {
-  const { results } = await notion.databases.query({
-    database_id: assetPackageDatabaseId,
+  // 使用新版本 API: dataSources.query 替代 databases.query
+  const { results } = await notion.dataSources.query({
+    data_source_id: assetPackageDatabaseId, // 参数名从 database_id 改为 data_source_id
     sorts: [{
       property: 'version',
       direction: 'descending'

@@ -24,7 +24,7 @@ import { unified } from 'unified'
 import notionRehype from 'notion-rehype-k'
 import rehypeReact from '../../components/RehypeReact'
 import { ReactNode } from 'react'
-import { imageCDNUrl, IMAGE_NPM_PACKAGE_NAME, IMAGE_NPM_PACKAGE_PATH, nextVersion } from '../../lib/npm'
+import { imageCDNUrl, IMAGE_TEMP_PATH, processAndUploadImage, isImageProcessed } from '../../lib/tencent-cos'
 import { imageFileName } from '../../lib/imaging'
 import { Data } from 'vfile'
 import { H1 } from '../../components/Header'
@@ -32,7 +32,6 @@ import { DateTime } from 'luxon'
 import { HrStyle } from '../../components/Border'
 import tw from 'twin.macro'
 import { HeadingText } from '../../styles/global'
-import { publishImage } from '../../lib/npm'
 
 const Post: NextPage<{ page: PageObjectResponse; blocks: any[] }> = ({ page, blocks }) => {
   const router = useRouter()
@@ -206,10 +205,11 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   let blocks = await getBlocks(post)
   blocks = await recursiveGetBlocks(blocks)
 
-  // const imgPkgIx = await imagePackageIndex()
-  const nextXYZ = await nextVersion(IMAGE_NPM_PACKAGE_NAME)
-  const newVersion = `${nextXYZ}-${page.id.substring(0, 6)}`
-  let addedImages = 0
+  // 创建临时目录
+  const tempDir = IMAGE_TEMP_PATH
+  if (!fs.existsSync(tempDir)) {
+    fs.mkdirSync(tempDir, { recursive: true })
+  }
 
   // Resolve all images' dimensions
   await Promise.all(
@@ -220,26 +220,54 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         const { type } = b
         const value = b[type]
         let src = value.type === 'external' ? value.external.url : value.file.url
-        let imgHashName = await imageFileName(src)
-        // if (!imgPkgIx.has(imgHashName)) {
-        const remoteVersion = await getAssetPackageVersion(imgHashName)
-        if (!remoteVersion) {
-          await downloadImage(src, `${IMAGE_NPM_PACKAGE_PATH}/${newVersion}`, imgHashName)
-          value[value.type].url = imageCDNUrl(newVersion, imgHashName)
-          addedImages += 1
+        const imgHashName = await imageFileName(src)
+        
+        // 检查图片是否已经处理并上传到 COS
+        const isProcessed = await isImageProcessed(imgHashName)
+        
+        if (!isProcessed) {
+          // 图片未处理，需要下载、生成缩略图并上传
+          console.log(`[INFO] Processing new image: ${imgHashName}`)
+          
+          // 1. 下载原图到临时目录
+          const localPath = `${tempDir}/${imgHashName}`
+          await downloadImage(src, tempDir, imgHashName)
+          
+          // 2. 生成缩略图并上传到 COS
+          try {
+            await processAndUploadImage(localPath, imgHashName)
+            console.log(`[INFO] Successfully processed: ${imgHashName}`)
+          } catch (err) {
+            console.error(`[ERROR] Failed to process image: ${imgHashName}`, err)
+            // 如果处理失败，使用原始 URL
+            value[value.type].url = src
+            const { width, height } = await probeImageSize(src)
+            value['dim'] = { width, height }
+            b[type] = value
+            return
+          }
         } else {
-          value[value.type].url = imageCDNUrl(remoteVersion, imgHashName)
+          console.log(`[INFO] Image already processed: ${imgHashName}`)
         }
-        // src = await proxyStaticImage(src)
+        
+        // 使用 COS CDN URL
+        value[value.type].url = imageCDNUrl(imgHashName)
+        
+        // 获取图片尺寸
         const { width, height } = await probeImageSize(src)
-        // const { width, height } = { width: 100, height: 100}
         value['dim'] = { width, height }
         b[type] = value
       })
   )
 
-  if (addedImages > 0) {
-    await publishImage(newVersion)
+  // 清理临时目录（如果存在且为空）
+  try {
+    const files = await fs.promises.readdir(tempDir)
+    if (files.length === 0) {
+      await fs.promises.rmdir(tempDir)
+    }
+  } catch (err) {
+    // 忽略清理错误
   }
 
   // return { props: { page, blocks: blocksWithChildren }, revalidate: 1 } // 1 hour

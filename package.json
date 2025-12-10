@@ -12,24 +12,30 @@
     "lint": "next lint",
     "format": "prettier --write '{components,config,lib,pages,styles}/*.{js,jsx,ts,tsx,css,json}'",
     "export": "next export",
-    "publish": "NEXT_PUBLIC_SERVICE_WORKER=true && next build && next export && tsx ci/publish.ts"
+    "publish": "NEXT_PUBLIC_SERVICE_WORKER=true && next build && next export && tsx ci/publish.ts",
+    "test:proxy": "node scripts/test-notion-proxy.js",
+    "list:databases": "node scripts/list-databases.js"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.142.0",
     "@aws-sdk/lib-storage": "^3.142.0",
+    "cos-nodejs-sdk-v5": "^2.12.3",
     "@fontsource/source-code-pro": "^4.5.12",
     "@fontsource/source-sans-3": "^4.5.11",
     "@fontsource/source-serif-4": "^4.5.16",
     "@giscus/react": "^2.2.0",
     "@headlessui/react": "^1.6.6",
     "@next/font": "^13.1.2",
-    "@notionhq/client": "2.1.1",
+    "@notionhq/client": "5.4.0",
     "@types/hast": "^2.3.4",
     "@types/node-fetch": "^2.6.2",
     "awesome-debounce-promise": "^2.1.0",
     "axios": "^1.2.2",
+    "dotenv": "^16.0.3",
     "feed": "^4.2.2",
+    "https-proxy-agent": "^7.0.2",
     "jsdom": "^20.0.0",
+    "node-fetch": "^2.7.0",
     "luxon": "^3.3.0",
     "md5": "^2.3.0",
     "moment": "^2.29.4",
@@ -90,5 +96,6 @@
     "twin": {
       "preset": "styled-components"
     }
-  }
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }
