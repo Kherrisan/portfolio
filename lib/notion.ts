@@ -42,8 +42,6 @@ const createNotionClient = () => {
     })
   }
   
-  // 没有配置代理时使用默认配置
-  console.log(`[INFO] Notion API version: 2025-09-03 (default)`)
   return new Client({ 
     auth: process.env.NOTION_KEY,
   })

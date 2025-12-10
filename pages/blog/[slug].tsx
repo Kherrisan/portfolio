@@ -229,33 +229,39 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
           // 图片未处理，需要下载、生成缩略图并上传
           console.log(`[INFO] Processing new image: ${imgHashName}`)
           
-          // 1. 下载原图到临时目录
-          const localPath = `${tempDir}/${imgHashName}`
-          await downloadImage(src, tempDir, imgHashName)
-          
-          // 2. 生成缩略图并上传到 COS
           try {
+            // 1. 下载原图到临时目录
+            const localPath = `${tempDir}/${imgHashName}`
+            await downloadImage(src, tempDir, imgHashName)
+            
+            // 2. 生成缩略图并上传到 COS
             await processAndUploadImage(localPath, imgHashName)
             console.log(`[INFO] Successfully processed: ${imgHashName}`)
+            
+            // 使用 COS CDN URL
+            value[value.type].url = imageCDNUrl(imgHashName)
           } catch (err) {
-            console.error(`[ERROR] Failed to process image: ${imgHashName}`, err)
-            // 如果处理失败，使用原始 URL
+            console.error(`[ERROR] Failed to download or process image: ${imgHashName}`, err)
+            console.warn(`[WARN] Falling back to original Notion URL for: ${imgHashName}`)
+            // 如果下载或处理失败，使用原始 Notion URL
             value[value.type].url = src
-            const { width, height } = await probeImageSize(src)
-            value['dim'] = { width, height }
-            b[type] = value
-            return
           }
         } else {
           console.log(`[INFO] Image already processed: ${imgHashName}`)
+          // 使用 COS CDN URL
+          value[value.type].url = imageCDNUrl(imgHashName)
         }
         
-        // 使用 COS CDN URL
-        value[value.type].url = imageCDNUrl(imgHashName)
+        // 获取图片尺寸（无论使用哪个 URL）
+        try {
+          const { width, height } = await probeImageSize(src)
+          value['dim'] = { width, height }
+        } catch (err) {
+          console.error(`[ERROR] Failed to probe image size: ${imgHashName}`, err)
+          // 如果无法获取尺寸，使用默认值
+          value['dim'] = { width: 800, height: 600 }
+        }
         
-        // 获取图片尺寸
-        const { width, height } = await probeImageSize(src)
-        value['dim'] = { width, height }
         b[type] = value
       })
   )
