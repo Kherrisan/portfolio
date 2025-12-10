@@ -13,8 +13,8 @@ import { PrivateContext } from '../components/PrivateToggle'
 import { H1 } from '../components/Header'
 import { Callout, LinkArrowRight, UnderlineLink } from '../components/Link'
 
-import doudou from '../public/images/doudou_spring_320x320.jpg'
-import dst_zy from '../public/images/dst_zy.jpg'
+// import doudou from '../public/images/doudou_spring_320x320.jpg'
+// import dst_zy from '../public/images/dst_zy.jpg'
 
 const Home = ({ latestPost, latestPrivatePost }: { latestPost: LatestPostProps, latestPrivatePost: LatestPostProps }) => {
   const { privateAccessable } = useContext(PrivateContext);
@@ -43,18 +43,18 @@ const Home = ({ latestPost, latestPrivatePost }: { latestPost: LatestPostProps, 
         </p>
 
         <p className="leading-7">
-          Graduate student at{' '}
+          Phd candidate at{' '}
           <a
             href="https://cyber.seu.edu.cn"
             target="_blank"
             rel="noopener noreferrer"
             className="bg-emerald-600/10 text-emerald-600 p-1 rounded font-bold transition-all duration-150 hover:bg-emerald-600/20"
           >
-            🌲 CYBER#SEU
+            🌲 CYBER@SEU
           </a>{' '}
           on 🧪astrology, 🔭alchemy (=ﾟωﾟ)ﾉ. Graduated from{' '}
           <Link href="https://cose.seu.edu.cn" target='_blank'>
-            <UnderlineLink>COSE#SEU</UnderlineLink>{' '}
+            <UnderlineLink>COSE@SEU</UnderlineLink>{' '}
           </Link>
           (BSc).
         </p>
@@ -83,12 +83,12 @@ const Home = ({ latestPost, latestPrivatePost }: { latestPost: LatestPostProps, 
             href="mailto:zoudikai@outlook.com"
             className="group inline-flex flex-wrap items-center"
           >
-            <UnderlineLink>📨 zoudikai#outlook.com</UnderlineLink>
+            <UnderlineLink>📨 zoudikai at outlook.com</UnderlineLink>
           </a>
         </p>
       </div>
 
-      <div className='mt-8'>
+      {/* <div className='mt-8'>
         <Callout emoji='🥦'>
           今天是3.8妇女节，祝我的宗宗宝贝节日快乐~
           <Image
@@ -100,7 +100,7 @@ const Home = ({ latestPost, latestPrivatePost }: { latestPost: LatestPostProps, 
             priority
           />
         </Callout>
-      </div>      
+      </div>       */}
 
       <div className="secondary-text text-center font-mono text-xs">
         <p className="leading-7 mt-8">
@@ -110,12 +110,9 @@ const Home = ({ latestPost, latestPrivatePost }: { latestPost: LatestPostProps, 
             className="bg-indigo-600/10 text-indigo-600 p-1 rounded font-bold transition-all duration-150 hover:bg-indigo-600/20"
           >
             spencerwooo/spencerwoo.com
-          </a>
-          , built with ❤️ love and 💻 expertise by spencerwoo.
+          </a>.
         </p>
       </div>
-
-      
 
       {/* <Sakana /> */}
     </div>
