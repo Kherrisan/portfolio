@@ -16,6 +16,10 @@ const navigations = [
     link: '/publication',
   },
   {
+    name: 'Vulnerability',
+    link: '/vulnerability',
+  },
+  {
     name: 'Projects & Socials',
     link: '/projectsnsocials',
   },

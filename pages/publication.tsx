@@ -10,6 +10,7 @@ import { H1, Heading } from '../components/Header'
 import { HrStyle } from '../components/Border'
 import { AmberText, SecondaryText } from '../styles/global'
 import tw from 'twin.macro'
+import { publications } from '../config/publication'
 
 const CCF = ({ rank, children }: { rank?: 'C' | 'B' | 'A' | 'S' | 'Q1' | 'Q2' | 'Q3' | undefined | null, children: React.ReactNode }) => {
     let color = '';
@@ -89,7 +90,13 @@ const Publication: NextPage<{
             <div className="container mx-auto max-w-4xl px-6">
                 <H1 css={HrStyle}>Publication</H1>
 
-                <PublicationItem year={2025} title='Semantics-aware Location Privacy Preserving: A Differential Privacy Approach' authors='D Zou, J Tao, Z Wang' source='Computers & Security' href='https://www.sciencedirect.com/science/article/pii/S0167404825000914' rank='B' />
+                {
+                    publications.map((item, index) => (
+                        <PublicationItem key={index} year={item.year} title={item.title} authors={item.authors} source={item.source} href={item.href} rank={item.rank} />
+                    ))
+                }
+
+                {/* <PublicationItem year={2025} title='Semantics-aware Location Privacy Preserving: A Differential Privacy Approach' authors='D Zou, J Tao, Z Wang' source='Computers & Security' href='https://www.sciencedirect.com/science/article/pii/S0167404825000914' rank='B' />
 
                 <PublicationItem year={2024} title='An Accurate and Lightweight Intrusion Detection Model Deployed on Edge Network Devices' authors='Y Ao, J Tao, D Zou, W Sun, L Yu' source='2024 International Joint Conference on Neural Networks (IJCNN)' href='https://ieeexplore.ieee.org/document/10651457' rank='C' />
 
@@ -101,7 +108,7 @@ const Publication: NextPage<{
 
                 <PublicationItem year={2023} title='Privacy-Preserving Data Aggregation in IoTs: A Randomize-then-Shuffle Paradigm' authors='Z Wang, J Tao, D Zou' source='IEEE 97th Vehicular Technology Conference (VTC2023-Spring)' href='https://dl.acm.org/doi/10.1145/3579093' rank='A' />
 
-                <PublicationItem year={2023} title='Towards the Minimal Wait-for Delay for Rechargeable WSNs with Multiple Mobile Chargers' authors='Z Wang, J Tao, Y Xu, Y Gao, D Zou' source='ACM Transactions on Sensor Networks' href='https://dl.acm.org/doi/10.1145/3579093' rank='B' />
+                <PublicationItem year={2023} title='Towards the Minimal Wait-for Delay for Rechargeable WSNs with Multiple Mobile Chargers' authors='Z Wang, J Tao, Y Xu, Y Gao, D Zou' source='ACM Transactions on Sensor Networks' href='https://dl.acm.org/doi/10.1145/3579093' rank='B' /> */}
 
                 {/* {data.map((item, index) => (
                     <div key={index} className="grid grid-cols-10 sm:grid-cols-12 pb-10 pt-6">
